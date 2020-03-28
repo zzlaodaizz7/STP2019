@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:background="#fff">
+
+    <TextView
+        android:id="@+id/txtTeamHost"
+        android:text="Team Host 's name"
+        android:textSize="15sp"
+        android:textColor="#000"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:id="@+id/txtState"
+        android:text="State"
+        android:textSize="12sp"
+        android:layout_below="@+id/txtTeamHost"
+        android:textColor="#2DAA1F"
+        android:layout_marginTop="4dp"
+        android:layout_marginLeft="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.3dp"
+        android:background="@android:color/darker_gray"
+        android:layout_below="@+id/txtState"
+        android:layout_marginTop="5dp"/>
+
+    <!--thoi gian dien ra tran dau-->
+    <ImageView
+        android:id="@+id/iconTime"
+        android:src="@drawable/clock"
+        android:layout_below="@+id/txtState"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+    <TextView
+        android:id="@+id/txtTime"
+        android:text="Thời gian"
+        android:textColor="#7A7272"
+        android:layout_below="@+id/txtState"
+        android:layout_toRightOf="@+id/iconTime"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <!--San bong-->
+    <ImageView
+        android:id="@+id/iconPitch"
+        android:src="@drawable/field"
+        android:layout_below="@+id/txtTime"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="12dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+    <TextView
+        android:id="@+id/txtPitch"
+        android:text="Sân nhà"
+        android:textColor="#7A7272"
+        android:layout_below="@+id/txtTime"
+        android:layout_toRightOf="@+id/iconPitch"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <ImageView
+        android:id="@+id/iconLevel"
+        android:src="@drawable/soccerball"
+
+        android:layout_below="@+id/txtPitch"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+    <TextView
+        android:id="@+id/txtLevel"
+        android:text="Trình độ"
+        android:textColor="#7A7272"
+        android:layout_below="@+id/txtPitch"
+        android:layout_toRightOf="@+id/iconLevel"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+</RelativeLayout>
