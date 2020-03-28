@@ -113,7 +113,7 @@
                     android:id="@+id/BenPhaiTextViewChonNgay"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:drawableRight="@drawable/right"
+                    android:drawableRight="@drawable/icon_right_18dp"
                     android:text="--:--"
                     android:textColor="@color/mauChuNhat"
                     android:textSize="12sp"
