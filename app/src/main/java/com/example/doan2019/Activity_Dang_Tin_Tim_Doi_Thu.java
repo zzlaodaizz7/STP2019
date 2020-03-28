@@ -32,6 +32,7 @@ public class Activity_Dang_Tin_Tim_Doi_Thu extends AppCompatActivity {
     ArrayList<String> arrayDoiBong, arraySanBong;
     ConstraintLayout layoutChonNgay, layoutChonSan;
     Switch btnCoSan;
+    Switch btnCoSan1;
 
 
     @Override
