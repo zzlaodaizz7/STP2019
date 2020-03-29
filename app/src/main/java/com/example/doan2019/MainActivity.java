@@ -17,6 +17,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         btnViewListMatch = (Button) findViewById(R.id.btnViewListMatch);
+
         btnViewListMatch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -25,7 +26,5 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        Intent i = new Intent(MainActivity.this, Activity_Dang_Tin_Tim_Doi_Thu.class);
-        startActivity(i);
     }
 }
