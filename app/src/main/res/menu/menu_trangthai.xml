@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:title="Chưa có đối thủ"
+        android:id="@+id/chuacodoithu_menuTrangThai"/>
+    <item android:title="Đã có đối thủ"
+        android:id="@+id/dacodoithu_menuTrangThai"/>
+    <item android:title="Tất cả"
+        android:id="@+id/tatca_menuTrangThai"/>
+</menu>

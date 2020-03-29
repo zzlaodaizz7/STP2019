@@ -10,6 +10,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".Activity_Dang_Tin_Tim_Doi_Thu"></activity>
+        <activity android:name=".ViewMatchActivity"></activity>
+        <activity android:name=".ViewListMatchActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
