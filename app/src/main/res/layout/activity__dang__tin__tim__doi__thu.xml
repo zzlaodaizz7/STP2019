@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:background="#7DCC6D"
+        android:background="@drawable/custom_mau_action_bar_dx"
         android:paddingBottom="5dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -20,26 +20,25 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="#7DCC6D"
-            android:drawableLeft="@drawable/back_activity_24"
+            android:drawableLeft="@drawable/back_18dp"
             android:paddingLeft="5dp"
             android:paddingRight="5dp"
             android:text="Back"
             android:textColor="#FFF"
-            android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent" />
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="Đăng tin"
+            android:text="Đăng Tin"
             android:textColor="#FFF"
-            android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent" />
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -55,13 +54,15 @@
             android:layout_height="match_parent"
             android:layout_margin="20dp"
             android:background="#fff"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            tools:layout_editor_absoluteX="16dp"
+            tools:layout_editor_absoluteY="6dp">
 
             <TextView
                 android:id="@+id/TextViewTenDoi"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:drawableLeft="@drawable/icon_person_18dp"
+                android:drawableLeft="@drawable/person_black_18dp"
                 android:padding="5dp"
                 android:text="Tên đội"
                 android:textColor="@color/mauChuDam"
@@ -209,7 +210,7 @@
                     android:id="@+id/TextViewChonThoiGian"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:drawableLeft="@drawable/icon_time_18dp"
+                    android:drawableLeft="@drawable/ic_time_18dp"
                     android:text="Chọn khung giờ"
                     android:textColor="@color/mauChuDam"
                     android:textSize="12sp"
@@ -243,7 +244,7 @@
                     android:id="@+id/TextViewChonKeo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:drawableLeft="@drawable/icon_keo_18dp"
+                    android:drawableLeft="@drawable/ic_keo_18dp"
                     android:text="Kèo"
                     android:textColor="@color/mauChuDam"
                     android:textSize="12sp"
@@ -284,19 +285,33 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent"></TextView>
 
-        <Button
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#7DCC6D"
-            android:text="Đăng tin"
-            android:textAllCaps="false"
-            android:textColor="#fff"
-            android:textSize="18sp"
+            android:orientation="horizontal"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.5">
+            app:layout_constraintTop_toTopOf="parent">
 
-        </Button>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="8"
+                android:background="@drawable/custom_button_dx"
+                android:text="Đăng Tin"
+                android:textAllCaps="false"
+                android:textColor="#fff"></Button>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+        </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </LinearLayout>
