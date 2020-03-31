@@ -19,8 +19,9 @@
 
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:drawableLeft="@drawable/back_18dp"
+            android:gravity="center"
             android:paddingLeft="5dp"
             android:paddingRight="5dp"
             android:text="Back"
@@ -290,6 +291,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
             <TextView
