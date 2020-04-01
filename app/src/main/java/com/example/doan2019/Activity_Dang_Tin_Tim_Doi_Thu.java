@@ -26,14 +26,12 @@ import java.util.Calendar;
 public class Activity_Dang_Tin_Tim_Doi_Thu extends AppCompatActivity {
     EditText edtKeoDau;
     ListView lvDoiBong, lvSanBong;
-    TextView tvChonFC, tvChonNgay, tvChonSan, tvChonGio;
+    TextView tvChonFC, tvChonNgay, tvChonSan, tvChonGio, tvBack;
     Button tvTime1, tvTime2, tvTime3;
     Dialog dialogChonDoiBong, dialogChonSan, dialogChonGio;
     ArrayList<String> arrayDoiBong, arraySanBong;
     ConstraintLayout layoutChonNgay, layoutChonSan;
     Switch btnCoSan;
-    Switch btnCoSan1;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +45,16 @@ public class Activity_Dang_Tin_Tim_Doi_Thu extends AppCompatActivity {
         ClickChonSan();
         ClickCoHoacKhongSan();
         ClickChonGio();
+        ClickTextViewBack();
+    }
+
+    private void ClickTextViewBack() {
+        tvBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
     }
 
     private void ClickChonGio() {
@@ -134,6 +142,7 @@ public class Activity_Dang_Tin_Tim_Doi_Thu extends AppCompatActivity {
         layoutChonSan = findViewById(R.id.ConstrainLayoutChonSanBong);
         tvChonGio = findViewById(R.id.TextViewChonKhungGio);
         edtKeoDau = findViewById(R.id.EditTextNhapKeo);
+        tvBack = findViewById(R.id.TextViewBack);
     }
 
     void ClickChonFC() {

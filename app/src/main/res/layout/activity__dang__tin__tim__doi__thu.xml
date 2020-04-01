@@ -18,6 +18,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
+            android:id="@+id/TextViewBack"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:drawableLeft="@drawable/back_18dp"
