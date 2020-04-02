@@ -62,7 +62,7 @@ public class ViewListMatchActivity extends AppCompatActivity {
         btnDangTin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                startActivity(new Intent(ViewListMatchActivity.this, Activity_Dang_Tin_Tim_Doi_Thu.class));
             }
         });
 
@@ -89,6 +89,7 @@ public class ViewListMatchActivity extends AppCompatActivity {
         btnChonTrangThai = (Button) findViewById(R.id.btnChonTrangThai);
         btnChonTrinhDo = (Button) findViewById(R.id.btnChonTrinhDo);
         listViewMatch = (ListView) findViewById(R.id.listViewMatch);
+        btnDangTin = findViewById(R.id. btnDangtin);
 
         matchArrayList = new ArrayList<>();
         matchArrayList.add(new Match("1", "FC Red", "", new Date(), "3 : 4",  "San My Dinh", "Trung binh", "Chua co doi thu"));
