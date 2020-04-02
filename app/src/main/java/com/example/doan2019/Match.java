@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 public class Match implements Serializable {
-    private String id;
+    private int id;
     private String teamHost;
     private String teamGuest;
     private Date time;
@@ -13,7 +13,7 @@ public class Match implements Serializable {
     private String level;
     private String state;
 
-    public Match(String id, String teamHost, String teamGuest, Date time, String ratio, String pitch, String level, String state){
+    public Match(int id, String teamHost, String teamGuest, Date time, String ratio, String pitch, String level, String state){
         this.id = id;
         this.teamHost = teamHost;
         this.teamGuest = teamGuest;
@@ -24,11 +24,11 @@ public class Match implements Serializable {
         this.state = state;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 

@@ -9,8 +9,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Activity_Dang_Tin_Tim_Doi_Thu"></activity>
-        <activity android:name=".ViewMatchActivity"></activity>
+        <activity android:name=".NotificationActivity"></activity>
+        <activity android:name=".Activity_Dang_Tin_Tim_Doi_Thu" />
+        <activity android:name=".ViewMatchActivity" />
         <activity android:name=".ViewListMatchActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
