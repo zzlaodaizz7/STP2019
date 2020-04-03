@@ -8,7 +8,6 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -17,7 +16,6 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -27,7 +25,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
-public class ViewListMatchActivity extends AppCompatActivity {
+public class ListViewMatchActivity extends AppCompatActivity {
 
     ScrollView scrollView;
     EditText edtSearch;
@@ -45,7 +43,9 @@ public class ViewListMatchActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_view_list_match);
+        setContentView(R.layout.fragment_tim_doi);
+
+
 
         mapping();
 
@@ -53,7 +53,7 @@ public class ViewListMatchActivity extends AppCompatActivity {
         listViewMatch.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(ViewListMatchActivity.this, ViewMatchActivity.class);
+                Intent intent = new Intent(ListViewMatchActivity.this, ViewMatchActivity.class);
                 Match match = matchArrayList.get(position);
                 intent.putExtra("matchIsChosen", match);
                 startActivity(intent);
@@ -64,7 +64,7 @@ public class ViewListMatchActivity extends AppCompatActivity {
         btnCreatMatch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(ViewListMatchActivity.this, Activity_Dang_Tin_Tim_Doi_Thu.class);
+                Intent intent = new Intent(ListViewMatchActivity.this, Activity_Dang_Tin_Tim_Doi_Thu.class);
                 startActivity(intent);
             }
         });
@@ -72,7 +72,7 @@ public class ViewListMatchActivity extends AppCompatActivity {
         btnNotification.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(ViewListMatchActivity.this, NotificationActivity.class);
+                Intent intent = new Intent(ListViewMatchActivity.this, NotificationActivity.class);
                 startActivity(intent);
             }
         });
@@ -120,7 +120,7 @@ public class ViewListMatchActivity extends AppCompatActivity {
         txtChooseTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DatePickerDialog datePickerDialog = new DatePickerDialog(ViewListMatchActivity.this, new DatePickerDialog.OnDateSetListener() {
+                DatePickerDialog datePickerDialog = new DatePickerDialog(ListViewMatchActivity.this, new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                         calendar.set(year, month, dayOfMonth);
@@ -185,7 +185,7 @@ public class ViewListMatchActivity extends AppCompatActivity {
         statusArrayList.add("Chưa có đối thủ");
         statusArrayList.add("Đã có đối thủ");
 
-        ArrayAdapter statusAdapter = new ArrayAdapter(ViewListMatchActivity.this, android.R.layout.simple_list_item_1, statusArrayList);
+        ArrayAdapter statusAdapter = new ArrayAdapter(ListViewMatchActivity.this, android.R.layout.simple_list_item_1, statusArrayList);
 
         listViewStatus.setAdapter(statusAdapter);
     }
@@ -221,7 +221,7 @@ public class ViewListMatchActivity extends AppCompatActivity {
         levelArrayList.add("Trung bình");
         levelArrayList.add("Khá");
 
-        ArrayAdapter levelAdapter = new ArrayAdapter(ViewListMatchActivity.this, android.R.layout.simple_list_item_1, levelArrayList);
+        ArrayAdapter levelAdapter = new ArrayAdapter(ListViewMatchActivity.this, android.R.layout.simple_list_item_1, levelArrayList);
 
         listViewLevel.setAdapter(levelAdapter);
     }

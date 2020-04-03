@@ -12,8 +12,9 @@
         <activity android:name=".NotificationActivity"></activity>
         <activity android:name=".Activity_Dang_Tin_Tim_Doi_Thu" />
         <activity android:name=".ViewMatchActivity" />
-        <activity android:name=".ViewListMatchActivity" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".ListViewMatchActivity" />
+        <activity android:name=".MainActivity"
+            android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

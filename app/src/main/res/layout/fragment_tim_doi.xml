@@ -151,7 +151,7 @@
                 android:layout_marginLeft="20dp"
                 android:layout_below="@+id/ConstrainLayoutChooseStatusAndLevelAndTime"
                 android:layout_marginTop="10dp"
-                android:background="#7DCC6D"
+                android:background="@drawable/custom_button_dx"
                 android:text="Tìm kiếm"
                 android:textAllCaps="false"
                 android:textColor="#fff"

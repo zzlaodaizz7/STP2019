@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/nav_timDoi"
+        android:icon="@drawable/ic_tim_doi_24dp"
+        android:title="Tìm Đối" />
+
+    <item
+        android:id="@+id/nav_timSan"
+        android:icon="@drawable/ic_tim_san_24dp"
+        android:title="Tìm Sân"/>
+
+    <item
+        android:id="@+id/nav_taiKhoan"
+        android:icon="@drawable/ic_tai_khoan_24dp"
+        android:title="Tài Khoản"/>
+
+    <item
+        android:id="@+id/nav_xepHang"
+        android:icon="@drawable/ic_xep_hang_24dp"
+        android:title="Xếp Hạng"/>
+
+    <item
+        android:id="@+id/nav_caiDat"
+        android:icon="@drawable/ic_cai_dat_24dp"
+        android:title="Cài Đặt"/>
+</menu>
