@@ -33,12 +33,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener navListener =
-            new BottomNavigationView.OnNavigationItemSelectedListener(){
+            new BottomNavigationView.OnNavigationItemSelectedListener() {
                 @Override
                 public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                     Fragment selectedFragment = null;
 
-                    switch (menuItem.getItemId()){
+                    switch (menuItem.getItemId()) {
                         case R.id.nav_timDoi:
                             selectedFragment = new TimDoiFragment();
                             break;
@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
                             selectedFragment = new TimSanFragment();
                             break;
                         case R.id.nav_taiKhoan:
-                            selectedFragment = new TaiKhoanFragment();
+                            selectedFragment = new TaiKhoanChuaLoginFragment();
                             break;
                         case R.id.nav_xepHang:
                             selectedFragment = new XepHangFragment();
