@@ -122,26 +122,28 @@
                         app:layout_constraintStart_toEndOf="@+id/txtVS"
                         app:layout_constraintTop_toTopOf="@+id/txtTeamHost"
                         app:layout_constraintBottom_toBottomOf="@+id/txtTeamHost" />
+
                     <View
                         android:id="@+id/viewTenDoi_down"
                         android:layout_width="match_parent"
                         android:layout_height="0.3dp"
                         android:background="@android:color/darker_gray"
-                        app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintVertical_bias="0.19"/>
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="0.19" />
 
                     <ImageView
                         android:id="@+id/iconTime"
-                        android:src="@drawable/icon_thoi_gian_24px"
                         android:layout_width="24dp"
                         android:layout_height="24dp"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent"
+                        android:src="@drawable/icon_thoi_gian_24px"
+                        app:layout_constraintBottom_toBottomOf="@+id/viewThoiGian_down"
+                        app:layout_constraintTop_toTopOf="@+id/viewTenDoi_down"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.05"
-                        app:layout_constraintVertical_bias="0.23"/>
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintHorizontal_bias="0.051"
+                        />
 
                     <TextView
                         android:id="@+id/txt_Time"
@@ -176,19 +178,20 @@
                         android:layout_marginTop="10dp"
                         android:layout_height="0.3dp"
                         android:background="@android:color/darker_gray"
-                        app:layout_constraintTop_toBottomOf="@+id/txtTime"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintVertical_bias="0.3"
                         />
 
                     <ImageView
                         android:id="@+id/iconPitch"
-                        android:src="@drawable/icon_san_bong_24px"
                         android:layout_width="24dp"
                         android:layout_height="24dp"
+                        android:src="@drawable/icon_san_bong_24px"
+                        app:layout_constraintBottom_toBottomOf="@+id/viewSanbong_down"
+                        app:layout_constraintTop_toTopOf="@+id/viewThoiGian_down"
                         app:layout_constraintStart_toStartOf="@+id/iconTime"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintVertical_bias="0.34"/>
+                         />
                     <TextView
                         android:id="@+id/txt_Pitch"
                         android:text="Sân nhà"
@@ -214,14 +217,15 @@
                         android:layout_marginRight="20dp"/>
 
                     <View
-                        android:id="@+id/viewSanBong_down"
+                        android:id="@+id/viewSanbong_down"
                         android:layout_width="match_parent"
                         android:layout_marginLeft="10dp"
                         android:layout_marginRight="10dp"
                         android:layout_marginTop="10dp"
                         android:layout_height="0.3dp"
                         android:background="@android:color/darker_gray"
-                        app:layout_constraintTop_toBottomOf="@+id/txtPitch"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintVertical_bias="0.41"
                         />
 
@@ -231,10 +235,8 @@
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         app:layout_constraintStart_toStartOf="@+id/iconTime"
-                        app:layout_constraintEnd_toEndOf="@+id/iconTime"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintVertical_bias="0.45"/>
+                        app:layout_constraintBottom_toBottomOf="@+id/viewTyLe_down"
+                        app:layout_constraintTop_toTopOf="@+id/viewSanbong_down"/>
                     <TextView
                         android:id="@+id/txt_Ratio"
                         android:text="Tỷ lệ"
@@ -265,7 +267,8 @@
                         android:layout_marginTop="10dp"
                         android:layout_height="0.3dp"
                         android:background="@android:color/darker_gray"
-                        app:layout_constraintTop_toBottomOf="@+id/txtRatio"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintVertical_bias="0.52"
                         />
 
@@ -275,10 +278,8 @@
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         app:layout_constraintStart_toStartOf="@+id/iconTime"
-                        app:layout_constraintEnd_toEndOf="@+id/iconTime"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintVertical_bias="0.56"/>
+                        app:layout_constraintTop_toTopOf="@+id/viewTyLe_down"
+                        app:layout_constraintBottom_toBottomOf="@+id/viewTrangThai_down"/>
                     <TextView
                         android:id="@+id/txt_State"
                         android:text="Trạng thái"
@@ -309,30 +310,30 @@
                         android:layout_marginTop="10dp"
                         android:layout_height="0.3dp"
                         android:background="@android:color/darker_gray"
-                        app:layout_constraintTop_toBottomOf="@+id/txtState"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintVertical_bias="0.63"
                         />
 
                     <ImageView
                         android:id="@+id/iconLevel"
-                        android:src="@drawable/icon_doi_bong_24px"
                         android:layout_width="24dp"
                         android:layout_height="24dp"
+                        android:src="@drawable/icon_doi_bong_24px"
+                        app:layout_constraintBottom_toBottomOf="@+id/viewTrinhDo_down"
                         app:layout_constraintStart_toStartOf="@+id/iconTime"
-                        app:layout_constraintEnd_toEndOf="@+id/iconTime"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintVertical_bias="0.67"/>
+                        app:layout_constraintTop_toTopOf="@+id/viewTrangThai_down" />
+
                     <TextView
                         android:id="@+id/txt_Level"
-                        android:text="Trình độ"
-                        android:textSize="17sp"
-                        android:textColor="@color/mauChuDam"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:text="Trình độ"
+                        android:textColor="@color/mauChuDam"
+                        android:textSize="17sp"
+                        app:layout_constraintBottom_toBottomOf="@+id/iconLevel"
                         app:layout_constraintStart_toStartOf="@+id/txt_Time"
-                        app:layout_constraintTop_toTopOf="@+id/iconLevel"
-                        app:layout_constraintBottom_toBottomOf="@+id/iconLevel"/>
+                        app:layout_constraintTop_toTopOf="@+id/iconLevel" />
                     <TextView
                         android:id="@+id/txtLevel"
                         android:layout_width="wrap_content"
@@ -348,6 +349,19 @@
                     <View
                         android:id="@+id/viewTrinhDo_down"
                         android:layout_width="match_parent"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_height="0.3dp"
+                        android:background="#fff"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintVertical_bias="0.74"
+                        />
+
+                    <View
+                        android:id="@+id/viewBtnBatDoi_up"
+                        android:layout_width="match_parent"
                         android:layout_height="0.3dp"
                         android:background="@android:color/darker_gray"
                         app:layout_constraintTop_toTopOf="parent"
@@ -357,18 +371,18 @@
                     <Button
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        app:layout_constraintTop_toBottomOf="@id/viewTrinhDo_down"
+                        app:layout_constraintTop_toBottomOf="@id/viewBtnBatDoi_up"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         android:text="Bắt đối"
                         android:textAllCaps="false"
-                        android:textColor="#fff"
+                        android:textColor="@color/mauChuNhat"
                         android:layout_marginLeft="20dp"
                         android:layout_marginRight="20dp"
-                        android:background="@drawable/custom_button_dx"
-
-                        android:stateListAnimator="@null"
+                        android:background="@drawable/custom_button_batdoi"
+                        android:drawableTint="@color/mauChuDam"
+                        android:outlineProvider="none"
                         />
 
 
