@@ -34,12 +34,14 @@ public class DangNhapFragment extends Fragment {
     LoginButton loginButton;
     private View view;
     CallbackManager callbackManager;
+    LangNgheSuKienTuFragmentDangNhapDenActivity langNgheSuKienTuFragmentDangNhapDenActivity;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         FacebookSdk.sdkInitialize(FacebookSdk.getApplicationContext());
         callbackManager = CallbackManager.Factory.create();
+        langNgheSuKienTuFragmentDangNhapDenActivity = (LangNgheSuKienTuFragmentDangNhapDenActivity) getActivity();
         view = inflater.inflate(R.layout.fragment_dang_nhap, container, false);
         Mapping();
         BatSuKienClickDangNhap();
@@ -55,7 +57,8 @@ public class DangNhapFragment extends Fragment {
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
-                result();
+                //Goi den ham MainActivity de chuyen huong
+                langNgheSuKienTuFragmentDangNhapDenActivity.ChuyenHuongTuChuaDangNhapSangDaDangNhapVaNguocLai();
             }
 
             @Override
@@ -66,20 +69,6 @@ public class DangNhapFragment extends Fragment {
             public void onError(FacebookException error) {
             }
         });
-    }
-
-    private void result() {
-        GraphRequest graphRequest = GraphRequest.newMeRequest(AccessToken.getCurrentAccessToken(), new GraphRequest.GraphJSONObjectCallback() {
-            @Override
-            public void onCompleted(JSONObject object, GraphResponse response) {
-                TaiKhoanChuaLoginFragment taiKhoanChuaLoginFragment = new TaiKhoanChuaLoginFragment();
-
-            }
-        });
-        Bundle parameters = new Bundle();
-        parameters.putString("fields", "id,name,email,gender,birthday");
-        graphRequest.setParameters(parameters);
-        graphRequest.executeAsync();
     }
 
     private void Mapping() {

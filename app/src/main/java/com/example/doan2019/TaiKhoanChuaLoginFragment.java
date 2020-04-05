@@ -25,44 +25,12 @@ public class TaiKhoanChuaLoginFragment extends Fragment {
     private View view;
     private ViewPager viewPager;
 
-    //    Check da dang nhap chua
-    AccessToken accessToken = AccessToken.getCurrentAccessToken();
-    boolean isLoggedIn = accessToken != null && !accessToken.isExpired();
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        if (isLoggedIn == false) {
-            view = inflater.inflate(R.layout.fragment_tai_khoan_chua_login, container, false);
-            Mapping();
-        } else {
-            LayDuLieuDaLuu();
-            view = inflater.inflate(R.layout.fragment_tai_khoan_da_login, container, false);
-        }
+        view = inflater.inflate(R.layout.fragment_tai_khoan_chua_login, container, false);
+        Mapping();
         return view;
-    }
-
-    private void LayDuLieuDaLuu() {
-        final TaiKhoanDaLoginFragment taiKhoanDaLoginFragment = new TaiKhoanDaLoginFragment();
-
-        GraphRequest graphRequest = GraphRequest.newMeRequest(AccessToken.getCurrentAccessToken(), new GraphRequest.GraphJSONObjectCallback() {
-            @Override
-            public void onCompleted(JSONObject object, GraphResponse response) {
-                try {
-                    Log.d("JSON", object.getString("id"));
-                    Log.d("JSON", object.getString("name"));
-                    Log.d("JSON", object.getString("email"));
-                    taiKhoanDaLoginFragment.GanNoiDung(object.getString("id"),
-                            object.getString("name"), object.getString("email"));
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-        Bundle parameters = new Bundle();
-        parameters.putString("fields", "id,name,email,gender,birthday");
-        graphRequest.setParameters(parameters);
-        graphRequest.executeAsync();
     }
 
     private void Mapping() {
