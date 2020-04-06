@@ -3,7 +3,6 @@ package com.example.doan2019;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -12,7 +11,7 @@ import android.view.MenuItem;
 import com.facebook.AccessToken;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-public class MainActivity extends AppCompatActivity implements LangNgheSuKienTuFragmentDangNhapDenActivity{
+public class MainActivity extends AppCompatActivity implements LangNgheSuKienChuyenFragment {
     BottomNavigationView bottomNavigationView;
 
     @Override
@@ -51,12 +50,9 @@ public class MainActivity extends AppCompatActivity implements LangNgheSuKienTuF
                         case R.id.nav_taiKhoan:
                             AccessToken accessToken = AccessToken.getCurrentAccessToken();
                             boolean isLoggedIn = accessToken != null && !accessToken.isExpired();
-                            if(isLoggedIn == false) {
-                                Log.d("JSON", "Tai khoan chua dang nhap");
+                            if (isLoggedIn == false) {
                                 selectedFragment = new TaiKhoanChuaLoginFragment();
-                            }
-                            else {
-                                Log.d("JSON", "Tai khoan da dang nhap");
+                            } else {
                                 selectedFragment = new TaiKhoanDaLoginFragment();
                             }
                             break;
@@ -74,15 +70,7 @@ public class MainActivity extends AppCompatActivity implements LangNgheSuKienTuF
             };
 
     @Override
-    public void ChuyenHuongTuChuaDangNhapSangDaDangNhapVaNguocLai() {
-        AccessToken accessToken = AccessToken.getCurrentAccessToken();
-        boolean isLoggedIn = accessToken != null && !accessToken.isExpired();
-        Fragment fragment = null;
-        if(isLoggedIn == true)
-            fragment = new TaiKhoanDaLoginFragment();
-        else
-            fragment = new TaiKhoanChuaLoginFragment();
-        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                fragment).commit();
+    public void ChuyenHuongFragment(Fragment x) {
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, x).commit();
     }
 }
