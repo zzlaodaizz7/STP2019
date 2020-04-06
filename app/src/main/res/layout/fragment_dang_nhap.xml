@@ -46,7 +46,7 @@
         android:drawableLeft="@drawable/ic_mail_18dp"
         android:text="Tài Khoản"
         android:textColor="@android:color/black"
-        android:textSize="14sp"
+        android:textSize="13sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@id/DuongKeHoac"
@@ -59,7 +59,7 @@
         android:layout_marginTop="5dp"
         android:background="@drawable/custom_edittext"
         android:hint="Nhập tài khoản"
-        android:textSize="13sp"
+        android:textSize="12sp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@id/TextViewTaiKhoan" />
 
@@ -71,7 +71,7 @@
         android:drawableLeft="@drawable/ic_lock_18dp"
         android:text="Mậu khẩu"
         android:textColor="@android:color/black"
-        android:textSize="14sp"
+        android:textSize="13sp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@id/EditTextTaiKhoan" />
 
@@ -82,7 +82,7 @@
         android:layout_marginTop="5dp"
         android:background="@drawable/custom_edittext"
         android:hint="Nhập mật khẩu"
-        android:textSize="13sp"
+        android:textSize="12sp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@id/TextViewMatKhau" />
 
@@ -93,6 +93,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:layout_marginRight="5dp"
+        android:textSize="13sp"
         android:background="@drawable/custom_button_quen_mat_khau"
         android:text="Quên Mật Khẩu?"
         android:textColor="@drawable/custom_text_button_quen_mat_khau"
@@ -109,6 +110,7 @@
         android:layout_marginTop="20dp"
         android:background="@drawable/custom_button_default_dx"
         android:text="Đăng Nhập"
+        android:textSize="13sp"
         android:textAllCaps="false"
         android:textColor="@drawable/custom_text_color"
         app:layout_constraintLeft_toRightOf="@id/ButtonQuenMatKhau"

@@ -72,7 +72,7 @@
                     android:padding="5dp"
                     android:text="Tên đội"
                     android:textColor="@color/mauChuDam"
-                    android:textSize="12sp"
+                    android:textSize="13sp"
                     android:textStyle="bold"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintTop_toTopOf="parent"></TextView>
@@ -110,7 +110,7 @@
                         android:layout_height="wrap_content"
                         android:text="Chọn ngày"
                         android:textColor="@color/mauChuDam"
-                        android:textSize="12sp"
+                        android:textSize="13sp"
                         android:textStyle="bold"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintLeft_toLeftOf="parent"
@@ -145,7 +145,7 @@
                         android:layout_height="wrap_content"
                         android:text="Có sân nhà"
                         android:textColor="@color/mauChuDam"
-                        android:textSize="12sp"
+                        android:textSize="13sp"
                         android:textStyle="bold"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintLeft_toLeftOf="parent"
@@ -185,7 +185,7 @@
                         android:layout_marginLeft="5dp"
                         android:text="Chọn sân"
                         android:textColor="@color/mauChuDam"
-                        android:textSize="12sp"
+                        android:textSize="13sp"
                         android:textStyle="bold"
                         app:layout_constraintLeft_toRightOf="@id/ImageViewIconYardSoccer"
                         app:layout_constraintTop_toTopOf="parent"></TextView>
@@ -219,7 +219,7 @@
                         android:drawableLeft="@drawable/ic_time_18dp"
                         android:text="Chọn khung giờ"
                         android:textColor="@color/mauChuDam"
-                        android:textSize="12sp"
+                        android:textSize="13sp"
                         android:textStyle="bold"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintTop_toTopOf="parent"></TextView>
@@ -253,7 +253,7 @@
                         android:drawableLeft="@drawable/ic_keo_18dp"
                         android:text="Kèo"
                         android:textColor="@color/mauChuDam"
-                        android:textSize="12sp"
+                        android:textSize="13sp"
                         android:textStyle="bold"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintTop_toTopOf="parent"></TextView>

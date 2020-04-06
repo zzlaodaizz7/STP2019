@@ -22,8 +22,9 @@
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/ViewPagerTaiKhoan"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:background="#FAFAFA"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@id/TabLayoutTaiKhoan" />
 </androidx.constraintlayout.widget.ConstraintLayout>

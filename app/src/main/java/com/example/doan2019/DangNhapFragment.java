@@ -7,6 +7,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.AccessToken;
@@ -31,9 +33,11 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 public class DangNhapFragment extends Fragment {
+    private Button btnQuenMatKhau, btnDangNhap;
     LoginButton loginButton;
     private View view;
-    CallbackManager callbackManager;
+    private CallbackManager callbackManager;
+    private EditText edtTaiKhoan, edtMatKhau;
     LangNgheSuKienTuFragmentDangNhapDenActivity langNgheSuKienTuFragmentDangNhapDenActivity;
 
     @Nullable
@@ -44,11 +48,31 @@ public class DangNhapFragment extends Fragment {
         langNgheSuKienTuFragmentDangNhapDenActivity = (LangNgheSuKienTuFragmentDangNhapDenActivity) getActivity();
         view = inflater.inflate(R.layout.fragment_dang_nhap, container, false);
         Mapping();
-        BatSuKienClickDangNhap();
+        ClickDangNhapFaceBook();
+        ClickDangNhap();
+        ClickQuenMatKhau();
         return view;
     }
 
-    private void BatSuKienClickDangNhap() {
+    private void ClickDangNhap() {
+        btnDangNhap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getActivity(), "TK: " + edtTaiKhoan.getText(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void ClickQuenMatKhau() {
+        btnQuenMatKhau.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getActivity(), "MK: " + edtMatKhau.getText(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void ClickDangNhapFaceBook() {
         loginButton.setReadPermissions(Arrays.asList("public_profile", "email"));
         SetLogin_Button();
     }
@@ -72,6 +96,10 @@ public class DangNhapFragment extends Fragment {
     }
 
     private void Mapping() {
+        edtTaiKhoan = view.findViewById(R.id.EditTextTaiKhoan);
+        edtMatKhau = view.findViewById(R.id.EditTextMatKhau);
+        btnDangNhap = view.findViewById(R.id.ButtonDangNhap);
+        btnQuenMatKhau = view.findViewById(R.id.ButtonQuenMatKhau);
         loginButton = view.findViewById(R.id.login_button);
         loginButton.setFragment(this);
     }

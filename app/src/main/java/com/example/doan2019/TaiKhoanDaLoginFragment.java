@@ -6,7 +6,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
@@ -23,6 +25,7 @@ import androidx.fragment.app.Fragment;
 
 public class TaiKhoanDaLoginFragment extends Fragment {
     ProfilePictureView profilePictureView;
+    Button btnTaoDoiBong;
     TextView txtName, txtEmail, txtDiaChi, txtDangXuat, txtChinhSua;
     private View view;
     LangNgheSuKienTuFragmentDangNhapDenActivity langNgheSuKienTuFragmentDangNhapDenActivity;
@@ -34,9 +37,19 @@ public class TaiKhoanDaLoginFragment extends Fragment {
         langNgheSuKienTuFragmentDangNhapDenActivity = (LangNgheSuKienTuFragmentDangNhapDenActivity) getActivity();
         Mapping();
         GanNoiDung();
-        BatSuKienClickDangXuat();
-        BatSuKienClickChinhSua();
+        ClickTaoDoiBong();
+        ClickDangXuat();
+        ClickChinhSua();
         return view;
+    }
+
+    private void ClickTaoDoiBong() {
+        btnTaoDoiBong.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getActivity(), "Tạo đội bóng", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     public void GanNoiDung() {
@@ -64,11 +77,11 @@ public class TaiKhoanDaLoginFragment extends Fragment {
         txtDiaChi.setText("Hà Nội, Việt Nam");
     }
 
-    private void BatSuKienClickChinhSua() {
+    private void ClickChinhSua() {
 
     }
 
-    private void BatSuKienClickDangXuat() {
+    private void ClickDangXuat() {
         txtDangXuat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -79,6 +92,7 @@ public class TaiKhoanDaLoginFragment extends Fragment {
     }
 
     public void Mapping() {
+        btnTaoDoiBong = view.findViewById(R.id.ButtonTaoDoiBong);
         profilePictureView = view.findViewById(R.id.ImageProfilePicture);
         txtName = view.findViewById(R.id.TextViewName);
         txtEmail = view.findViewById(R.id.TextViewEmail);
