@@ -9,10 +9,10 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.facebook.AccessToken;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-public class MainActivity extends AppCompatActivity {
-
+public class MainActivity extends AppCompatActivity implements LangNgheSuKienChuyenFragment {
     BottomNavigationView bottomNavigationView;
 
     @Override
@@ -36,12 +36,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener navListener =
-            new BottomNavigationView.OnNavigationItemSelectedListener(){
+            new BottomNavigationView.OnNavigationItemSelectedListener() {
                 @Override
                 public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                     Fragment selectedFragment = null;
 
-                    switch (menuItem.getItemId()){
+                    switch (menuItem.getItemId()) {
                         case R.id.nav_timDoi:
                             selectedFragment = new TimDoiFragment();
                             break;
@@ -49,7 +49,13 @@ public class MainActivity extends AppCompatActivity {
                             selectedFragment = new TimSanFragment();
                             break;
                         case R.id.nav_taiKhoan:
-                            selectedFragment = new TaiKhoanFragment();
+                            AccessToken accessToken = AccessToken.getCurrentAccessToken();
+                            boolean isLoggedIn = accessToken != null && !accessToken.isExpired();
+                            if (isLoggedIn == false) {
+                                selectedFragment = new TaiKhoanChuaLoginFragment();
+                            } else {
+                                selectedFragment = new TaiKhoanDaLoginFragment();
+                            }
                             break;
                         case R.id.nav_xepHang:
                             selectedFragment = new XepHangFragment();
@@ -63,4 +69,9 @@ public class MainActivity extends AppCompatActivity {
                     return true;
                 }
             };
+
+    @Override
+    public void ChuyenHuongFragment(Fragment x) {
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, x).commit();
+    }
 }

@@ -5,4 +5,6 @@
     <color name="colorAccent">#03DAC5</color>
     <color name="mauChuDam">#000</color>
     <color name="mauChuNhat">#6C6B6B</color>
+    <color name="mauNenXam">#E7E4E4</color>
+    <color name="mauChuXam">#747373</color>
 </resources>
