@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent"
-    android:background="#fff">
+    android:background="#fff"
+     >
 
     <TextView
         android:id="@+id/txtTeamHost"
         android:text="Team Host 's name"
-        android:textSize="15sp"
+        android:textSize="14sp"
         android:textColor="#000"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="10dp"
@@ -34,19 +35,20 @@
     <!--thoi gian dien ra tran dau-->
     <ImageView
         android:id="@+id/iconTime"
-        android:src="@drawable/clock"
+        android:layout_width="18dp"
+        android:layout_height="18dp"
+        android:src="@drawable/icon_thoi_gian_24px"
         android:layout_below="@+id/txtState"
         android:layout_marginTop="15dp"
-        android:layout_marginLeft="10dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_marginLeft="10dp" />
     <TextView
         android:id="@+id/txtTime"
         android:text="Thời gian"
-        android:textColor="#7A7272"
-        android:layout_below="@+id/txtState"
+        android:textColor="@color/mauChuNhat"
+        android:textSize="12sp"
+        android:layout_alignTop="@+id/iconTime"
+        android:layout_alignBottom="@+id/iconTime"
         android:layout_toRightOf="@+id/iconTime"
-        android:layout_marginTop="20dp"
         android:layout_marginLeft="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
@@ -54,39 +56,41 @@
     <!--San bong-->
     <ImageView
         android:id="@+id/iconPitch"
-        android:src="@drawable/field"
         android:layout_below="@+id/txtTime"
         android:layout_marginTop="10dp"
         android:layout_marginLeft="12dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_width="18dp"
+        android:layout_height="18dp"
+        android:src="@drawable/icon_san_bong_24px"/>
     <TextView
         android:id="@+id/txtPitch"
         android:text="Sân nhà"
-        android:textColor="#7A7272"
-        android:layout_below="@+id/txtTime"
+        android:textColor="@color/mauChuNhat"
+        android:textSize="12sp"
         android:layout_toRightOf="@+id/iconPitch"
-        android:layout_marginTop="20dp"
+        android:layout_alignTop="@+id/iconPitch"
+        android:layout_alignBottom="@+id/iconPitch"
         android:layout_marginLeft="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 
     <ImageView
         android:id="@+id/iconLevel"
-        android:src="@drawable/soccerball"
-
+        android:layout_width="18dp"
+        android:layout_height="18dp"
+        android:src="@drawable/icon_doi_bong_24px"
         android:layout_below="@+id/txtPitch"
         android:layout_marginTop="10dp"
         android:layout_marginLeft="10dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_marginBottom="10dp"/>
     <TextView
         android:id="@+id/txtLevel"
         android:text="Trình độ"
-        android:textColor="#7A7272"
-        android:layout_below="@+id/txtPitch"
+        android:textColor="@color/mauChuNhat"
+        android:textSize="12sp"
+        android:layout_alignBottom="@+id/iconLevel"
+        android:layout_alignTop="@+id/iconLevel"
         android:layout_toRightOf="@+id/iconLevel"
-        android:layout_marginTop="15dp"
         android:layout_marginLeft="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>

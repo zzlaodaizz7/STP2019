@@ -91,7 +91,7 @@
                         android:layout_height="wrap_content"
                         android:text="Team Host"
                         android:textColor="@color/mauChuDam"
-                        android:textSize="17sp"
+                        android:textSize="14sp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="@+id/txtVS"
                         app:layout_constraintTop_toTopOf="parent"
@@ -114,7 +114,7 @@
                     <TextView
                         android:id="@+id/txtTeamGuest"
                         android:text="Team Guest"
-                        android:textSize="20sp"
+                        android:textSize="14sp"
                         android:textColor="@color/mauChuDam"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -135,8 +135,8 @@
 
                     <ImageView
                         android:id="@+id/iconTime"
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
                         android:src="@drawable/icon_thoi_gian_24px"
                         app:layout_constraintBottom_toBottomOf="@+id/viewThoiGian_down"
                         app:layout_constraintTop_toTopOf="@+id/viewTenDoi_down"
@@ -151,7 +151,7 @@
                         android:layout_height="wrap_content"
                         android:text="Thời gian"
                         android:textColor="@color/mauChuDam"
-                        android:textSize="17sp"
+                        android:textSize="12sp"
                         app:layout_constraintBottom_toBottomOf="@+id/iconTime"
                         app:layout_constraintStart_toEndOf="@+id/iconTime"
                         app:layout_constraintTop_toTopOf="@+id/iconTime"
@@ -164,7 +164,7 @@
                         android:layout_marginRight="20dp"
                         android:text="dd/mm/yyyy hh:mm"
                         android:textColor="#7A7272"
-                        android:textSize="17sp"
+                        android:textSize="12sp"
                         app:layout_constraintBottom_toBottomOf="@+id/iconTime"
                         app:layout_constraintStart_toEndOf="@+id/txt_Time"
                         app:layout_constraintTop_toTopOf="@+id/iconTime"
@@ -185,8 +185,8 @@
 
                     <ImageView
                         android:id="@+id/iconPitch"
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
                         android:src="@drawable/icon_san_bong_24px"
                         app:layout_constraintBottom_toBottomOf="@+id/viewSanbong_down"
                         app:layout_constraintTop_toTopOf="@+id/viewThoiGian_down"
@@ -195,7 +195,7 @@
                     <TextView
                         android:id="@+id/txt_Pitch"
                         android:text="Sân nhà"
-                        android:textSize="17sp"
+                        android:textSize="12sp"
                         android:textColor="@color/mauChuDam"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -210,7 +210,7 @@
                         android:layout_height="wrap_content"
                         android:text="Sân Mỹ Đình"
                         android:textColor="#7A7272"
-                        android:textSize="17sp"
+                        android:textSize="12sp"
                         app:layout_constraintTop_toTopOf="@+id/iconPitch"
                         app:layout_constraintBottom_toBottomOf="@+id/iconPitch"
                         app:layout_constraintStart_toStartOf="@+id/txtTime"
@@ -232,15 +232,15 @@
                     <ImageView
                         android:id="@+id/iconRatio"
                         android:src="@drawable/icon_ty_le_24px"
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
                         app:layout_constraintStart_toStartOf="@+id/iconTime"
                         app:layout_constraintBottom_toBottomOf="@+id/viewTyLe_down"
                         app:layout_constraintTop_toTopOf="@+id/viewSanbong_down"/>
                     <TextView
                         android:id="@+id/txt_Ratio"
                         android:text="Tỷ lệ"
-                        android:textSize="17sp"
+                        android:textSize="12sp"
                         android:textColor="@color/mauChuDam"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -253,7 +253,7 @@
                         android:layout_height="wrap_content"
                         android:text="3 : 7"
                         android:textColor="#7A7272"
-                        android:textSize="17sp"
+                        android:textSize="12sp"
                         app:layout_constraintTop_toTopOf="@+id/iconRatio"
                         app:layout_constraintBottom_toBottomOf="@+id/iconRatio"
                         app:layout_constraintStart_toStartOf="@+id/txtTime"
@@ -275,15 +275,15 @@
                     <ImageView
                         android:id="@+id/iconState"
                         android:src="@drawable/icon_state_24px"
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
                         app:layout_constraintStart_toStartOf="@+id/iconTime"
                         app:layout_constraintTop_toTopOf="@+id/viewTyLe_down"
                         app:layout_constraintBottom_toBottomOf="@+id/viewTrangThai_down"/>
                     <TextView
                         android:id="@+id/txt_State"
                         android:text="Trạng thái"
-                        android:textSize="17sp"
+                        android:textSize="12sp"
                         android:textColor="@color/mauChuDam"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -296,7 +296,7 @@
                         android:layout_height="wrap_content"
                         android:text="Đã có đối"
                         android:textColor="#7A7272"
-                        android:textSize="17sp"
+                        android:textSize="12sp"
                         app:layout_constraintTop_toTopOf="@+id/iconState"
                         app:layout_constraintBottom_toBottomOf="@+id/iconState"
                         app:layout_constraintStart_toStartOf="@+id/txtTime"
@@ -317,8 +317,8 @@
 
                     <ImageView
                         android:id="@+id/iconLevel"
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
                         android:src="@drawable/icon_doi_bong_24px"
                         app:layout_constraintBottom_toBottomOf="@+id/viewTrinhDo_down"
                         app:layout_constraintStart_toStartOf="@+id/iconTime"
@@ -330,7 +330,7 @@
                         android:layout_height="wrap_content"
                         android:text="Trình độ"
                         android:textColor="@color/mauChuDam"
-                        android:textSize="17sp"
+                        android:textSize="12sp"
                         app:layout_constraintBottom_toBottomOf="@+id/iconLevel"
                         app:layout_constraintStart_toStartOf="@+id/txt_Time"
                         app:layout_constraintTop_toTopOf="@+id/iconLevel" />
@@ -340,7 +340,7 @@
                         android:layout_height="wrap_content"
                         android:text="Trung bình yếu"
                         android:textColor="#7A7272"
-                        android:textSize="17sp"
+                        android:textSize="12sp"
                         app:layout_constraintTop_toTopOf="@+id/iconLevel"
                         app:layout_constraintBottom_toBottomOf="@+id/iconLevel"
                         app:layout_constraintStart_toStartOf="@+id/txtTime"
@@ -369,6 +369,7 @@
                         app:layout_constraintVertical_bias="0.84"/>
 
                     <Button
+                        android:id="@+id/btnBatDoi"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:layout_constraintTop_toBottomOf="@id/viewBtnBatDoi_up"
