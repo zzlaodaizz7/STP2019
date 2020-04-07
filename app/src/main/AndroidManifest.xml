@@ -11,7 +11,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:name=".MyApplicationClass">
-        <activity android:name=".Activity_Dang_Tin_Tim_Doi_Thu" />
+        <activity android:name=".DangTinFragment" />
         <activity android:name=".MainActivity"
             android:windowSoftInputMode="adjustPan">
             <intent-filter>

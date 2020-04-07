@@ -39,12 +39,13 @@ public class TimDoiFragment extends Fragment {
     TextView txtChonNgay;
     ImageButton btnThongBao;
     View view;
+    LangNgheSuKienChuyenFragment langNgheSuKienChuyenFragment;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_tim_doi, container, false);
-
+        langNgheSuKienChuyenFragment = (LangNgheSuKienChuyenFragment) getActivity();
         mapping();
 
         clickChonNgay();
@@ -213,7 +214,7 @@ public class TimDoiFragment extends Fragment {
         btnDangTin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                langNgheSuKienChuyenFragment.ChuyenHuongFragment(new DangTinFragment());
             }
         });
     }

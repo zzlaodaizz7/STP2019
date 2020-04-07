@@ -67,11 +67,30 @@ public class TaiKhoanDaLoginFragment extends Fragment {
         arrCacFCBanThamGia.add("FC Trần Duy Hưng");
         arrCacFCBanThamGia.add("FC Mễ Trì");
 
-        ArrayAdapter arrayAdapter = new ArrayAdapter(
-                view.getContext(),
-                android.R.layout.simple_list_item_1,
-                arrCacFCBanThamGia);
+        ArrayAdapter arrayAdapter = new ArrayAdapter(getActivity(), android.R.layout.simple_list_item_1, arrCacFCBanThamGia);
         lvCacFCDangThamGia.setAdapter(arrayAdapter);
+        setListViewHeightBasedOnChildren(arrayAdapter, lvCacFCDangThamGia);
+    }
+
+    private void setListViewHeightBasedOnChildren(ArrayAdapter matchAdapter, ListView listView) {
+
+        if (matchAdapter == null) {
+            return;
+        }
+        int desiredWidth = View.MeasureSpec.makeMeasureSpec(listView.getWidth(), View.MeasureSpec.UNSPECIFIED);
+        int totalHeight = 0;
+        View view = null;
+        for (int i = 0; i < matchAdapter.getCount(); i++) {
+            view = matchAdapter.getView(i, view, listView);
+            if (i == 0)
+                view.setLayoutParams(new ViewGroup.LayoutParams(desiredWidth, ViewGroup.LayoutParams.WRAP_CONTENT));
+
+            view.measure(desiredWidth, View.MeasureSpec.UNSPECIFIED);
+            totalHeight += view.getMeasuredHeight();
+        }
+        ViewGroup.LayoutParams params = listView.getLayoutParams();
+        params.height = totalHeight + (listView.getDividerHeight() * (matchAdapter.getCount() - 1));
+        listView.setLayoutParams(params);
     }
 
     private void ClickTaoDoiBong() {

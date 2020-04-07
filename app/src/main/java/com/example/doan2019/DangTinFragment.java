@@ -1,12 +1,19 @@
 package com.example.doan2019;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -16,28 +23,29 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Switch;
 import android.widget.TextView;
-
-import com.example.doan2019.R;
+import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-public class Activity_Dang_Tin_Tim_Doi_Thu extends AppCompatActivity {
+public class DangTinFragment extends Fragment {
     EditText edtKeoDau;
     ListView lvDoiBong, lvSanBong;
     TextView tvChonFC, tvChonNgay, tvChonSan, tvChonGio, tvBack;
-    Button tvTime1, tvTime2, tvTime3;
+    Button tvTime1, tvTime2, tvTime3, btnDangTin;
     Dialog dialogChonDoiBong, dialogChonSan, dialogChonGio;
     ArrayList<String> arrayDoiBong, arraySanBong;
     ConstraintLayout layoutChonNgay, layoutChonSan;
     Switch btnCoSan;
+    private View view;
+    LangNgheSuKienChuyenFragment langNgheSuKienChuyenFragment;
 
+    @Nullable
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity__dang__tin__tim__doi__thu);
-
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        view = inflater.inflate(R.layout.fragment_dang_tin, container, false);
+        langNgheSuKienChuyenFragment = (LangNgheSuKienChuyenFragment) getActivity();
         Mapping();
 
         ClickChonFC();
@@ -46,13 +54,25 @@ public class Activity_Dang_Tin_Tim_Doi_Thu extends AppCompatActivity {
         ClickCoHoacKhongSan();
         ClickChonGio();
         ClickTextViewBack();
+        ClickDangTin();
+
+        return view;
+    }
+
+    private void ClickDangTin() {
+        btnDangTin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getActivity(), "Đăng tin", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void ClickTextViewBack() {
         tvBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                finish();
+                langNgheSuKienChuyenFragment.ChuyenHuongFragment(new TimDoiFragment());
             }
         });
     }
@@ -92,7 +112,7 @@ public class Activity_Dang_Tin_Tim_Doi_Thu extends AppCompatActivity {
     }
 
     private void ShowDialogChonGio() {
-        dialogChonGio = new Dialog(this);
+        dialogChonGio = new Dialog(getActivity());
         dialogChonGio.setContentView(R.layout.dialog_chon_gio);
         dialogChonGio.show();
         tvTime1 = dialogChonGio.findViewById(R.id.TextViewTime1);
@@ -120,7 +140,7 @@ public class Activity_Dang_Tin_Tim_Doi_Thu extends AppCompatActivity {
         layoutChonNgay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DatePickerDialog datePickerDialog = new DatePickerDialog(Activity_Dang_Tin_Tim_Doi_Thu.this, new DatePickerDialog.OnDateSetListener() {
+                DatePickerDialog datePickerDialog = new DatePickerDialog(getActivity(), new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                         calendar.set(year, month, dayOfMonth);
@@ -134,15 +154,16 @@ public class Activity_Dang_Tin_Tim_Doi_Thu extends AppCompatActivity {
     }
 
     void Mapping() {
-        tvChonFC = findViewById(R.id.TextViewChonFC);
-        layoutChonNgay = findViewById(R.id.ConstrainLayoutChonNgay);
-        tvChonNgay = findViewById(R.id.BenPhaiTextViewChonNgay);
-        tvChonSan = findViewById(R.id.TextViewChonSan);
-        btnCoSan = findViewById(R.id.ButtonCoSan);
-        layoutChonSan = findViewById(R.id.ConstrainLayoutChonSanBong);
-        tvChonGio = findViewById(R.id.TextViewChonKhungGio);
-        edtKeoDau = findViewById(R.id.EditTextNhapKeo);
-        tvBack = findViewById(R.id.TextViewBack);
+        btnDangTin = view.findViewById(R.id.ButtonDangTin);
+        tvChonFC = view.findViewById(R.id.TextViewChonFC);
+        layoutChonNgay = view.findViewById(R.id.ConstrainLayoutChonNgay);
+        tvChonNgay = view.findViewById(R.id.BenPhaiTextViewChonNgay);
+        tvChonSan = view.findViewById(R.id.TextViewChonSan);
+        btnCoSan = view.findViewById(R.id.ButtonCoSan);
+        layoutChonSan = view.findViewById(R.id.ConstrainLayoutChonSanBong);
+        tvChonGio = view.findViewById(R.id.TextViewChonKhungGio);
+        edtKeoDau = view.findViewById(R.id.EditTextNhapKeo);
+        tvBack = view.findViewById(R.id.TextViewBack);
     }
 
     void ClickChonFC() {
@@ -176,7 +197,7 @@ public class Activity_Dang_Tin_Tim_Doi_Thu extends AppCompatActivity {
     }
 
     private void ShowDialogChonSan() {
-        dialogChonSan = new Dialog(this);
+        dialogChonSan = new Dialog(getActivity());
         dialogChonSan.setContentView(R.layout.dialog_chon_san);
         dialogChonSan.show();
 
@@ -220,7 +241,7 @@ public class Activity_Dang_Tin_Tim_Doi_Thu extends AppCompatActivity {
         arraySanBong.add("Sân bóng 5");
         arraySanBong.add("Sân bóng 6");
 
-        ArrayAdapter adapterSanBong = new ArrayAdapter(Activity_Dang_Tin_Tim_Doi_Thu.this, android.R.layout.simple_list_item_1, arraySanBong);
+        ArrayAdapter adapterSanBong = new ArrayAdapter(getActivity(), android.R.layout.simple_list_item_1, arraySanBong);
 
         lvSanBong.setAdapter(adapterSanBong);
     }
@@ -236,7 +257,7 @@ public class Activity_Dang_Tin_Tim_Doi_Thu extends AppCompatActivity {
     }
 
     void ShowDialogChonDoiBong() {
-        dialogChonDoiBong = new Dialog(this);
+        dialogChonDoiBong = new Dialog(getActivity());
         dialogChonDoiBong.setContentView(R.layout.dialog_chon_doi);
         dialogChonDoiBong.show();
 
@@ -274,7 +295,7 @@ public class Activity_Dang_Tin_Tim_Doi_Thu extends AppCompatActivity {
         arrayDoiBong.add("Đội bóng 5");
         arrayDoiBong.add("Đội bóng 6");
 
-        ArrayAdapter adapter = new ArrayAdapter(Activity_Dang_Tin_Tim_Doi_Thu.this, android.R.layout.simple_list_item_1, arrayDoiBong);
+        ArrayAdapter adapter = new ArrayAdapter(getActivity(), android.R.layout.simple_list_item_1, arrayDoiBong);
 
         lvDoiBong.setAdapter(adapter);
     }

@@ -108,11 +108,17 @@
             android:layout_marginRight="75dp"
             android:background="@drawable/custom_button_default_dx"
             android:text="Đăng Ký"
-            android:textSize="13sp"
             android:textAllCaps="false"
             android:textColor="@drawable/custom_text_color"
+            android:textSize="13sp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/EditTextNhapLaiMatKhau" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ButtonDangKy" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
