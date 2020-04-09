@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
@@ -28,7 +29,7 @@ import androidx.fragment.app.Fragment;
 
 public class TaiKhoanDaLoginFragment extends Fragment {
     ProfilePictureView profilePictureView;
-    Button btnTaoDoiBong;
+    Button btnTaoDoiBong, btnTimDoi;
     TextView txtName, txtEmail, txtDiaChi, txtDangXuat, txtChinhSua;
     private View view;
     ListView lvCacFCDangThamGia;
@@ -46,7 +47,28 @@ public class TaiKhoanDaLoginFragment extends Fragment {
         ClickTaoDoiBong();
         ClickDangXuat();
         ClickChinhSua();
+        ClickTimKiemDoi();
+        ClickListDoiBong();
         return view;
+    }
+
+    private void ClickListDoiBong() {
+        lvCacFCDangThamGia.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Toast.makeText(getActivity(), arrCacFCBanThamGia.get(i), Toast.LENGTH_SHORT).show();
+                langNgheSuKienChuyenFragment.ChuyenHuongFragment(new ChiTietDoiBongFragment());
+            }
+        });
+    }
+
+    private void ClickTimKiemDoi() {
+        btnTimDoi.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getActivity(), "Tìm kiếm đội bóng", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void GanNoiDungListCacFCDangThamGia() {
@@ -144,6 +166,7 @@ public class TaiKhoanDaLoginFragment extends Fragment {
     }
 
     public void Mapping() {
+        btnTimDoi = view.findViewById(R.id.ButtonTimKiemDoi);
         lvCacFCDangThamGia = view.findViewById(R.id.ListViewCacDoiThamGia);
         btnTaoDoiBong = view.findViewById(R.id.ButtonTaoDoiBong);
         profilePictureView = view.findViewById(R.id.ImageProfilePicture);
