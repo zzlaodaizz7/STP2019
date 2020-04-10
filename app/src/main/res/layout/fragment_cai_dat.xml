@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/TextViewCaiDat"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/custom_mau_action_bar_dx"
+        android:padding="10dp"
+        android:text="Cài Đặt"
+        android:textAlignment="center"
+        android:textColor="@android:color/white"
+        android:textSize="13sp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/LayoutCardview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        app:cardElevation="10dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/TextViewCaiDat">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/ImageFragmentCaiDat"
+                android:layout_width="96dp"
+                android:layout_height="96dp"
+                android:layout_marginTop="20dp"
+                android:src="@drawable/icon_app"
+                app:civ_border_color="#FF000000"
+                app:civ_border_width="2dp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/TextViewNameApp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="FC TN"
+                android:textColor="@android:color/black"
+                android:textSize="16sp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/ImageFragmentCaiDat" />
+
+            <TextView
+                android:id="@+id/TextViewPhienBan"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="Phiên bản 1.1"
+                android:textSize="12sp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/TextViewNameApp" />
+
+            <TextView
+                android:id="@+id/TextViewGioiThieu"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="Thiết kế và phát triển bởi"
+                android:textSize="12sp"
+                app:layout_constraintHorizontal_chainStyle="packed"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@id/TextViewTenTacGia"
+                app:layout_constraintTop_toBottomOf="@id/TextViewPhienBan" />
+
+            <TextView
+                android:id="@+id/TextViewTenTacGia"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text=" DTD SVMC"
+                android:textColor="#21B500"
+                android:textSize="13sp"
+                android:textStyle="bold"
+                app:layout_constraintLeft_toRightOf="@id/TextViewGioiThieu"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/TextViewPhienBan" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                app:layout_constraintTop_toBottomOf="@id/TextViewGioiThieu" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+
+    <TextView
+        android:id="@+id/TextViewChiaSe"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/custom_textview_background_fragment_cai_dat"
+        android:clickable="true"
+        android:drawableLeft="@drawable/ic_share_18dp"
+        android:drawableRight="@drawable/ic_right_24dp"
+        android:drawablePadding="5dp"
+        android:gravity="center_vertical"
+        android:padding="10dp"
+        android:text="Chia Sẻ"
+        android:textColor="@drawable/custom_textview_click_fragment_cai_dat"
+        android:textSize="13sp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/LayoutCardview" />
+
+    <TextView
+        android:id="@+id/TextViewPhanHoi"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/custom_textview_background_fragment_cai_dat"
+        android:clickable="true"
+        android:drawableLeft="@drawable/ic_phan_hoi_18dp"
+        android:drawableRight="@drawable/ic_right_24dp"
+        android:drawablePadding="5dp"
+        android:gravity="center_vertical"
+        android:padding="10dp"
+        android:text="Phản Hồi"
+        android:textColor="@drawable/custom_textview_click_fragment_cai_dat"
+        android:textSize="13sp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/TextViewChiaSe" />
+
+    <TextView
+        android:id="@+id/TextViewDieuKhoan"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/custom_textview_background_fragment_cai_dat"
+        android:clickable="true"
+        android:drawableLeft="@drawable/ic_lock_18dp"
+        android:drawableRight="@drawable/ic_right_24dp"
+        android:drawablePadding="5dp"
+        android:gravity="center_vertical"
+        android:padding="10dp"
+        android:text="Điều Khoản"
+        android:textColor="@drawable/custom_textview_click_fragment_cai_dat"
+        android:textSize="13sp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/TextViewPhanHoi" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

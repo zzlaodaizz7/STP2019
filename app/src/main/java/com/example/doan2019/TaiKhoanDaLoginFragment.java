@@ -56,7 +56,7 @@ public class TaiKhoanDaLoginFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Toast.makeText(getActivity(), arrCacFCBanThamGia.get(i), Toast.LENGTH_SHORT).show();
-                langNgheSuKienChuyenFragment.ChuyenHuongFragment(new ChiTietDoiBongTaiKhoanDaLoginFragment());
+                langNgheSuKienChuyenFragment.ChuyenHuongFragment(new ChiTietDoiBongDaThamGiaFragment());
             }
         });
     }
@@ -65,7 +65,7 @@ public class TaiKhoanDaLoginFragment extends Fragment {
         btnTimDoi.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getActivity(), "Tìm kiếm đội bóng", Toast.LENGTH_SHORT).show();
+                langNgheSuKienChuyenFragment.ChuyenHuongFragment(new TimKiemDoiBongFragment());
             }
         });
     }

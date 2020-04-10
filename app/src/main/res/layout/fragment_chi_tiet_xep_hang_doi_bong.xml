@@ -75,6 +75,16 @@
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
+                    <ImageView
+                        android:id="@+id/ImageViewDaiDienDoiBong"
+                        android:layout_width="90dp"
+                        android:layout_height="90dp"
+                        android:layout_marginTop="5dp"
+                        android:src="@drawable/ic_launcher_background"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/ImageViewBiaDoiBong" />
+
                     <TextView
                         android:id="@+id/TextViewName"
                         android:layout_width="wrap_content"
@@ -85,7 +95,7 @@
                         android:textSize="16sp"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/ImageViewBiaDoiBong" />
+                        app:layout_constraintTop_toBottomOf="@id/ImageViewDaiDienDoiBong" />
 
                     <TextView
                         android:id="@+id/TextViewDiem"
@@ -201,9 +211,11 @@
                         android:id="@+id/TextViewICPhone"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        app:layout_constraintHorizontal_bias="0.1"
                         android:text="Điện thoại"
                         android:textColor="@android:color/black"
                         app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
@@ -402,13 +414,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="30dp"
+                android:layout_marginTop="5dp"
                 android:layout_marginRight="30dp"
-                android:elevation="10dp"
-                android:layout_marginTop="5dp">
+                android:elevation="10dp">
+
                 <ListView
+                    android:id="@+id/ListViewDanhSachThanhVien"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/ListViewDanhSachThanhVien"/>
+                    android:layout_height="wrap_content" />
 
             </androidx.cardview.widget.CardView>
 

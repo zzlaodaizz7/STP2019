@@ -8,9 +8,6 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -43,13 +40,13 @@ public class ChiTietDoiBongXepHangFragment extends Fragment {
     private void GanDuLieu() {
         bundle = getArguments();
 
-        XepHangDoiBongClass xepHangDoiBongClass = (XepHangDoiBongClass) bundle.getSerializable("doibong");
-        txtTenDoiBong.setText(xepHangDoiBongClass.getTen());
-        txtDiem.setText(xepHangDoiBongClass.getDiem() + "");
-        txtDiaChi.setText(xepHangDoiBongClass.getDiaChi());
-        txtTrinhDo.setText(xepHangDoiBongClass.getTrinhDo());
-        txtNgayThanhlap.setText(xepHangDoiBongClass.getNgayThanhLap());
-        txtPhone.setText(xepHangDoiBongClass.getSoDienThoai());
+        DoiBongClass doiBongClass = (DoiBongClass) bundle.getSerializable("doibong");
+        txtTenDoiBong.setText(doiBongClass.getTen());
+        txtDiem.setText(doiBongClass.getDiem() + "");
+        txtDiaChi.setText(doiBongClass.getDiaChi());
+        txtTrinhDo.setText(doiBongClass.getTrinhDo());
+        txtNgayThanhlap.setText(doiBongClass.getNgayThanhLap());
+        txtPhone.setText(doiBongClass.getSoDienThoai());
     }
 
     private void Mapping() {

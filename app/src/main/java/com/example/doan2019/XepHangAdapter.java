@@ -7,18 +7,14 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
-
 import java.util.List;
-
-import androidx.recyclerview.widget.RecyclerView;
 
 public class XepHangAdapter extends BaseAdapter {
     private Context context;
     private int layout;
-    private List<XepHangDoiBongClass> doiBongList;
+    private List<DoiBongClass> doiBongList;
 
-    public XepHangAdapter(Context context, int layout, List<XepHangDoiBongClass> doiBongList) {
+    public XepHangAdapter(Context context, int layout, List<DoiBongClass> doiBongList) {
         this.context = context;
         this.layout = layout;
         this.doiBongList = doiBongList;
@@ -65,7 +61,7 @@ public class XepHangAdapter extends BaseAdapter {
             viewHolder = (ViewHolder) view.getTag();
 
         //Gan gia tri
-        XepHangDoiBongClass doiBong = doiBongList.get(i);
+        DoiBongClass doiBong = doiBongList.get(i);
         viewHolder.txtSoThuTu.setText(i + 1 + "");
         viewHolder.txtTen.setText(doiBong.getTen());
         viewHolder.txtDiem.setText(doiBong.getDiem() + " Điểm");

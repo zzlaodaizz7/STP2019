@@ -2,12 +2,9 @@ package com.example.doan2019;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -19,7 +16,7 @@ import androidx.fragment.app.Fragment;
 public class XepHangFragment extends Fragment {
     private View view;
     ListView lvxepHangDoiBong;
-    ArrayList<XepHangDoiBongClass> listDoiBong;
+    ArrayList<DoiBongClass> listDoiBong;
     ArrayList<ThanhVienDoiBongClass> listThanhVienDoiBong;
     XepHangAdapter adapter;
     LangNgheSuKienChuyenFragment langNgheSuKienChuyenFragment;
@@ -43,8 +40,8 @@ public class XepHangFragment extends Fragment {
                 ChiTietDoiBongXepHangFragment chiTietDoiBongXepHangFragment = new ChiTietDoiBongXepHangFragment();
 
                 Bundle bundle = new Bundle();
-                XepHangDoiBongClass xepHangDoiBongClass = listDoiBong.get(i);
-                bundle.putSerializable("doibong", xepHangDoiBongClass);
+                DoiBongClass doiBongClass = listDoiBong.get(i);
+                bundle.putSerializable("doibong", doiBongClass);
                 chiTietDoiBongXepHangFragment.setArguments(bundle);
 
                 langNgheSuKienChuyenFragment.ChuyenHuongFragment(chiTietDoiBongXepHangFragment);
@@ -62,11 +59,11 @@ public class XepHangFragment extends Fragment {
         listThanhVienDoiBong.add(new ThanhVienDoiBongClass("Nguyễn Văn D", "Cầu thủ", 4));
         listThanhVienDoiBong.add(new ThanhVienDoiBongClass("Nguyễn Văn E", "Đội phó", 5));
 
-        listDoiBong.add(new XepHangDoiBongClass("FC fb", 3.02, "Hà Nội, Việt Nam", "Khá", "11/10/2010", "0123456789", listThanhVienDoiBong));
-        listDoiBong.add(new XepHangDoiBongClass("FC Linh Đàm", 3.02, "Hà Nội, Việt Nam", "Khá", "11/10/2010", "0123456789", listThanhVienDoiBong));
-        listDoiBong.add(new XepHangDoiBongClass("FC Cầu Giấy", 3.02, "Hà Nội, Việt Nam", "Khá", "11/10/2010", "0123456789", listThanhVienDoiBong));
-        listDoiBong.add(new XepHangDoiBongClass("FC Mễ Trì", 3.02, "Hà Nội, Việt Nam", "Khá", "11/10/2010", "0123456789", listThanhVienDoiBong));
-        listDoiBong.add(new XepHangDoiBongClass("FC Lê Đức Thọ", 3.02, "Hà Nội, Việt Nam", "Khá", "11/10/2010", "0123456789", listThanhVienDoiBong));
+        listDoiBong.add(new DoiBongClass("FC fb", 3.02, "Hà Nội, Việt Nam", "Khá", "11/10/2010", "0123456789", listThanhVienDoiBong));
+        listDoiBong.add(new DoiBongClass("FC Linh Đàm", 3.02, "Hà Nội, Việt Nam", "Khá", "11/10/2010", "0123456789", listThanhVienDoiBong));
+        listDoiBong.add(new DoiBongClass("FC Cầu Giấy", 3.02, "Hà Nội, Việt Nam", "Khá", "11/10/2010", "0123456789", listThanhVienDoiBong));
+        listDoiBong.add(new DoiBongClass("FC Mễ Trì", 3.02, "Hà Nội, Việt Nam", "Khá", "11/10/2010", "0123456789", listThanhVienDoiBong));
+        listDoiBong.add(new DoiBongClass("FC Lê Đức Thọ", 3.02, "Hà Nội, Việt Nam", "Khá", "11/10/2010", "0123456789", listThanhVienDoiBong));
 
         adapter = new XepHangAdapter(getActivity(), R.layout.dong_xep_hang, listDoiBong);
         lvxepHangDoiBong.setAdapter(adapter);

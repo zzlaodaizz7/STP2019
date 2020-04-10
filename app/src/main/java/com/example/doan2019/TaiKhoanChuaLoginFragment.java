@@ -1,20 +1,11 @@
 package com.example.doan2019;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
-import com.facebook.AccessToken;
-import com.facebook.FacebookSdk;
-import com.facebook.GraphRequest;
-import com.facebook.GraphResponse;
 import com.google.android.material.tabs.TabLayout;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -35,8 +26,8 @@ public class TaiKhoanChuaLoginFragment extends Fragment {
 
     private void Mapping() {
         viewPager = view.findViewById(R.id.ViewPagerTaiKhoan);
-        AdapterTaiKhoan adapterTaiKhoan = new AdapterTaiKhoan(getChildFragmentManager());
-        viewPager.setAdapter(adapterTaiKhoan);
+        TaiKhoanAdapter taiKhoanAdapter = new TaiKhoanAdapter(getChildFragmentManager());
+        viewPager.setAdapter(taiKhoanAdapter);
         TabLayout tabLayout = view.findViewById(R.id.TabLayoutTaiKhoan);
         tabLayout.setupWithViewPager(viewPager);
     }
