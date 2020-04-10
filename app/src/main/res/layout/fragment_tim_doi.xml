@@ -34,7 +34,7 @@
                 android:background="@drawable/custom_simple_button"
                 android:focusedByDefault="true"
                 android:text="Đăng tin"
-                android:textSize="15sp"
+                android:textSize="13sp"
                 android:textAllCaps="false" />
 
             <ImageButton

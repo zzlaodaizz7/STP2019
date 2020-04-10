@@ -229,7 +229,8 @@ public class TimDoiFragment extends Fragment {
                 Match match = matchArrayList.get(position);
                 bundle.putSerializable("batdoi", match);
                 batDoiFragment.setArguments(bundle);
-                getFragmentManager().beginTransaction().replace(R.id.fragment_container, batDoiFragment).commit();
+
+                langNgheSuKienChuyenFragment.ChuyenHuongFragment(batDoiFragment);
             }
         });
     }

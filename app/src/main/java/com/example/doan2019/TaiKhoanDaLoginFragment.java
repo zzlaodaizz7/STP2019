@@ -1,7 +1,6 @@
 package com.example.doan2019;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -57,7 +56,7 @@ public class TaiKhoanDaLoginFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Toast.makeText(getActivity(), arrCacFCBanThamGia.get(i), Toast.LENGTH_SHORT).show();
-                langNgheSuKienChuyenFragment.ChuyenHuongFragment(new ChiTietDoiBongFragment());
+                langNgheSuKienChuyenFragment.ChuyenHuongFragment(new ChiTietDoiBongTaiKhoanDaLoginFragment());
             }
         });
     }
