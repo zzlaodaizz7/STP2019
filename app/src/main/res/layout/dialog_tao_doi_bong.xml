@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/ImageViewCLosePopup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:src="@drawable/ic_close_tao_doi_bong_24dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Tạo Đội Bóng"
+        android:textColor="@android:color/black"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toBottomOf="@id/ImageViewCLosePopup"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/TextViewXongTaoDoiBong"
+        android:layout_width="wrap_content"
+        android:clickable="true"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:text="Xong"
+        android:textColor="@drawable/custom_text_xong_tao_doi_bong"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@id/ImageViewCLosePopup"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@id/ImageViewCLosePopup" />
+
+    <View
+        android:id="@+id/ViewDuongKeNganCach"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/mauNenXam"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/TextViewXongTaoDoiBong" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/LayoutDuoi"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:paddingLeft="30dp"
+        android:paddingRight="30dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="20dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ViewDuongKeNganCach">
+
+        <TextView
+            android:id="@+id/TextViewTenDoiBong"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/ic_ten_doi_bong_dang_ky_18dp"
+            android:text="Tên Đội Bóng"
+            android:textColor="@android:color/black"
+            android:textSize="13sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/EditTextTenDoiBong"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/custom_edittext"
+            android:hint="Nhập tên đội..."
+            android:textSize="12sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/TextViewTenDoiBong" />
+
+        <TextView
+            android:id="@+id/TextViewDiaChiDoiBong"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:drawableLeft="@drawable/ic_location_18dp"
+            android:text="Địa Chỉ"
+            android:textColor="@android:color/black"
+            android:textSize="13sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/EditTextTenDoiBong" />
+
+        <EditText
+            android:id="@+id/EditTextDiaChiDoiBong"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/custom_edittext"
+            android:hint="Nhập địa chỉ đội bóng..."
+            android:textSize="12sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/TextViewDiaChiDoiBong" />
+
+        <Button
+            android:id="@+id/ButtonTrinhDoDoiBong"
+            android:layout_width="100dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/custom_button_quen_mat_khau"
+            android:drawableRight="@drawable/ic_down_18dp"
+            android:text="Trình độ"
+            android:textAllCaps="false"
+            android:textColor="@drawable/custom_text_button_quen_mat_khau"
+            android:textSize="13sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/EditTextDiaChiDoiBong" />
+
+        <TextView
+            android:id="@+id/TextViewDienThoaiDoiBong"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:drawableLeft="@drawable/ic_phone_18dp"
+            android:text="Điện Thoại"
+            android:textColor="@android:color/black"
+            android:textSize="13sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ButtonTrinhDoDoiBong" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=" - Không bắt buộc"
+            app:layout_constraintBottom_toBottomOf="@id/TextViewDienThoaiDoiBong"
+            app:layout_constraintLeft_toRightOf="@id/TextViewDienThoaiDoiBong"
+            app:layout_constraintTop_toTopOf="@id/TextViewDienThoaiDoiBong" />
+
+        <EditText
+            android:id="@+id/EditTextDienThoaiDoiBong"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/custom_edittext"
+            android:hint="Nhập điện thoại liên hệ..."
+            android:textSize="12sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/TextViewDienThoaiDoiBong" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

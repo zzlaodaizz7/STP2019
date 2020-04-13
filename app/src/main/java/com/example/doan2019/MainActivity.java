@@ -5,15 +5,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.facebook.AccessToken;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity implements LangNgheSuKienChuyenFragment {
     BottomNavigationView bottomNavigationView;
+    int menuHienTai = 1, menuDaChon = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,29 +42,37 @@ public class MainActivity extends AppCompatActivity implements LangNgheSuKienChu
 
                     switch (menuItem.getItemId()) {
                         case R.id.nav_timDoi:
+                            menuDaChon = 1;
                             selectedFragment = new TimDoiFragment();
                             break;
                         case R.id.nav_timSan:
+                            menuDaChon = 2;
                             selectedFragment = new TimSanFragment();
                             break;
                         case R.id.nav_taiKhoan:
+                            menuDaChon = 3;
                             AccessToken accessToken = AccessToken.getCurrentAccessToken();
                             boolean isLoggedIn = accessToken != null && !accessToken.isExpired();
                             if (isLoggedIn == false) {
-                                selectedFragment = new TaiKhoanChuaLoginFragment();
+                                selectedFragment = new TaiKhoanFragment();
                             } else {
                                 selectedFragment = new TaiKhoanDaLoginFragment();
                             }
                             break;
                         case R.id.nav_xepHang:
+                            menuDaChon = 4;
                             selectedFragment = new XepHangFragment();
                             break;
                         case R.id.nav_caiDat:
+                            menuDaChon = 5;
                             selectedFragment = new CaiDatFragment();
                             break;
                     }
-                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                            selectedFragment).commit();
+                    if(menuDaChon != menuHienTai) {
+                        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                                selectedFragment).commit();
+                        menuHienTai = menuDaChon;
+                    }
                     return true;
                 }
             };

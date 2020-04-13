@@ -118,7 +118,8 @@ public class TaiKhoanDaLoginFragment extends Fragment {
         btnTaoDoiBong.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getActivity(), "Tạo đội bóng", Toast.LENGTH_SHORT).show();
+                TaoDoiBongDialog taoDoiBongDialog = new TaoDoiBongDialog();
+                taoDoiBongDialog.show(getActivity().getSupportFragmentManager(), "Dialog_Popup");
             }
         });
     }
@@ -159,7 +160,7 @@ public class TaiKhoanDaLoginFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 LoginManager.getInstance().logOut();
-                langNgheSuKienChuyenFragment.ChuyenHuongFragment(new TaiKhoanChuaLoginFragment());
+                langNgheSuKienChuyenFragment.ChuyenHuongFragment(new TaiKhoanFragment());
             }
         });
     }

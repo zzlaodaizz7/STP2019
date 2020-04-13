@@ -86,6 +86,15 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@id/TextViewMatKhau" />
 
+    <CheckBox
+        android:id="@+id/CheckBoxLuuThongTinDangNhap"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:text="Lưu thông tin đăng nhập"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/EditTextMatKhau" />
+
 
     <Button
         android:id="@+id/ButtonQuenMatKhau"
@@ -93,14 +102,14 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:layout_marginRight="5dp"
-        android:textSize="13sp"
         android:background="@drawable/custom_button_quen_mat_khau"
         android:text="Quên Mật Khẩu?"
-        android:textColor="@drawable/custom_text_button_quen_mat_khau"
         android:textAllCaps="false"
+        android:textColor="@drawable/custom_text_button_quen_mat_khau"
+        android:textSize="13sp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toLeftOf="@id/ButtonDangNhap"
-        app:layout_constraintTop_toBottomOf="@id/EditTextMatKhau" />
+        app:layout_constraintTop_toBottomOf="@id/CheckBoxLuuThongTinDangNhap" />
 
     <Button
         android:id="@+id/ButtonDangNhap"
@@ -110,10 +119,10 @@
         android:layout_marginTop="20dp"
         android:background="@drawable/custom_button_default_dx"
         android:text="Đăng Nhập"
-        android:textSize="13sp"
         android:textAllCaps="false"
         android:textColor="@drawable/custom_text_color"
+        android:textSize="13sp"
         app:layout_constraintLeft_toRightOf="@id/ButtonQuenMatKhau"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/EditTextMatKhau" />
+        app:layout_constraintTop_toBottomOf="@id/CheckBoxLuuThongTinDangNhap" />
 </androidx.constraintlayout.widget.ConstraintLayout>
