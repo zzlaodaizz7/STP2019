@@ -26,7 +26,7 @@ public class XepHangFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_xep_hang_doi_bong, container, false);
         langNgheSuKienChuyenFragment = (LangNgheSuKienChuyenFragment) getActivity();
-        AnhXa();
+        Mapping();
         KhoiTaoListView();
         ClickListview();
 
@@ -91,7 +91,7 @@ public class XepHangFragment extends Fragment {
         listView.setLayoutParams(params);
     }
 
-    private void AnhXa() {
+    private void Mapping() {
         lvxepHangDoiBong = view.findViewById(R.id.ListViewXepHangDoiBong);
     }
 

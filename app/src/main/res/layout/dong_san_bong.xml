@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/LayoutCardview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        app:cardElevation="10dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp">
+
+            <View
+                android:id="@+id/VienNgoai"
+                android:layout_width="102dp"
+                android:layout_height="72dp"
+                android:background="#09C603"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <View
+                android:id="@+id/VienTrong"
+                android:layout_width="100dp"
+                android:layout_height="70dp"
+                android:background="#fff"
+                app:layout_constraintLeft_toLeftOf="@+id/VienNgoai"
+                app:layout_constraintRight_toRightOf="@+id/VienNgoai"
+                app:layout_constraintTop_toTopOf="@+id/VienNgoai"
+                app:layout_constraintBottom_toBottomOf="@+id/VienNgoai"/>
+
+            <ImageView
+                android:id="@+id/ImageViewDongSanBong"
+                android:layout_width="100dp"
+                android:layout_height="70dp"
+                android:padding="5dp"
+                android:scaleType="fitCenter"
+                android:src="@mipmap/ic_launcher"
+                app:layout_constraintLeft_toLeftOf="@+id/VienTrong"
+                app:layout_constraintRight_toRightOf="@+id/VienTrong"
+                app:layout_constraintBottom_toBottomOf="@+id/VienTrong"
+                app:layout_constraintTop_toTopOf="@+id/VienTrong" />
+
+            <TextView
+                android:id="@+id/TextViewTenSanBong"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:text="Tên Sân Bóng"
+                android:textColor="@android:color/black"
+                android:textSize="16sp"
+                app:layout_constraintLeft_toRightOf="@id/ImageViewDongSanBong"
+                app:layout_constraintTop_toTopOf="@+id/ImageViewDongSanBong" />
+
+            <TextView
+                android:id="@+id/TextViewICLocationSanBong"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/ic_location_18dp"
+                android:text="Địa chỉ"
+                android:textColor="@android:color/black"
+                android:textSize="13sp"
+                app:layout_constraintBottom_toBottomOf="@+id/TextViewDiaChiSanBong"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/TextViewDiaChiSanBong" />
+
+            <TextView
+                android:id="@+id/TextViewDiaChiSanBong"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:singleLine="false"
+                android:text="Địa chỉ sân bóng"
+                android:textColor="@color/mauChuXam"
+                android:textSize="13sp"
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintLeft_toLeftOf="@id/TextViewTenSanBong"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/ImageViewDongSanBong" />
+
+            <TextView
+                android:id="@+id/TextViewICPhoneSanBong"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/ic_phone_18dp"
+                android:text="Điện thoại"
+                android:textColor="@android:color/black"
+                android:textSize="13sp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/TextViewPhoneSanBong" />
+
+            <TextView
+                android:id="@+id/TextViewPhoneSanBong"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="0123456789"
+                android:textColor="@android:color/holo_blue_dark"
+                app:layout_constraintHorizontal_bias="0.4"
+                app:layout_constraintLeft_toLeftOf="@id/TextViewTenSanBong"
+                app:layout_constraintTop_toBottomOf="@+id/TextViewDiaChiSanBong" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="12dp"
+        app:layout_constraintTop_toBottomOf="@id/LayoutCardview" />
+</androidx.constraintlayout.widget.ConstraintLayout>
