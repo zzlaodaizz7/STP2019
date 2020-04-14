@@ -134,7 +134,6 @@ public class TimSanFragment extends Fragment {
         int desiredWidth = View.MeasureSpec.makeMeasureSpec(listView.getWidth(), View.MeasureSpec.UNSPECIFIED);
         int totalHeight = 0;
         View view = null;
-        Toast.makeText(getActivity(), matchAdapter.getCount() + "", Toast.LENGTH_SHORT).show();
         for (int i = 0; i < matchAdapter.getCount(); i++) {
             view = matchAdapter.getView(i, view, listView);
             if (i == 0)

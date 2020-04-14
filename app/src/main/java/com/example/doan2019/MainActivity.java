@@ -4,8 +4,11 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.facebook.AccessToken;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -20,6 +23,7 @@ public class MainActivity extends AppCompatActivity implements LangNgheSuKienChu
         setContentView(R.layout.activity_main);
 
         Mapping();
+
         DangKySuKienLangNghe();
 
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,

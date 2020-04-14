@@ -15,17 +15,19 @@ public class DoiBongClass implements Serializable {
     private Bitmap ImageBia, ImageDaiDien;
     private ArrayList<ThanhVienDoiBongClass> listThanhVien;
 
-    public DoiBongClass(String ten, double diem, String diaChi, String trinhDo, String ngayThanhLap, String soDienThoai, ArrayList<ThanhVienDoiBongClass> listThanhVien) {
+    public DoiBongClass(String ten, double diem, String diaChi, String trinhDo, String ngayThanhLap, String soDienThoai, Bitmap imageBia, Bitmap imageDaiDien, ArrayList<ThanhVienDoiBongClass> listThanhVien) {
         this.ten = ten;
         this.diem = diem;
         this.diaChi = diaChi;
         this.trinhDo = trinhDo;
         this.ngayThanhLap = ngayThanhLap;
         this.soDienThoai = soDienThoai;
+        ImageBia = imageBia;
+        ImageDaiDien = imageDaiDien;
         this.listThanhVien = listThanhVien;
     }
 
-    public DoiBongClass(String fc_fb, double v, String diaChi, String khá, int i, String soDienThoai, ArrayList<ThanhVienDoiBongClass> thanhVienDoiBongClasses) {
+    public DoiBongClass() {
     }
 
     public String getTen() {
