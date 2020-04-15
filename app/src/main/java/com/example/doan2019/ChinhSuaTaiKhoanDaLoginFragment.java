@@ -102,7 +102,7 @@ public class ChinhSuaTaiKhoanDaLoginFragment extends Fragment {
         txtQuayLai.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                langNgheSuKienChuyenFragment.ChuyenHuongFragment(new TaiKhoanDaLoginFragment());
+                Toast.makeText(getActivity(), "Quay lại", Toast.LENGTH_SHORT).show();
             }
         });
     }

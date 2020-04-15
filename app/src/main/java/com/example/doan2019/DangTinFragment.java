@@ -9,6 +9,7 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.os.Bundle;
 
+import android.support.v4.media.MediaMetadataCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,6 +36,7 @@ import com.example.doan2019.Retrofit.DoiBong;
 import com.example.doan2019.Retrofit.JsonApiSanBong;
 import com.example.doan2019.Retrofit.SanBong;
 
+import androidx.fragment.app.FragmentManager;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -74,16 +76,25 @@ public class DangTinFragment extends Fragment {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         jsonApiSanBong = retrofit.create(JsonApiSanBong.class);
+
         LoadListSanBong();
+
         LoadListDoiBong();
+
         Mapping();
 
         ClickChonFC();
+
         BatSuKienClickChonNgay();
+
         ClickChonSan();
+
         ClickCoHoacKhongSan();
+
         ClickChonGio();
+
         ClickTextViewBack();
+
         ClickDangTin();
 
         return view;
@@ -187,7 +198,7 @@ public class DangTinFragment extends Fragment {
         tvBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                langNgheSuKienChuyenFragment.ChuyenHuongFragment(new TimDoiFragment());
+                Toast.makeText(getActivity(), "Quay lại", Toast.LENGTH_SHORT).show();
             }
         });
     }

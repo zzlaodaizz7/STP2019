@@ -15,29 +15,46 @@ import androidx.fragment.app.Fragment;
 
 public class ChiTietDoiBongDaThamGiaFragment extends Fragment {
     private View view;
-    TextView txtTenDoiBong, txtDiem, txtDiaChi, txtTrinhDo, txtNgayThanhlap, txtPhone;
+    TextView txtTenDoiBong, txtDiem, txtDiaChi, txtTrinhDo, txtNgayThanhlap, txtPhone, txtDanhSachCacTinDaDang;
     Button btnThamGiaFC;
     ImageView imgAnhBia, imgAnhDaiDien;
     Bundle bundle;
+    DoiBongClass doiBong;
+    LangNgheSuKienChuyenFragment langNgheSuKienChuyenFragment;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_chi_tiet_doi_bong_da_tham_gia, container, false);
+        langNgheSuKienChuyenFragment = (LangNgheSuKienChuyenFragment) getActivity();
 
         Mapping();
 
         GanNoiDung();
 
-        ClickButtonThamGiaFC();
+        ClickDanhSachCacTinDaDang();
 
         return view;
+    }
+
+    private void ClickDanhSachCacTinDaDang() {
+        txtDanhSachCacTinDaDang.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                DanhSachCacTinDaDangFragment danhSachCacTinDaDangFragment = new DanhSachCacTinDaDangFragment();
+                Bundle bundleDanhSachCacTinDaDangFragment = new Bundle();
+                bundleDanhSachCacTinDaDangFragment.putSerializable("doibong", doiBong);
+                danhSachCacTinDaDangFragment.setArguments(bundleDanhSachCacTinDaDangFragment);
+
+                langNgheSuKienChuyenFragment.ChuyenHuongFragment(danhSachCacTinDaDangFragment);
+            }
+        });
     }
 
     private void GanNoiDung() {
         bundle = getArguments();
 
-        DoiBongClass doiBong = (DoiBongClass) bundle.getSerializable("doibong");
+        doiBong = (DoiBongClass) bundle.getSerializable("doibong");
         imgAnhBia.setImageBitmap(doiBong.getImageBia());
         imgAnhDaiDien.setImageBitmap(doiBong.getImageDaiDien());
         txtTenDoiBong.setText(doiBong.getTen());
@@ -48,19 +65,10 @@ public class ChiTietDoiBongDaThamGiaFragment extends Fragment {
         txtPhone.setText(doiBong.getSoDienThoai());
     }
 
-    private void ClickButtonThamGiaFC() {
-        btnThamGiaFC.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(getActivity(), "Xin tham gia FC", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
     private void Mapping() {
+        txtDanhSachCacTinDaDang = view.findViewById(R.id.TextViewDanhSachCacTinDaDang);
         imgAnhBia = view.findViewById(R.id.ImageViewBiaDoiBong);
         imgAnhDaiDien = view.findViewById(R.id.ImageViewDaiDienDoiBong);
-        btnThamGiaFC = view.findViewById(R.id.ButtonThamGiaVaoFC);
         txtTenDoiBong = view.findViewById(R.id.TextViewName);
         txtDiem = view.findViewById(R.id.TextViewDiem);
         txtDiaChi = view.findViewById(R.id.TextViewDiaChi);

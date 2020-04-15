@@ -6,6 +6,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class DoiBongClass implements Serializable {
+    private int ID;
     private String ten;
     private double diem;
     private String diaChi;
@@ -14,6 +15,19 @@ public class DoiBongClass implements Serializable {
     private String soDienThoai;
     private Bitmap ImageBia, ImageDaiDien;
     private ArrayList<ThanhVienDoiBongClass> listThanhVien;
+
+    public DoiBongClass(int ID, String ten, double diem, String diaChi, String trinhDo, String ngayThanhLap, String soDienThoai, Bitmap imageBia, Bitmap imageDaiDien, ArrayList<ThanhVienDoiBongClass> listThanhVien) {
+        this.ID = ID;
+        this.ten = ten;
+        this.diem = diem;
+        this.diaChi = diaChi;
+        this.trinhDo = trinhDo;
+        this.ngayThanhLap = ngayThanhLap;
+        this.soDienThoai = soDienThoai;
+        ImageBia = imageBia;
+        ImageDaiDien = imageDaiDien;
+        this.listThanhVien = listThanhVien;
+    }
 
     public DoiBongClass(String ten, double diem, String diaChi, String trinhDo, String ngayThanhLap, String soDienThoai, Bitmap imageBia, Bitmap imageDaiDien, ArrayList<ThanhVienDoiBongClass> listThanhVien) {
         this.ten = ten;
