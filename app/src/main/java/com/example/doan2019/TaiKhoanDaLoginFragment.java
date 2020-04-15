@@ -1,5 +1,7 @@
 package com.example.doan2019;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,30 +35,47 @@ public class TaiKhoanDaLoginFragment extends Fragment {
     private View view;
     ListView lvCacFCDangThamGia;
     LangNgheSuKienChuyenFragment langNgheSuKienChuyenFragment;
-    ArrayList<String> arrCacFCBanThamGia;
+    ArrayList<DoiBongClass> arrFCThamGia;
+    ArrayList<String> arrTenCacFCThamGia;
+    ArrayList<ThanhVienDoiBongClass> listThanhVienDoiBong;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_tai_khoan_da_login, container, false);
         langNgheSuKienChuyenFragment = (LangNgheSuKienChuyenFragment) getActivity();
+
         Mapping();
+
         GanNoiDung();
+
         GanNoiDungListCacFCDangThamGia();
+
         ClickTaoDoiBong();
+
         ClickDangXuat();
+
         ClickChinhSua();
+
         ClickTimKiemDoi();
-        ClickListDoiBong();
+
+        ClickListViewCacFCDangThamGia();
+
         return view;
     }
 
-    private void ClickListDoiBong() {
+    private void ClickListViewCacFCDangThamGia() {
         lvCacFCDangThamGia.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Toast.makeText(getActivity(), arrCacFCBanThamGia.get(i), Toast.LENGTH_SHORT).show();
-                langNgheSuKienChuyenFragment.ChuyenHuongFragment(new ChiTietDoiBongDaThamGiaFragment());
+                ChiTietDoiBongDaThamGiaFragment chiTietDoiBongDaThamGiaFragment = new ChiTietDoiBongDaThamGiaFragment();
+
+                Bundle bundle = new Bundle();
+                DoiBongClass doiBong = arrFCThamGia.get(i);
+                bundle.putSerializable("doibong", doiBong);
+                chiTietDoiBongDaThamGiaFragment.setArguments(bundle);
+
+                langNgheSuKienChuyenFragment.ChuyenHuongFragment(chiTietDoiBongDaThamGiaFragment);
             }
         });
     }
@@ -71,24 +90,30 @@ public class TaiKhoanDaLoginFragment extends Fragment {
     }
 
     private void GanNoiDungListCacFCDangThamGia() {
-        arrCacFCBanThamGia = new ArrayList<>();
-        arrCacFCBanThamGia.add("FC Cầu Giấy");
-        arrCacFCBanThamGia.add("FC Long Biên");
-        arrCacFCBanThamGia.add("FC Yên Hoà");
-        arrCacFCBanThamGia.add("FC Trần Duy Hưng");
-        arrCacFCBanThamGia.add("FC Mễ Trì");
-        arrCacFCBanThamGia.add("FC Cầu Giấy");
-        arrCacFCBanThamGia.add("FC Long Biên");
-        arrCacFCBanThamGia.add("FC Yên Hoà");
-        arrCacFCBanThamGia.add("FC Trần Duy Hưng");
-        arrCacFCBanThamGia.add("FC Mễ Trì");
-        arrCacFCBanThamGia.add("FC Cầu Giấy");
-        arrCacFCBanThamGia.add("FC Long Biên");
-        arrCacFCBanThamGia.add("FC Yên Hoà");
-        arrCacFCBanThamGia.add("FC Trần Duy Hưng");
-        arrCacFCBanThamGia.add("FC Mễ Trì");
+        arrFCThamGia = new ArrayList<>();
+        listThanhVienDoiBong = new ArrayList<>();
+        arrTenCacFCThamGia = new ArrayList<>();
+        Bitmap anhDaiDien = BitmapFactory.decodeResource(getResources(), R.drawable.icon_app);
+        Bitmap anhBia = BitmapFactory.decodeResource(getResources(), R.drawable.anh_test_doi_bong);
 
-        ArrayAdapter arrayAdapter = new ArrayAdapter(getActivity(), android.R.layout.simple_list_item_1, arrCacFCBanThamGia);
+        listThanhVienDoiBong.add(new ThanhVienDoiBongClass("Nguyễn Văn A", "Đội trưởng", 1));
+        listThanhVienDoiBong.add(new ThanhVienDoiBongClass("Nguyễn Văn B", "Cầu thủ", 2));
+        listThanhVienDoiBong.add(new ThanhVienDoiBongClass("Nguyễn Văn C", "Cầu thủ", 3));
+        listThanhVienDoiBong.add(new ThanhVienDoiBongClass("Nguyễn Văn D", "Cầu thủ", 4));
+        listThanhVienDoiBong.add(new ThanhVienDoiBongClass("Nguyễn Văn E", "Đội phó", 5));
+
+        arrFCThamGia.add(new DoiBongClass("FC fb", 3.02, "Hà Nội, Việt Nam", "Khá", "11/10/2010", "0123456789", anhBia, anhDaiDien, listThanhVienDoiBong));
+        arrFCThamGia.add(new DoiBongClass("FC Linh Đàm", 3.02, "Hà Nội, Việt Nam", "Khá", "11/10/2010", "0123456789",anhBia, anhDaiDien, listThanhVienDoiBong));
+        arrFCThamGia.add(new DoiBongClass("FC Cầu Giấy", 3.02, "Hà Nội, Việt Nam", "Khá", "11/10/2010", "0123456789",anhBia, anhDaiDien, listThanhVienDoiBong));
+        arrFCThamGia.add(new DoiBongClass("FC Mễ Trì", 3.02, "Hà Nội, Việt Nam", "Khá", "11/10/2010", "0123456789",anhBia, anhDaiDien, listThanhVienDoiBong));
+        arrFCThamGia.add(new DoiBongClass("FC Lê Đức Thọ", 3.02, "Hà Nội, Việt Nam", "Khá", "11/10/2010", "0123456789",anhBia, anhDaiDien, listThanhVienDoiBong));
+
+        for(int i = 0; i < arrFCThamGia.size(); i++){
+
+            arrTenCacFCThamGia.add(arrFCThamGia.get(i).getTen());
+        }
+
+        ArrayAdapter arrayAdapter = new ArrayAdapter(getActivity(), android.R.layout.simple_list_item_1, arrTenCacFCThamGia);
         lvCacFCDangThamGia.setAdapter(arrayAdapter);
         setListViewHeightBasedOnChildren(arrayAdapter, lvCacFCDangThamGia);
     }
@@ -118,7 +143,8 @@ public class TaiKhoanDaLoginFragment extends Fragment {
         btnTaoDoiBong.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getActivity(), "Tạo đội bóng", Toast.LENGTH_SHORT).show();
+                TaoDoiBongDialog taoDoiBongDialog = new TaoDoiBongDialog();
+                taoDoiBongDialog.show(getActivity().getSupportFragmentManager(), "Dialog_Popup");
             }
         });
     }
@@ -159,7 +185,7 @@ public class TaiKhoanDaLoginFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 LoginManager.getInstance().logOut();
-                langNgheSuKienChuyenFragment.ChuyenHuongFragment(new TaiKhoanChuaLoginFragment());
+                langNgheSuKienChuyenFragment.ChuyenHuongFragment(new TaiKhoanFragment());
             }
         });
     }

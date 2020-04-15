@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,12 +18,16 @@ public class ChiTietDoiBongXepHangFragment extends Fragment {
     TextView txtTenDoiBong, txtDiem, txtDiaChi, txtTrinhDo, txtNgayThanhlap, txtPhone;
     Bundle bundle;
     Button btnThamGiaFC;
+    ImageView imgAnhBia, imgDaiDien;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_chi_tiet_xep_hang_doi_bong, container, false);
+
         Mapping();
+
         GanDuLieu();
+
         ClickThamGiaFC();
 
         return view;
@@ -41,6 +46,8 @@ public class ChiTietDoiBongXepHangFragment extends Fragment {
         bundle = getArguments();
 
         DoiBongClass doiBongClass = (DoiBongClass) bundle.getSerializable("doibong");
+        imgAnhBia.setImageBitmap(doiBongClass.getImageBia());
+        imgDaiDien.setImageBitmap(doiBongClass.getImageDaiDien());
         txtTenDoiBong.setText(doiBongClass.getTen());
         txtDiem.setText(doiBongClass.getDiem() + "");
         txtDiaChi.setText(doiBongClass.getDiaChi());
@@ -50,6 +57,8 @@ public class ChiTietDoiBongXepHangFragment extends Fragment {
     }
 
     private void Mapping() {
+        imgAnhBia = view.findViewById(R.id.ImageViewBiaDoiBong);
+        imgDaiDien = view.findViewById(R.id.ImageViewDaiDienDoiBong);
         btnThamGiaFC = view.findViewById(R.id.ButtonThamGiaVaoFC);
         txtTenDoiBong = view.findViewById(R.id.TextViewName);
         txtDiem = view.findViewById(R.id.TextViewDiem);

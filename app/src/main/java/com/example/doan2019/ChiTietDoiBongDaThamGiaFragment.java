@@ -18,15 +18,34 @@ public class ChiTietDoiBongDaThamGiaFragment extends Fragment {
     TextView txtTenDoiBong, txtDiem, txtDiaChi, txtTrinhDo, txtNgayThanhlap, txtPhone;
     Button btnThamGiaFC;
     ImageView imgAnhBia, imgAnhDaiDien;
+    Bundle bundle;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_chi_tiet_doi_bong_da_tham_gia, container, false);
+
         Mapping();
+
+        GanNoiDung();
+
         ClickButtonThamGiaFC();
 
         return view;
+    }
+
+    private void GanNoiDung() {
+        bundle = getArguments();
+
+        DoiBongClass doiBong = (DoiBongClass) bundle.getSerializable("doibong");
+        imgAnhBia.setImageBitmap(doiBong.getImageBia());
+        imgAnhDaiDien.setImageBitmap(doiBong.getImageDaiDien());
+        txtTenDoiBong.setText(doiBong.getTen());
+        txtDiem.setText(doiBong.getDiem() + " Điểm");
+        txtDiaChi.setText(doiBong.getDiaChi());
+        txtTrinhDo.setText(doiBong.getTrinhDo());
+        txtNgayThanhlap.setText(doiBong.getNgayThanhLap());
+        txtPhone.setText(doiBong.getSoDienThoai());
     }
 
     private void ClickButtonThamGiaFC() {
