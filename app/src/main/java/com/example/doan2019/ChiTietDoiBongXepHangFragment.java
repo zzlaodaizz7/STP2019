@@ -4,10 +4,16 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.doan2019.Retrofit.DoiBong;
+
+import java.util.ArrayList;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,10 +25,15 @@ public class ChiTietDoiBongXepHangFragment extends Fragment {
     Bundle bundle;
     Button btnThamGiaFC;
     ImageView imgAnhBia, imgDaiDien;
+    ListView lvDanhSachThanhVien;
+    ArrayList<ThanhVienDoiBongClass> arrThanhVien;
+    DanhSachThanhVienAdapter adapter;
+    LangNgheSuKienChuyenFragment langNgheSuKienChuyenFragment;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_chi_tiet_xep_hang_doi_bong, container, false);
+        view = inflater.inflate(R.layout.fragment_chi_tiet_doi_bong_xep_hang, container, false);
+        langNgheSuKienChuyenFragment = (LangNgheSuKienChuyenFragment) getActivity();
 
         Mapping();
 
@@ -32,7 +43,25 @@ public class ChiTietDoiBongXepHangFragment extends Fragment {
 
         ClickThamGiaFC();
 
+        ClickListViewThanhVien();
+
         return view;
+    }
+
+    private void ClickListViewThanhVien() {
+        lvDanhSachThanhVien.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                ChiTietThanhVienFragment chiTietThanhVienFragment = new ChiTietThanhVienFragment();
+
+                Bundle bundleThanhVien = new Bundle();
+                ThanhVienDoiBongClass thanhVien = arrThanhVien.get(i);
+                bundleThanhVien.putSerializable("thanhvien", thanhVien);
+                chiTietThanhVienFragment.setArguments(bundleThanhVien);
+
+                langNgheSuKienChuyenFragment.ChuyenHuongFragment(chiTietThanhVienFragment);
+            }
+        });
     }
 
     private void ClickQuayLai() {
@@ -65,9 +94,35 @@ public class ChiTietDoiBongXepHangFragment extends Fragment {
         txtTrinhDo.setText(doiBongClass.getTrinhDo());
         txtNgayThanhlap.setText(doiBongClass.getNgayThanhLap());
         txtPhone.setText(doiBongClass.getSoDienThoai());
+
+        arrThanhVien = doiBongClass.getListThanhVien();
+        adapter = new DanhSachThanhVienAdapter(getActivity(), R.layout.dong_thanh_vien, arrThanhVien);
+        lvDanhSachThanhVien.setAdapter(adapter);
+        SetListViewHeightBasedOnChildren(adapter, lvDanhSachThanhVien);
+    }
+
+    private void SetListViewHeightBasedOnChildren(DanhSachThanhVienAdapter matchAdapter, ListView listView) {
+        if (matchAdapter == null) {
+            return;
+        }
+        int desiredWidth = View.MeasureSpec.makeMeasureSpec(listView.getWidth(), View.MeasureSpec.UNSPECIFIED);
+        int totalHeight = 0;
+        View view = null;
+        for (int i = 0; i < matchAdapter.getCount(); i++) {
+            view = matchAdapter.getView(i, view, listView);
+            if (i == 0)
+                view.setLayoutParams(new ViewGroup.LayoutParams(desiredWidth, ViewGroup.LayoutParams.WRAP_CONTENT));
+
+            view.measure(desiredWidth, View.MeasureSpec.UNSPECIFIED);
+            totalHeight += view.getMeasuredHeight();
+        }
+        ViewGroup.LayoutParams params = listView.getLayoutParams();
+        params.height = totalHeight + (listView.getDividerHeight() * (matchAdapter.getCount() - 1));
+        listView.setLayoutParams(params);
     }
 
     private void Mapping() {
+        lvDanhSachThanhVien = view.findViewById(R.id.ListViewDanhSachThanhVien);
         txtQuayLai = view.findViewById(R.id.TextViewQuayLai);
         imgAnhBia = view.findViewById(R.id.ImageViewBiaDoiBong);
         imgDaiDien = view.findViewById(R.id.ImageViewDaiDienDoiBong);

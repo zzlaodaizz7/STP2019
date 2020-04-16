@@ -39,8 +39,6 @@ public class ChiTietDoiBongDaThamGiaFragment extends Fragment {
 
         Mapping();
 
-        KhoiTaoListViewThanhVien();
-
         ClickDanhSachThanhVien();
 
         ClickQuayLai();
@@ -75,27 +73,6 @@ public class ChiTietDoiBongDaThamGiaFragment extends Fragment {
                 langNgheSuKienChuyenFragment.ChuyenHuongFragment(chiTietThanhVienFragment);
             }
         });
-    }
-
-    private void KhoiTaoListViewThanhVien() {
-        arrThanhVien = new ArrayList<>();
-        Bitmap anhDaiDien = BitmapFactory.decodeResource(getResources(), R.drawable.icon_app);
-        long ngayTemp = 1234596789;
-        Date dateConvert = new Date(ngayTemp);
-
-        arrThanhVien.add(new ThanhVienDoiBongClass("Nguyễn Văn A", "Thành viên", 1, anhDaiDien, "Hà Nội, Việt Nam", dateConvert));
-        arrThanhVien.add(new ThanhVienDoiBongClass("Nguyễn Văn B", "Thành viên", 1, anhDaiDien, "Hà Nội, Việt Nam", dateConvert));
-        arrThanhVien.add(new ThanhVienDoiBongClass("Nguyễn Văn C", "Thành viên", 1, anhDaiDien, "Hà Nội, Việt Nam", dateConvert));
-        arrThanhVien.add(new ThanhVienDoiBongClass("Nguyễn Văn D", "Thành viên", 1, anhDaiDien, "Hà Nội, Việt Nam", dateConvert));
-        arrThanhVien.add(new ThanhVienDoiBongClass("Nguyễn Văn E", "Thành viên", 1, anhDaiDien, "Hà Nội, Việt Nam", dateConvert));
-        arrThanhVien.add(new ThanhVienDoiBongClass("Nguyễn Văn F", "Thành viên", 1, anhDaiDien, "Hà Nội, Việt Nam", dateConvert));
-        arrThanhVien.add(new ThanhVienDoiBongClass("Nguyễn Văn G", "Thành viên", 1, anhDaiDien, "Hà Nội, Việt Nam", dateConvert));
-        arrThanhVien.add(new ThanhVienDoiBongClass("Nguyễn Văn H", "Thành viên", 1, anhDaiDien, "Hà Nội, Việt Nam", dateConvert));
-        arrThanhVien.add(new ThanhVienDoiBongClass("Nguyễn Văn I", "Thành viên", 1, anhDaiDien, "Hà Nội, Việt Nam", dateConvert));
-
-        adapter = new DanhSachThanhVienAdapter(getActivity(), R.layout.dong_thanh_vien, arrThanhVien);
-        lvDanhSachThanhVien.setAdapter(adapter);
-        SetListViewHeightBasedOnChildren(adapter, lvDanhSachThanhVien);
     }
 
     private void SetListViewHeightBasedOnChildren(DanhSachThanhVienAdapter matchAdapter, ListView listView) {
@@ -144,6 +121,12 @@ public class ChiTietDoiBongDaThamGiaFragment extends Fragment {
         txtTrinhDo.setText(doiBong.getTrinhDo());
         txtNgayThanhlap.setText(doiBong.getNgayThanhLap());
         txtPhone.setText(doiBong.getSoDienThoai());
+
+        arrThanhVien = doiBong.getListThanhVien();
+        adapter = new DanhSachThanhVienAdapter(getActivity(), R.layout.dong_thanh_vien, arrThanhVien);
+        lvDanhSachThanhVien.setAdapter(adapter);
+        SetListViewHeightBasedOnChildren(adapter, lvDanhSachThanhVien);
+
     }
 
     private void Mapping() {

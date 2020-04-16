@@ -7,8 +7,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
 
+import java.sql.Date;
 import java.util.ArrayList;
 
 import androidx.annotation.NonNull;
@@ -17,6 +19,7 @@ import androidx.fragment.app.Fragment;
 
 public class TimKiemDoiBongFragment extends Fragment {
     private View view;
+    ImageView imgBack;
     ListView lvDoiBong;
     ArrayList<DoiBongClass> listDoiBong;
     ArrayList<ThanhVienDoiBongClass> listThanhVienDoiBong;
@@ -29,10 +32,23 @@ public class TimKiemDoiBongFragment extends Fragment {
         langNgheSuKienChuyenFragment = (LangNgheSuKienChuyenFragment) getActivity();
 
         Mapping();
+
+        ClickQuayLai();
+
         KhoiTaoListView();
+
         ClickListView();
 
         return view;
+    }
+
+    private void ClickQuayLai() {
+        imgBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getActivity().onBackPressed();
+            }
+        });
     }
 
     private void ClickListView() {
@@ -56,12 +72,18 @@ public class TimKiemDoiBongFragment extends Fragment {
         listThanhVienDoiBong = new ArrayList<>();
         Bitmap anhDaiDien = BitmapFactory.decodeResource(getResources(), R.drawable.icon_app);
         Bitmap anhBia = BitmapFactory.decodeResource(getResources(), R.drawable.anh_test_doi_bong);
+        long ngayTemp = 1234596789;
+        Date dateConvert = new Date(ngayTemp);
 
-        listThanhVienDoiBong.add(new ThanhVienDoiBongClass("Nguyễn Văn A", "Đội trưởng", 1));
-        listThanhVienDoiBong.add(new ThanhVienDoiBongClass("Nguyễn Văn B", "Cầu thủ", 2));
-        listThanhVienDoiBong.add(new ThanhVienDoiBongClass("Nguyễn Văn C", "Cầu thủ", 3));
-        listThanhVienDoiBong.add(new ThanhVienDoiBongClass("Nguyễn Văn D", "Cầu thủ", 4));
-        listThanhVienDoiBong.add(new ThanhVienDoiBongClass("Nguyễn Văn E", "Đội phó", 5));
+        listThanhVienDoiBong.add(new ThanhVienDoiBongClass("Nguyễn Văn A", "Thành viên", 1, anhDaiDien, "Hà Nội, Việt Nam", dateConvert));
+        listThanhVienDoiBong.add(new ThanhVienDoiBongClass("Nguyễn Văn B", "Thành viên", 1, anhDaiDien, "Hà Nội, Việt Nam", dateConvert));
+        listThanhVienDoiBong.add(new ThanhVienDoiBongClass("Nguyễn Văn C", "Thành viên", 1, anhDaiDien, "Hà Nội, Việt Nam", dateConvert));
+        listThanhVienDoiBong.add(new ThanhVienDoiBongClass("Nguyễn Văn D", "Thành viên", 1, anhDaiDien, "Hà Nội, Việt Nam", dateConvert));
+        listThanhVienDoiBong.add(new ThanhVienDoiBongClass("Nguyễn Văn E", "Thành viên", 1, anhDaiDien, "Hà Nội, Việt Nam", dateConvert));
+        listThanhVienDoiBong.add(new ThanhVienDoiBongClass("Nguyễn Văn F", "Thành viên", 1, anhDaiDien, "Hà Nội, Việt Nam", dateConvert));
+        listThanhVienDoiBong.add(new ThanhVienDoiBongClass("Nguyễn Văn G", "Thành viên", 1, anhDaiDien, "Hà Nội, Việt Nam", dateConvert));
+        listThanhVienDoiBong.add(new ThanhVienDoiBongClass("Nguyễn Văn H", "Thành viên", 1, anhDaiDien, "Hà Nội, Việt Nam", dateConvert));
+        listThanhVienDoiBong.add(new ThanhVienDoiBongClass("Nguyễn Văn I", "Thành viên", 1, anhDaiDien, "Hà Nội, Việt Nam", dateConvert));
 
         listDoiBong.add(new DoiBongClass("FC fb", 3.02, "Hà Nội, Việt Nam", "Khá", "11/10/2010", "0123456789",anhBia, anhDaiDien, listThanhVienDoiBong));
         listDoiBong.add(new DoiBongClass("FC Linh Đàm", 3.02, "Hà Nội, Việt Nam", "Khá", "11/10/2010", "0123456789",anhBia, anhDaiDien, listThanhVienDoiBong));
@@ -96,6 +118,7 @@ public class TimKiemDoiBongFragment extends Fragment {
     }
 
     private void Mapping() {
+        imgBack = view.findViewById(R.id.ImageViewQuayLai);
         lvDoiBong = view.findViewById(R.id.ListViewDoiBong);
     }
 }
