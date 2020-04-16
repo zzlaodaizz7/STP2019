@@ -82,6 +82,8 @@
                         android:id="@+id/ImageViewBiaDoiBong"
                         android:layout_width="match_parent"
                         android:layout_height="150dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
                         android:src="@drawable/anh_test_doi_bong"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -258,7 +260,7 @@
                 android:layout_marginLeft="30dp"
                 android:layout_marginTop="5dp"
                 android:layout_marginRight="30dp"
-                android:elevation="10dp">
+                app:cardElevation="10dp">
 
                 <ListView
                     android:id="@+id/ListViewDanhSachThanhVien"
@@ -267,9 +269,15 @@
 
             </androidx.cardview.widget.CardView>
 
-            <View
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
-                android:layout_height="100dp" />
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:layout_marginTop="5dp"
+                app:cardElevation="10dp">
+
+            </androidx.cardview.widget.CardView>
         </LinearLayout>
     </ScrollView>
 

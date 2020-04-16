@@ -3,19 +3,26 @@ package com.example.doan2019;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import com.facebook.AccessToken;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import java.util.ArrayList;
+
 public class MainActivity extends AppCompatActivity implements LangNgheSuKienChuyenFragment {
     BottomNavigationView bottomNavigationView;
     int menuHienTai = 1, menuDaChon = 0;
+    int rootFragment = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,7 +79,9 @@ public class MainActivity extends AppCompatActivity implements LangNgheSuKienChu
                             selectedFragment = new CaiDatFragment();
                             break;
                     }
-                    if(menuDaChon != menuHienTai) {
+                    if (menuDaChon != menuHienTai) {
+                        getSupportFragmentManager().popBackStack(0,0);
+                        getSupportFragmentManager().popBackStack();
                         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                                 selectedFragment).commit();
                         menuHienTai = menuDaChon;
@@ -83,6 +92,7 @@ public class MainActivity extends AppCompatActivity implements LangNgheSuKienChu
 
     @Override
     public void ChuyenHuongFragment(Fragment x) {
-        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, x).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, x)
+                .addToBackStack(rootFragment + "").commit();
     }
 }

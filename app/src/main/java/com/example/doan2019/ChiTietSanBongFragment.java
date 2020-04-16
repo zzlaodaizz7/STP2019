@@ -35,7 +35,7 @@ public class ChiTietSanBongFragment extends Fragment {
         tvQuayLai.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getActivity(), "Quay lại", Toast.LENGTH_SHORT).show();
+                getActivity().onBackPressed();
             }
         });
     }

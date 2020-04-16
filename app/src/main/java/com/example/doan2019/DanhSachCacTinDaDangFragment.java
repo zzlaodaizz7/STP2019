@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.sql.Date;
@@ -23,6 +24,7 @@ public class DanhSachCacTinDaDangFragment extends Fragment {
     DanhSachCacTinDaDangAdapter adapter;
     LangNgheSuKienChuyenFragment langNgheSuKienChuyenFragment;
     Bundle bundle;
+    TextView txtQuayLai;
     DoiBongClass doiBong;
 
     @Nullable
@@ -33,6 +35,8 @@ public class DanhSachCacTinDaDangFragment extends Fragment {
 
         Mapping();
 
+        ClickQuayLai();
+
         GetDuLieuDoiBong();
 
         KhoiTaoDuLieu();
@@ -40,6 +44,15 @@ public class DanhSachCacTinDaDangFragment extends Fragment {
         ClickListView();
 
         return view;
+    }
+
+    private void ClickQuayLai() {
+        txtQuayLai.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getActivity().onBackPressed();
+            }
+        });
     }
 
     private void ClickListView() {
@@ -135,7 +148,7 @@ public class DanhSachCacTinDaDangFragment extends Fragment {
         convertTimestamp = new Timestamp(date);
         arrDangTin.add(new DangTinDuongClass(1, convertDate, 2, 1, "1/2 nước", convertTimestamp, convertTimestamp, -1));
 
-        adapter = new DanhSachCacTinDaDangAdapter(getActivity(), R.layout.dong_cac_tin_da_dang, arrDangTin);
+        adapter = new DanhSachCacTinDaDangAdapter(getActivity(), R.layout.dong_tin_da_dang, arrDangTin);
         lvDanhSachCacTinDaDang.setAdapter(adapter);
         SetListViewHeightBasedOnChildren(adapter, lvDanhSachCacTinDaDang);
     }
@@ -161,6 +174,7 @@ public class DanhSachCacTinDaDangFragment extends Fragment {
     }
 
     private void Mapping() {
+        txtQuayLai = view.findViewById(R.id.TextViewQuayLai);
         lvDanhSachCacTinDaDang = view.findViewById(R.id.ListViewDanhSachCacTinDaDang);
     }
 }

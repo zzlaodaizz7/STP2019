@@ -70,6 +70,8 @@
                         android:id="@+id/ImageViewBiaSanBong"
                         android:layout_width="match_parent"
                         android:layout_height="150dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
                         android:src="@drawable/anh_test_doi_bong"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />

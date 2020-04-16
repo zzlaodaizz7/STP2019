@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -20,6 +21,7 @@ public class DanhSachCacDoiBatDoiFragment extends Fragment {
     private View view;
     LangNgheSuKienChuyenFragment langNgheSuKienChuyenFragment;
     ListView lvDoiBongBatDoi;
+    TextView txtQuayLai;
     ArrayList<DoiBongClass> listDoiBong;
     ArrayList<ThanhVienDoiBongClass> listThanhVienDoiBong;
     DanhSachCacDoiBatDoiAdapter adapter;
@@ -34,6 +36,8 @@ public class DanhSachCacDoiBatDoiFragment extends Fragment {
 
         Mapping();
 
+        ClickQuayLai();
+
         ClickListview();
 
         GetDuLieuIDDangTin();
@@ -41,6 +45,15 @@ public class DanhSachCacDoiBatDoiFragment extends Fragment {
         KhoiTaoListView();
 
         return view;
+    }
+
+    private void ClickQuayLai() {
+        txtQuayLai.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getActivity().onBackPressed();
+            }
+        });
     }
 
     private void GetDuLieuIDDangTin() {
@@ -85,7 +98,7 @@ public class DanhSachCacDoiBatDoiFragment extends Fragment {
         listDoiBong.add(new DoiBongClass("FC Mễ Trì", 3.02, "Hà Nội, Việt Nam", "Khá", "11/10/2010", "0123456789", anhBia, anhDaiDien, listThanhVienDoiBong));
         listDoiBong.add(new DoiBongClass("FC Lê Đức Thọ", 3.02, "Hà Nội, Việt Nam", "Khá", "11/10/2010", "0123456789", anhBia, anhDaiDien, listThanhVienDoiBong));
 
-        adapter = new DanhSachCacDoiBatDoiAdapter(getActivity(), R.layout.dong_cac_doi_bat_doi, listDoiBong);
+        adapter = new DanhSachCacDoiBatDoiAdapter(getActivity(), R.layout.dong_doi_bat_doi, listDoiBong);
         lvDoiBongBatDoi.setAdapter(adapter);
         SetListViewHeightBasedOnChildren(adapter, lvDoiBongBatDoi);
     }
@@ -111,6 +124,7 @@ public class DanhSachCacDoiBatDoiFragment extends Fragment {
     }
 
     private void Mapping() {
+        txtQuayLai = view.findViewById(R.id.TextViewQuayLai);
         lvDoiBongBatDoi = view.findViewById(R.id.ListViewCacDoiBatDoi);
     }
 }

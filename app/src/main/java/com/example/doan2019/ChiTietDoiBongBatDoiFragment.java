@@ -15,7 +15,7 @@ import androidx.fragment.app.Fragment;
 
 public class ChiTietDoiBongBatDoiFragment extends Fragment {
     private View view;
-    TextView txtTenDoiBong, txtDiem, txtDiaChi, txtTrinhDo, txtNgayThanhlap, txtPhone, txtDongYBatDoi;
+    TextView txtTenDoiBong, txtDiem, txtDiaChi, txtTrinhDo, txtNgayThanhlap, txtPhone, txtDongYBatDoi, txtQuayLai;
     Bundle bundle;
     ImageView imgAnhBia, imgDaiDien;
     @Nullable
@@ -25,11 +25,22 @@ public class ChiTietDoiBongBatDoiFragment extends Fragment {
 
         Mapping();
 
+        ClickQuayLai();
+
         GanDuLieu();
 
         ClickDongYBatDoi();
 
         return view;
+    }
+
+    private void ClickQuayLai() {
+        txtQuayLai.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getActivity().onBackPressed();
+            }
+        });
     }
 
     private void ClickDongYBatDoi() {
@@ -56,6 +67,7 @@ public class ChiTietDoiBongBatDoiFragment extends Fragment {
     }
 
     private void Mapping() {
+        txtQuayLai = view.findViewById(R.id.TextViewQuayLai);
         imgAnhBia = view.findViewById(R.id.ImageViewBiaDoiBong);
         imgDaiDien = view.findViewById(R.id.ImageViewDaiDienDoiBong);
         txtDongYBatDoi = view.findViewById(R.id.TextViewChapNhanBatDoi);
