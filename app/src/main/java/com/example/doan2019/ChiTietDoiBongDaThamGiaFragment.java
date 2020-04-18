@@ -15,10 +15,19 @@ import android.widget.Toast;
 
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+
+import com.example.doan2019.Retrofit.DoiBong;
+import com.example.doan2019.Retrofit.JsonApiSanBong;
+import com.example.doan2019.Retrofit.UserLogin;
+
+import retrofit2.Call;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ChiTietDoiBongDaThamGiaFragment extends Fragment {
     private View view;
@@ -26,17 +35,22 @@ public class ChiTietDoiBongDaThamGiaFragment extends Fragment {
     ImageView imgAnhBia, imgAnhDaiDien;
     Bundle bundle;
     ListView lvDanhSachThanhVien;
-    DoiBongClass doiBong;
+    DoiBong doiBong;
     DanhSachThanhVienAdapter adapter;
     ArrayList<ThanhVienDoiBongClass> arrThanhVien;
     LangNgheSuKienChuyenFragment langNgheSuKienChuyenFragment;
-
+    Retrofit retrofit;
+    JsonApiSanBong jsonApiSanBong;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_chi_tiet_doi_bong_da_tham_gia, container, false);
         langNgheSuKienChuyenFragment = (LangNgheSuKienChuyenFragment) getActivity();
-
+        retrofit = new Retrofit.Builder()
+                .baseUrl("http://192.168.1.4/DoAn/public/api/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        jsonApiSanBong = retrofit.create(JsonApiSanBong.class);
         Mapping();
 
         KhoiTaoListViewThanhVien();
@@ -82,7 +96,7 @@ public class ChiTietDoiBongDaThamGiaFragment extends Fragment {
         Bitmap anhDaiDien = BitmapFactory.decodeResource(getResources(), R.drawable.icon_app);
         long ngayTemp = 1234596789;
         Date dateConvert = new Date(ngayTemp);
-
+//        Call<List<UserLogin>> call = jsonApiSanBong.getDanhsachthanhviens("");
         arrThanhVien.add(new ThanhVienDoiBongClass("Nguyễn Văn A", "Thành viên", 1, anhDaiDien, "Hà Nội, Việt Nam", dateConvert));
         arrThanhVien.add(new ThanhVienDoiBongClass("Nguyễn Văn B", "Thành viên", 1, anhDaiDien, "Hà Nội, Việt Nam", dateConvert));
         arrThanhVien.add(new ThanhVienDoiBongClass("Nguyễn Văn C", "Thành viên", 1, anhDaiDien, "Hà Nội, Việt Nam", dateConvert));
@@ -135,15 +149,16 @@ public class ChiTietDoiBongDaThamGiaFragment extends Fragment {
     private void GanNoiDungThongTinDoiBong() {
         bundle = getArguments();
 
-        doiBong = (DoiBongClass) bundle.getSerializable("doibong");
-        imgAnhBia.setImageBitmap(doiBong.getImageBia());
-        imgAnhDaiDien.setImageBitmap(doiBong.getImageDaiDien());
+        doiBong = (DoiBong) bundle.getSerializable("doibong");
+        imgAnhBia.setImageBitmap(doiBong.getAnhbia());
+        imgAnhDaiDien.setImageBitmap(doiBong.getAnhdaidien());
         txtTenDoiBong.setText(doiBong.getTen());
-        txtDiem.setText(doiBong.getDiem() + " Điểm");
-        txtDiaChi.setText(doiBong.getDiaChi());
-        txtTrinhDo.setText(doiBong.getTrinhDo());
-        txtNgayThanhlap.setText(doiBong.getNgayThanhLap());
-        txtPhone.setText(doiBong.getSoDienThoai());
+        txtDiem.setText(doiBong.getSodiem() + " Điểm");
+        txtDiaChi.setText(doiBong.getDiachi());
+        txtTrinhDo.setText(doiBong.getTrinhdo());
+        txtNgayThanhlap.setText(doiBong.getCreated_at().toString());
+        System.out.println("ngaytao "+doiBong.getCreated_at());
+        txtPhone.setText(doiBong.getSdt());
     }
 
     private void Mapping() {

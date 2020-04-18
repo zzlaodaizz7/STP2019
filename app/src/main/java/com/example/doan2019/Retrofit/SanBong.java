@@ -14,6 +14,7 @@ public class SanBong {
     private Timestamp created_at;
     private Timestamp updated_at;
 
+
     public int getId() {
         return id;
     }

@@ -2,7 +2,10 @@ package com.example.doan2019;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +18,7 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -40,10 +44,11 @@ public class TimDoiFragment extends Fragment {
     ImageButton btnThongBao;
     View view;
     LangNgheSuKienChuyenFragment langNgheSuKienChuyenFragment;
-
+    SharedPreferences sharedPreferences;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        sharedPreferences = getActivity().getSharedPreferences("dataLogin", Context.MODE_PRIVATE);
         view = inflater.inflate(R.layout.fragment_tim_doi, container, false);
         langNgheSuKienChuyenFragment = (LangNgheSuKienChuyenFragment) getActivity();
         mapping();
@@ -214,6 +219,9 @@ public class TimDoiFragment extends Fragment {
         btnDangTin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (sharedPreferences.getString("token","").equals("")){
+                    Toast.makeText(getContext(), "Bạn chưa đăng nhập", Toast.LENGTH_SHORT).show();
+                }else
                 langNgheSuKienChuyenFragment.ChuyenHuongFragment(new DangTinFragment());
             }
         });

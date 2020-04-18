@@ -17,6 +17,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.example.doan2019.Retrofit.DoiBong;
+
 public class DanhSachCacTinDaDangFragment extends Fragment {
     private View view;
     ListView lvDanhSachCacTinDaDang;
@@ -25,7 +27,7 @@ public class DanhSachCacTinDaDangFragment extends Fragment {
     LangNgheSuKienChuyenFragment langNgheSuKienChuyenFragment;
     Bundle bundle;
     TextView txtQuayLai;
-    DoiBongClass doiBong;
+    DoiBong doiBong;
 
     @Nullable
     @Override
@@ -73,7 +75,7 @@ public class DanhSachCacTinDaDangFragment extends Fragment {
 
     private void GetDuLieuDoiBong() {
         bundle = getArguments();
-        doiBong = (DoiBongClass) bundle.getSerializable("doibong");
+        doiBong = (DoiBong) bundle.getSerializable("doibong");
         Toast.makeText(getActivity(), doiBong.getTen(), Toast.LENGTH_SHORT).show();
     }
 

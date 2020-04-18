@@ -7,6 +7,8 @@ import androidx.fragment.app.Fragment;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import android.support.v4.media.MediaMetadataCompat;
@@ -57,20 +59,25 @@ public class DangTinFragment extends Fragment {
     int IDSanBong = -1;
     int IDDoiBong = -1;
     int IDKhungGio = -1;
-    int IDUser = 17;
+    int IDUser = -1;
     int cosan = 0;
     String keo = "";
     JsonApiSanBong jsonApiSanBong;
     String d = "-1";
-    String Auth = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiNzJiMDMyOTNjNzMzYThlYmQ3OTJmMTA4Y2VkMzdmODdiODY0MTc2ODg5ZDI0YjhlZDA3Y2MwN2FlZmZkNmMwOGY0NmM2MjY2ZTVjYzBjZmMiLCJpYXQiOjE1ODY4NzA2MTEsIm5iZiI6MTU4Njg3MDYxMSwiZXhwIjoxNjE4NDA2NjExLCJzdWIiOiIxNyIsInNjb3BlcyI6W119.NBvZh-c-RYTWSMeWtIb90C9JxXlae5bHTSs211Z5K1NwXBvnZGhoUr51_bygtBjGOFnzniCu8kIstIvfG2SMkyLrSFDhWDoC5mPHkElLYuQ0iFtnfWGYJKZvxHDDQTU2eHgrscGEW_VQS7uqAfRPNzcMYv4Z8nz5TgdZpms_dTqz4GWiUuWoR_ZVa2qL4WHGSu6xqm-9YUwznuweJdJHkiEMUTPbYZlZ07hcRHnwrq_bmHKPAeK623gli28cvZ1tuyEErLkHRRCUKFajgHEVfuv9MAOEm6d0RoBV7CokdCBDX4fLA2BGPzYA_jwCtnBBzvHKbkgeuDAIOqCZVsiJiRog-d3thH309ovrHs4Jvg5XXJHvZLOmK9GVRpmP_CAgbbTG3YtrwI90umG9y01XidUuPupyK4PIFwscWrJO1ozEBzoGEEhTyp7-zS0WdYdra6RJNkWp1dy2SMWVBQYtEwPgXeHIVp9CUkIdJTtmQ_iNMavDkawZ1rix67ICyeFEMfjOt8pRMNtu6LCaziMKOkG_I2qW8O3YXY5p4hWF8blu-wMTeCTegywDk45NHU3ZY02yGDyBAhvsv2K31LIHfv3d6Ut-EibTzH_yugvHPaBhQ_ej8bfY-1UL8LXDTltWSFXKNKFQQvPrwJHgx9nFSqRXcfg3SJxmlWDuL1QYNAo";
+    String Auth = "";
+    SharedPreferences sharedPreferences;
     private View view;
     LangNgheSuKienChuyenFragment langNgheSuKienChuyenFragment;
     Retrofit retrofit;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        sharedPreferences = getActivity().getSharedPreferences("dataLogin", Context.MODE_PRIVATE);
         view = inflater.inflate(R.layout.fragment_dang_tin, container, false);
         langNgheSuKienChuyenFragment = (LangNgheSuKienChuyenFragment) getActivity();
+//        Toast.makeText(getContext(),sharedPreferences.getString("token",""), Toast.LENGTH_SHORT).show();
+        IDUser = sharedPreferences.getInt("id",0);
+        Auth = sharedPreferences.getString("token","");
         retrofit = new Retrofit.Builder()
                 .baseUrl("http://192.168.1.4/DoAn/public/api/")
                 .addConverterFactory(GsonConverterFactory.create())
@@ -174,7 +181,7 @@ public class DangTinFragment extends Fragment {
                     call.enqueue(new Callback<DangTin>() {
                         @Override
                         public void onResponse(Call<DangTin> call, Response<DangTin> response) {
-                            if (response.body().getTitle() == "success"){
+                            if (response.body().getType() == "success"){
                                 Toast.makeText(getContext(), response.body().getContent(), Toast.LENGTH_SHORT).show();
                             }else{
                                 Toast.makeText(getContext(), response.body().getContent(), Toast.LENGTH_SHORT).show();

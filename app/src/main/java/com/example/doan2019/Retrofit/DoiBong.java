@@ -1,13 +1,88 @@
 package com.example.doan2019.Retrofit;
 
-public class DoiBong {
+import android.graphics.Bitmap;
+
+import java.io.Serializable;
+import java.sql.Timestamp;
+
+public class DoiBong implements Serializable {
     private int id;
     private String ten;
     private String trinhdo;
     private String diachi;
     private String sdt;
+    private Bitmap anhbia;
+    private Bitmap anhdaidien;
     private int sodiem;
     private int hanhkiem;
+    private Timestamp created_at,updated_at;
+    private String type;
+    private String title;
+    private String content;
+    private int user_id;
+    public DoiBong(String ten, String trinhdo, String diachi, String sdt,int user_id) {
+        this.ten = ten;
+        this.trinhdo = trinhdo;
+        this.diachi = diachi;
+        this.sdt = sdt;
+        this.user_id = user_id;
+    }
+
+    public DoiBong(String ten, String trinhdo, String diachi, String sdt, Bitmap anhbia, Bitmap anhdaidien, int sodiem, int hanhkiem, Timestamp created_at) {
+        this.ten = ten;
+        this.trinhdo = trinhdo;
+        this.diachi = diachi;
+        this.sdt = sdt;
+        this.anhbia = anhbia;
+        this.anhdaidien = anhdaidien;
+        this.sodiem = sodiem;
+        this.hanhkiem = hanhkiem;
+        this.created_at = created_at;
+    }
+
+    public Timestamp getUpdated_at() {
+        return updated_at;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public int getUser_id() {
+        return user_id;
+    }
+
+    public Bitmap getAnhbia() {
+        return anhbia;
+    }
+
+    public void setAnhbia(Bitmap anhbia) {
+        this.anhbia = anhbia;
+    }
+
+    public Bitmap getAnhdaidien() {
+        return anhdaidien;
+    }
+
+    public void setAnhdaidien(Bitmap anhdaidien) {
+        this.anhdaidien = anhdaidien;
+    }
+
+    public Timestamp getCreated_at() {
+        return created_at;
+    }
+
+    public Timestamp getUpdate_at() {
+        return updated_at;
+    }
 
     public int getId() {
         return id;
