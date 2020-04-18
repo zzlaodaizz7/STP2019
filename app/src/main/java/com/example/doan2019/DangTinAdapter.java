@@ -7,25 +7,25 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
+import com.example.doan2019.DTO.DangTinDTO;
+
 import java.util.List;
 
-public class MatchAdapter extends BaseAdapter {
+public class DangTinAdapter extends BaseAdapter {
 
     private Context context;
     private int layout;
-    private List<Match> matchList;
+    private List<DangTinDTO> dangTinDTOS;
 
-    public MatchAdapter(Context context, int layout, List<Match> matchList) {
+    public DangTinAdapter(Context context, int layout, List<DangTinDTO> dangTinDTOS) {
         this.context = context;
         this.layout = layout;
-        this.matchList = matchList;
+        this.dangTinDTOS = dangTinDTOS;
     }
 
     @Override
     public int getCount() {
-        return matchList.size();
+        return dangTinDTOS.size();
     }
 
     @Override
@@ -48,11 +48,11 @@ public class MatchAdapter extends BaseAdapter {
     }
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        ViewHolder viewHolder;
+        DangTinAdapter.ViewHolder viewHolder;
         if(convertView == null){
             LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = layoutInflater.inflate(layout, null);
-            viewHolder = new ViewHolder();
+            viewHolder = new DangTinAdapter.ViewHolder();
             viewHolder.txtTeamHost = (TextView) convertView.findViewById(R.id.txtTeamHost);
             viewHolder.txtState = (TextView) convertView.findViewById(R.id.txtState);
             viewHolder.txtTime = (TextView) convertView.findViewById(R.id.txtTime);
@@ -61,17 +61,16 @@ public class MatchAdapter extends BaseAdapter {
             convertView.setTag(viewHolder);
         }
         else{
-            viewHolder = (ViewHolder) convertView.getTag();
+            viewHolder = (DangTinAdapter.ViewHolder) convertView.getTag();
         }
 
-        Match match = matchList.get(position);
-        DateFormat dateFormat = new SimpleDateFormat("dd/mm/yyyy hh:mm");
-        String time = dateFormat.format(match.getTime());
-        viewHolder.txtTeamHost.setText(match.getTeamHost());
-        viewHolder.txtState.setText(match.getState());
-        viewHolder.txtTime.setText(time);
-        viewHolder.txtPitch.setText(match.getPitch());
-        viewHolder.txtLevel.setText(match.getLevel());
+        DangTinDTO dangtin = dangTinDTOS.get(position);
+        viewHolder.txtTeamHost.setText(dangtin.getDoidangtin_ten());
+        viewHolder.txtState.setText(dangtin.getTrangthai());
+
+        viewHolder.txtTime.setText(dangtin.getNgay());
+        viewHolder.txtPitch.setText(""+dangtin.getSan_ten());
+        viewHolder.txtLevel.setText(""+dangtin.getTrinhdo());
         return convertView;
     }
 }

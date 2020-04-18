@@ -5,7 +5,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,44 +18,93 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.example.doan2019.DTO.DangTinDTO;
+import com.example.doan2019.Mapper.ModelMapper;
+import com.example.doan2019.Retrofit.DangTin;
+import com.example.doan2019.Retrofit.DoiBong_NguoiDung;
+import com.example.doan2019.Retrofit.JsonApiDoiBongNGuoiDung;
+import com.example.doan2019.Retrofit.JsonApiUser;
+import com.example.doan2019.Retrofit.KhungGio;
+import com.example.doan2019.Retrofit.APIUtils;
+import com.example.doan2019.Retrofit.DoiBong;
+import com.example.doan2019.Retrofit.JsonApiDangTin;
+import com.example.doan2019.Retrofit.JsonApiDoiBong;
+import com.example.doan2019.Retrofit.JsonApiKhungGio;
+import com.example.doan2019.Retrofit.JsonApiSanBong;
+import com.example.doan2019.Retrofit.SanBong;
+import com.example.doan2019.Retrofit.User;
+import com.onesignal.OSSubscriptionObserver;
+import com.onesignal.OSSubscriptionStateChanges;
+import com.onesignal.OneSignal;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-public class TimDoiFragment extends Fragment {
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+public class TimDoiFragment extends Fragment implements OSSubscriptionObserver {
 
     ScrollView scrollView;
     EditText editTextTimTheoTenDoiHoacTenSan;
-    ListView listViewTinTimDoi, listViewTrangThai, listViewTrinhDo;
-    ArrayList<Match> matchArrayList;
-    MatchAdapter matchAdapter;
-    Button btnDangTin;
-    Button btnChonTrangThai, btnChonTrinhDo;
-    Dialog dialogChonTrangThai, dialogChonTrinhDo;
-    ArrayList<String> statusArrayList, levelArrayList;
+    ListView listViewTinTimDoi, listViewTrangThai, listViewTrinhDo, listViewChonTimKiemTheoTenHaySan;
+    ArrayList<DangTinDTO> dangTinDTOArrayList, dangTinDTOTimKiemArrayList;
+    ArrayList<SanBong> sanBongArrayList;
+    ArrayList<DangTin> dangTinArrayList;
+    ArrayList<DoiBong> doiBongArrayList;
+    ArrayList<KhungGio> khungGioArrayList;
+    DangTinAdapter dangTinAdapter;
+    Button btnDangTin, btnTimTranDau, btnChonTimKiemTheoTenHaySan, btnChonTrangThai, btnChonTrinhDo;
+    Dialog dialogChonTrangThai, dialogChonTrinhDo, dialogChonTimKiemTheoTenHaySan;
+    ArrayList<String> statusArrayList, levelArrayList, danhMucTimKiemTheoTenHaySanArrayList;
+    ArrayList<DoiBong_NguoiDung> doiBong_nguoiDungArrayList;
     TextView txtChonNgay;
     ImageButton btnThongBao;
+    String doibongTK, sanbongTK, trangthaiTK, trinhdoTK, thoigianTK, danhmucTK;
+    int doitruongdoibatdoi_id, doitruongdoidangtin_id;
     View view;
-    LangNgheSuKienChuyenFragment langNgheSuKienChuyenFragment;
+    String Auth = "";
+    Map<String,String> header;
+    JsonApiKhungGio jsonApiKhungGio;
+    JsonApiSanBong jsonApiSanBong;
+    JsonApiDoiBong jsonApiDoiBong;
+    JsonApiDangTin jsonApiDangTin;
+    JsonApiDoiBongNGuoiDung jsonApiDoiBongNGuoiDung;
     SharedPreferences sharedPreferences;
+    LangNgheSuKienChuyenFragment langNgheSuKienChuyenFragment;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         sharedPreferences = getActivity().getSharedPreferences("dataLogin", Context.MODE_PRIVATE);
         view = inflater.inflate(R.layout.fragment_tim_doi, container, false);
         langNgheSuKienChuyenFragment = (LangNgheSuKienChuyenFragment) getActivity();
+        Auth = sharedPreferences.getString("token","");
+        jsonApiKhungGio = APIUtils.getJsonApiKhungGio();
+        jsonApiDoiBong = APIUtils.getJsonApiDoiBong();
+        jsonApiSanBong = APIUtils.getJsonApiSanBong();
+        jsonApiDangTin = APIUtils.getJsonApiDangTin();
+        jsonApiDoiBongNGuoiDung = APIUtils.getJsonApiDoiBongNguoiDung();
+
         mapping();
+
+        loadListViewTinTimDoi();
 
         clickChonNgay();
 
         clickChonTrangThai();
+
+        clickChonTimKiemTheoTenHaySan();
 
         clickChonTrinhDo();
 
@@ -63,13 +112,164 @@ public class TimDoiFragment extends Fragment {
 
         clickChonThongBao();
 
+        clickChonTimTranDau();
+
         clickChonListViewTinTimDoi();
 
         return view;
     }
 
-    private void mapping(){
+    private void loadListViewTinTimDoi(){
+        // lay du lieu san bong
+        sanBongArrayList = new ArrayList<>();
+        Call<List<SanBong>> call = jsonApiSanBong.getSanbongs();
+        call.enqueue(new Callback<List<SanBong>>() {
+            @Override
+            public void onResponse(Call<List<SanBong>> call, Response<List<SanBong>> response) {
+                List<SanBong> sanBongs = response.body();
+                for (SanBong sanBong : sanBongs) {
+                    sanBongArrayList.add(sanBong);
+                    Log.d("test", sanBongArrayList + "");
+                }
+                Call<List<KhungGio>> call1 = jsonApiKhungGio.getKhungGios(header);
+                call1.enqueue(new Callback<List<KhungGio>>() {
+                    @Override
+                    public void onResponse(Call<List<KhungGio>> call, Response<List<KhungGio>> response) {
+                        List<KhungGio> khungGios = response.body();
+                        for (KhungGio khungGio : khungGios) {
+                            khungGioArrayList.add(khungGio);
+                            Log.d("test", khungGioArrayList + "");
+                        }
+                        Call<List<DoiBong>> call2 = jsonApiDoiBong.getDoiBongs(header);
+                        call2.enqueue(new Callback<List<DoiBong>>() {
+                            @Override
+                            public void onResponse(Call<List<DoiBong>> call, Response<List<DoiBong>> response) {
+                                List<DoiBong> doiBongs = response.body();
+                                for (DoiBong doiBong : doiBongs) {
+                                    doiBongArrayList.add(doiBong);
+                                    Log.d("test", doiBongArrayList + "");
+                                }
+                                Call<List<DoiBong_NguoiDung>> call3 = jsonApiDoiBongNGuoiDung.getThanhViens(header);
+                                call3.enqueue(new Callback<List<DoiBong_NguoiDung>>() {
+                                    @Override
+                                    public void onResponse(Call<List<DoiBong_NguoiDung>> call, Response<List<DoiBong_NguoiDung>> response) {
+                                        List<DoiBong_NguoiDung> doiBong_nguoiDungs = response.body();
+                                        for (DoiBong_NguoiDung doiBong_nguoiDung : doiBong_nguoiDungs) {
+                                            doiBong_nguoiDungArrayList.add(doiBong_nguoiDung);
+                                        }
+                                        Call<List<DangTin>> callDangTin = jsonApiDangTin.getDangTins(header);
+                                        callDangTin.enqueue(new Callback<List<DangTin>>() {
+                                            @Override
+                                            public void onResponse(Call<List<DangTin>> call, Response<List<DangTin>> response) {
+                                                List<DangTin> dangTins = response.body();
+                                                for(DangTin dangTin : dangTins){
+                                                    dangTinArrayList.add(dangTin);
+                                                    String doidangtin_ten = "";
+                                                    String trinhdo = "";
+                                                    String trangthai = "";
+                                                    String san_ten = "";
+                                                    String khunggio_giatri = "";
+                                                    String doibatdoi_ten = "";
 
+                                                    for(DoiBong_NguoiDung doiBong_nguoiDung : doiBong_nguoiDungArrayList){
+                                                        if(doiBong_nguoiDung.getDoibongId() == dangTin.getDoidangtin_id() && doiBong_nguoiDung.getPhanquyenId()==1){
+                                                            doitruongdoidangtin_id = doiBong_nguoiDung.getUserId();
+                                                            break;
+                                                        }
+                                                    }
+
+                                                    for(KhungGio khungGio : khungGioArrayList){
+                                                        if(khungGio.getId() == dangTin.getKhunggio_id()){
+                                                            khunggio_giatri = khungGio.getThoigian();
+                                                            break;
+                                                        }
+                                                    }
+                                                    if(dangTin.getSan_id() != -1){
+                                                        trangthai = "Có sân nhà";
+                                                        for(SanBong sanBong : sanBongArrayList){
+                                                            if(sanBong.getId()==dangTin.getSan_id()){
+                                                                san_ten = sanBong.getTen();
+                                                                break;
+                                                            }
+                                                        }
+                                                    }
+                                                    else {
+                                                        san_ten = "Không có sân nhà";
+                                                        trangthai = "Cần đi khách";
+                                                    }
+                                                    if(dangTin.getDoibatdoi_id() != -1){
+                                                        for(DoiBong doiBong : doiBongArrayList){
+                                                            if(doiBong.getId()==dangTin.getDoibatdoi_id()){
+                                                                doibatdoi_ten = doiBong.getTen();
+                                                                break;
+                                                            }
+                                                        }
+                                                        for(DoiBong_NguoiDung doiBong_nguoiDung : doiBong_nguoiDungArrayList){
+                                                            if(doiBong_nguoiDung.getDoibongId() == dangTin.getDoibatdoi_id() && doiBong_nguoiDung.getPhanquyenId() == 1){
+                                                                doitruongdoibatdoi_id = doiBong_nguoiDung.getUserId();
+                                                                break;
+                                                            }
+                                                        }
+                                                    }
+                                                    for(DoiBong doiBong : doiBongArrayList){
+                                                        if(doiBong.getId()==dangTin.getDoidangtin_id()){
+                                                            doidangtin_ten = doiBong.getTen();
+                                                            trinhdo = doiBong.getTrinhdo();
+                                                            break;
+                                                        }
+                                                    }
+
+                                                    DangTinDTO dangTinDTO = ModelMapper.toDangTinDTO(dangTin, doidangtin_ten, doitruongdoidangtin_id, doibatdoi_ten, doitruongdoibatdoi_id, trangthai, trinhdo, san_ten, khunggio_giatri);
+                                                    dangTinDTOArrayList.add(dangTinDTO);
+                                                    Log.d("uu", dangTinDTO.getDoitruongdoibatdoi_id()+" "+dangTinDTO.getDoitruongdoidangtin_id());
+                                                }
+                                                dangTinAdapter = new DangTinAdapter(getActivity(), R.layout._match, dangTinDTOArrayList);
+                                                listViewTinTimDoi.setAdapter(dangTinAdapter);
+                                                setListViewHeightBasedOnChildren(dangTinAdapter, listViewTinTimDoi);
+                                            }
+
+                                            @Override
+                                            public void onFailure(Call<List<DangTin>> call, Throwable t) {
+                                            }
+                                        });
+                                    }
+
+                                    @Override
+                                    public void onFailure(Call<List<DoiBong_NguoiDung>> call, Throwable t) {
+                                    }
+                                });
+                            }
+
+                            @Override
+                            public void onFailure(Call<List<DoiBong>> call, Throwable t) {
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onFailure(Call<List<KhungGio>> call, Throwable t) {
+                    }
+                });
+            }
+            @Override
+            public void onFailure(Call<List<SanBong>> call, Throwable t) {
+                Log.d("retrofit", "loi: "+t);
+            }
+        });
+    }
+
+    private void mapping(){
+        header = new HashMap<>();
+        header.put("value","application/json");
+        header.put("Accept","application/json");
+        header.put("Authorization","Bearer "+Auth);
+        doibongTK = ""; sanbongTK = ""; trangthaiTK = ""; trinhdoTK = ""; thoigianTK = ""; danhmucTK = ""; doitruongdoibatdoi_id = -1; doitruongdoidangtin_id = -1;
+        dangTinArrayList = new ArrayList<>();
+        khungGioArrayList = new ArrayList<>();
+        doiBongArrayList = new ArrayList<>();
+        sanBongArrayList = new ArrayList<>();
+        dangTinDTOArrayList = new ArrayList<>();
+        doiBong_nguoiDungArrayList = new ArrayList<>();
         scrollView = (ScrollView) view.findViewById(R.id.scrollView);
         btnDangTin = (Button) view.findViewById(R.id.btnDangTin);
         btnChonTrangThai = (Button) view.findViewById(R.id.btnChonTrangThai);
@@ -78,19 +278,8 @@ public class TimDoiFragment extends Fragment {
         txtChonNgay = (TextView) view.findViewById(R.id.txtChonNgay);
         editTextTimTheoTenDoiHoacTenSan = (EditText) view.findViewById(R.id.editTextTimTheoTenDoiHoacTenSan);
         btnThongBao = (ImageButton) view.findViewById(R.id.btnThongBao);
-
-        matchArrayList = new ArrayList<>();
-        matchArrayList.add(new Match(1, "FC Red", "", new Date(), "3 : 4",  "San My Dinh", "Trung binh", "Chua co doi thu"));
-        matchArrayList.add(new Match(2, "FC White", "", new Date(), "3 : 4",  "San My Dinh", "Trung binh", "Chua co doi thu"));
-        matchArrayList.add(new Match(3, "FC 22", "", new Date(), "3 : 4",  "San My Dinh", "Trung binh", "Chua co doi thu"));
-        matchArrayList.add(new Match(4, "FC Apple", "Samsung", new Date(), "3 : 4",  "San Thanh Long", "Trung binh", "Da co doi thu"));
-        matchArrayList.add(new Match(5, "FC Samsung", "", new Date(), "3 : 4",  "San My Dinh", "Trung binh", "Chua co doi thu"));
-        matchArrayList.add(new Match(6, "FC Xiaomi", "", new Date(), "3 : 4",  "San Chau Trinh Tri", "Trung binh", "Chua co doi thu"));
-        matchArrayList.add(new Match(7, "FC Blue", "Green", new Date(), "3 : 4",  "San My Dinh", "Trung binh", "Da co doi thu"));
-
-        matchAdapter = new MatchAdapter(getActivity(), R.layout._match, matchArrayList);
-        listViewTinTimDoi.setAdapter(matchAdapter);
-        setListViewHeightBasedOnChildren(matchAdapter, listViewTinTimDoi);
+        btnTimTranDau = (Button) view.findViewById(R.id.btnTimTranDau);
+        btnChonTimKiemTheoTenHaySan = (Button) view.findViewById(R.id.btnChonTimKiemTheoTenHaySan);
     }
 
     private void clickChonNgay() {
@@ -105,8 +294,9 @@ public class TimDoiFragment extends Fragment {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                         calendar.set(year, month, dayOfMonth);
-                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
-                        txtChonNgay.setText(simpleDateFormat.format(calendar.getTime()));
+                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                        thoigianTK = simpleDateFormat.format(calendar.getTime());
+                        txtChonNgay.setText(thoigianTK);
                     }
                 }, nam, thang, ngay);
                 datePickerDialog.show();
@@ -114,16 +304,16 @@ public class TimDoiFragment extends Fragment {
         });
     }
 
-    private void setListViewHeightBasedOnChildren(MatchAdapter matchAdapter, ListView listView) {
+    private void setListViewHeightBasedOnChildren(DangTinAdapter dangTinAdapter, ListView listView) {
 
-        if (matchAdapter == null) {
+        if (dangTinAdapter == null) {
             return;
         }
         int desiredWidth = View.MeasureSpec.makeMeasureSpec(listView.getWidth(), View.MeasureSpec.UNSPECIFIED);
         int totalHeight = 0;
         View view = null;
-        for (int i = 0; i < matchAdapter.getCount(); i++) {
-            view = matchAdapter.getView(i, view, listView);
+        for (int i = 0; i < dangTinAdapter.getCount(); i++) {
+            view = dangTinAdapter.getView(i, view, listView);
             if (i == 0)
                 view.setLayoutParams(new ViewGroup.LayoutParams(desiredWidth, ViewGroup.LayoutParams.WRAP_CONTENT));
 
@@ -131,7 +321,7 @@ public class TimDoiFragment extends Fragment {
             totalHeight += view.getMeasuredHeight();
         }
         ViewGroup.LayoutParams params = listView.getLayoutParams();
-        params.height = totalHeight + (listView.getDividerHeight() * (matchAdapter.getCount() - 1));
+        params.height = totalHeight + (listView.getDividerHeight() * (dangTinAdapter.getCount() - 1));
         listView.setLayoutParams(params);
     }
 
@@ -149,7 +339,8 @@ public class TimDoiFragment extends Fragment {
         listViewTrangThai.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                btnChonTrangThai.setText(statusArrayList.get(position));
+                trangthaiTK =statusArrayList.get(position);
+                btnChonTrangThai.setText(trangthaiTK);
                 dialogChonTrangThai.cancel();
             }
         });
@@ -163,8 +354,8 @@ public class TimDoiFragment extends Fragment {
         listViewTrangThai = dialogChonTrangThai.findViewById(R.id.listViewTrangThai);
         statusArrayList = new ArrayList<>();
 
-        statusArrayList.add("Chưa có đối thủ");
-        statusArrayList.add("Đã có đối thủ");
+        statusArrayList.add("Có sân nhà");
+        statusArrayList.add("Cần đi khách");
 
         ArrayAdapter statusAdapter = new ArrayAdapter(getActivity(), android.R.layout.simple_list_item_1, statusArrayList);
 
@@ -185,7 +376,8 @@ public class TimDoiFragment extends Fragment {
         listViewTrinhDo.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                btnChonTrinhDo.setText(levelArrayList.get(position));
+                trinhdoTK = levelArrayList.get(position);
+                btnChonTrinhDo.setText(trinhdoTK);
                 dialogChonTrinhDo.cancel();
             }
         });
@@ -206,6 +398,42 @@ public class TimDoiFragment extends Fragment {
         listViewTrinhDo.setAdapter(levelAdapter);
     }
 
+    private void clickChonTimKiemTheoTenHaySan() {
+        btnChonTimKiemTheoTenHaySan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDialogChonTimKiemTheoTenHaySan();
+                clickDialogChonTimKiemTheoTenHaySan();
+            }
+        });
+    }
+
+    void clickDialogChonTimKiemTheoTenHaySan() {
+        listViewChonTimKiemTheoTenHaySan.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                danhmucTK = danhMucTimKiemTheoTenHaySanArrayList.get(position);
+                btnChonTimKiemTheoTenHaySan.setText(danhmucTK);
+                dialogChonTimKiemTheoTenHaySan.cancel();
+            }
+        });
+    }
+
+    private void showDialogChonTimKiemTheoTenHaySan() {
+        dialogChonTimKiemTheoTenHaySan = new Dialog(getActivity());
+        dialogChonTimKiemTheoTenHaySan.setContentView(R.layout.dialog_chon_tim_kiem_theo_ten_hay_san);
+        dialogChonTimKiemTheoTenHaySan.show();
+
+        listViewChonTimKiemTheoTenHaySan = dialogChonTimKiemTheoTenHaySan.findViewById(R.id.listViewChonTimKiemTheoTenHaySan);
+        danhMucTimKiemTheoTenHaySanArrayList = new ArrayList<>();
+
+        danhMucTimKiemTheoTenHaySanArrayList.add("Đội bóng");
+        danhMucTimKiemTheoTenHaySanArrayList.add("Sân bóng");
+
+        ArrayAdapter arrayAdapter = new ArrayAdapter(getActivity(), android.R.layout.simple_list_item_1, danhMucTimKiemTheoTenHaySanArrayList);
+        listViewChonTimKiemTheoTenHaySan.setAdapter(arrayAdapter);
+    }
+
     private void clickChonThongBao(){
         btnThongBao.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -219,9 +447,6 @@ public class TimDoiFragment extends Fragment {
         btnDangTin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (sharedPreferences.getString("token","").equals("")){
-                    Toast.makeText(getContext(), "Bạn chưa đăng nhập", Toast.LENGTH_SHORT).show();
-                }else
                 langNgheSuKienChuyenFragment.ChuyenHuongFragment(new DangTinFragment());
             }
         });
@@ -234,8 +459,9 @@ public class TimDoiFragment extends Fragment {
                 BatDoiFragment batDoiFragment = new BatDoiFragment();
 
                 Bundle bundle = new Bundle();
-                Match match = matchArrayList.get(position);
-                bundle.putSerializable("batdoi", match);
+
+                DangTinDTO dangTinDTO = dangTinDTOArrayList.get(position);
+                bundle.putSerializable("batdoi", dangTinDTO);
                 batDoiFragment.setArguments(bundle);
 
                 langNgheSuKienChuyenFragment.ChuyenHuongFragment(batDoiFragment);
@@ -243,4 +469,79 @@ public class TimDoiFragment extends Fragment {
         });
     }
 
+    private void clickChonTimTranDau(){
+
+        btnTimTranDau.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dangTinDTOTimKiemArrayList = new ArrayList<>();
+                sanbongTK = editTextTimTheoTenDoiHoacTenSan.getText().toString();
+                doibongTK = editTextTimTheoTenDoiHoacTenSan.getText().toString();
+                for(DangTinDTO dangTinDTO : dangTinDTOArrayList){
+                    dangTinDTOTimKiemArrayList.add(dangTinDTO);
+                }
+                if(!thoigianTK.equals("")){
+                    for(int i = 0; i < dangTinDTOTimKiemArrayList.size(); i++){
+                        if(!thoigianTK.equals(dangTinDTOTimKiemArrayList.get(i).getNgay())){
+                            dangTinDTOTimKiemArrayList.remove(dangTinDTOTimKiemArrayList.get(i));
+                            Log.d("timkiem", dangTinDTOTimKiemArrayList+"");
+                            i--;
+                        }
+                    }
+                }
+                if(danhmucTK.equals("Sân bóng")){
+                    Log.d("timkiem", "sân bóng");
+                    if(!sanbongTK.equals("")){
+                        for(int i = 0; i < dangTinDTOTimKiemArrayList.size(); i++){
+                            if(!sanbongTK.equals(dangTinDTOTimKiemArrayList.get(i).getSan_ten())){
+                                dangTinDTOTimKiemArrayList.remove(dangTinDTOTimKiemArrayList.get(i));
+                                Log.d("timkiem", dangTinDTOTimKiemArrayList+"");
+                                i--;
+                            }
+                        }
+                    }
+                }
+                else if(danhmucTK.equals("Đội bóng")){
+                    if(!doibongTK.equals("")){
+                        for(int i = 0; i < dangTinDTOTimKiemArrayList.size(); i++){
+                            if(!doibongTK.equals(dangTinDTOTimKiemArrayList.get(i).getDoidangtin_ten())){
+                                dangTinDTOTimKiemArrayList.remove(dangTinDTOTimKiemArrayList.get(i));
+                                Log.d("timkiem", dangTinDTOTimKiemArrayList+"");
+                                i--;
+                            }
+                        }
+                    }
+                }
+                if(!trangthaiTK.equals("")){
+                    for(int i = 0; i < dangTinDTOTimKiemArrayList.size(); i++){
+                        if(!trangthaiTK.equals(dangTinDTOTimKiemArrayList.get(i).getTrangthai())){
+                            dangTinDTOTimKiemArrayList.remove(dangTinDTOTimKiemArrayList.get(i));
+                            Log.d("timkiem", dangTinDTOTimKiemArrayList+"");
+                            i--;
+                        }
+                    }
+                }
+                if(!trinhdoTK.equals("")){
+                    for(int i = 0; i < dangTinDTOTimKiemArrayList.size(); i++){
+                        if(!trinhdoTK.equals(dangTinDTOTimKiemArrayList.get(i).getTrinhdo())){
+                            dangTinDTOTimKiemArrayList.remove(dangTinDTOTimKiemArrayList.get(i));
+                            Log.d("timkiem", dangTinDTOTimKiemArrayList+"");
+                            i--;
+                        }
+                    }
+                }
+                DangTinAdapter dangTinAdapter = new DangTinAdapter(getActivity(), R.layout._match, dangTinDTOTimKiemArrayList);
+                listViewTinTimDoi.setAdapter(dangTinAdapter);
+                setListViewHeightBasedOnChildren(dangTinAdapter, listViewTinTimDoi);
+            }
+        });
+    }
+
+
+    @Override
+    public void onOSSubscriptionChanged(OSSubscriptionStateChanges stateChanges) {
+
+
+
+    }
 }

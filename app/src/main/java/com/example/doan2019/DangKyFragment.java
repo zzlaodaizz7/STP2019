@@ -12,16 +12,27 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.example.doan2019.Retrofit.APIUtils;
+import com.example.doan2019.Retrofit.JsonApiDangTin;
+import com.example.doan2019.Retrofit.JsonApiUser;
+import com.example.doan2019.Retrofit.User;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class DangKyFragment extends Fragment {
     private View view;
     private EditText edtTen, edtTaiKhoan, edtMatKhau, edtNhapLaiMatKhau;
+    String ten, email, matkhau, nhaplaimatkhau;
     private Button btnDangKy;
+    JsonApiUser jsonApiUser;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_dang_ky, container, false);
-
+        jsonApiUser = APIUtils.getJsonApiUser();
         Mapping();
 
         ClickDangKy();
@@ -33,10 +44,33 @@ public class DangKyFragment extends Fragment {
         btnDangKy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getActivity(), edtTen.getText() + "\n"
-                        + edtTaiKhoan.getText() + "\n"
-                        + edtMatKhau.getText() + "\n"
-                        +edtNhapLaiMatKhau.getText(), Toast.LENGTH_SHORT).show();
+                ten = edtTen.getText().toString();
+                email = edtTaiKhoan.getText().toString();
+                matkhau = edtMatKhau.getText().toString();
+                nhaplaimatkhau = edtNhapLaiMatKhau.getText().toString();
+
+
+
+                if(ten.equals("") || email.equals("") || matkhau.equals("") || nhaplaimatkhau.equals("")){
+                    Toast.makeText(getActivity(), "bạn hãy nhập đầy đủ thông tin", Toast.LENGTH_LONG).show();
+                }
+                else if(!matkhau.equals(nhaplaimatkhau)){
+                    Toast.makeText(getActivity(), "Mật khẩu nhập lại không trùng khớp", Toast.LENGTH_LONG).show();
+                }
+                else{
+                    User user = new User(ten, email, matkhau);
+                    Call<String> call = jsonApiUser.register(user);
+                    call.enqueue(new Callback<String>() {
+                        @Override
+                        public void onResponse(Call<String> call, Response<String> response) {
+                            Toast.makeText(getActivity(), "Bạn đã đăng ký thành công", Toast.LENGTH_LONG).show();
+                        }
+                        @Override
+                        public void onFailure(Call<String> call, Throwable t) {
+
+                        }
+                    });
+                }
             }
         });
     }

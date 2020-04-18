@@ -1,12 +1,25 @@
 package com.example.doan2019.Retrofit;
 
+import java.sql.Timestamp;
+
 public class DangTin {
-    private int doidangtin_id,san_id,khunggio_id;
-    private String ngay,keo;
+//    private int doidangtin_id,san_id,khunggio_id;
+//    private String ngay,keo;
+//    private String type;
+//    private String title;
+//    private String content;
+    private int id;
+    private int doidangtin_id;
+    private int doibatdoi_id;
+    private String ngay;
+    private String keo;
+    private int san_id;
+    private int khunggio_id;
+    private Timestamp created_at;
+    private Timestamp updated_at;
     private String type;
     private String title;
     private String content;
-
 
     public DangTin(int doidangtin_id, int san_id, int khunggio_id, String ngay, String keo) {
         this.doidangtin_id = doidangtin_id;
@@ -15,16 +28,21 @@ public class DangTin {
         this.ngay = ngay;
         this.keo = keo;
     }
-    public String getType() {
-        return type;
+
+    public DangTin(int doidangtin_id, String ngay, String keo, int san_id, int khunggio_id) {
+        this.doidangtin_id = doidangtin_id;
+        this.ngay = ngay;
+        this.keo = keo;
+        this.san_id = san_id;
+        this.khunggio_id = khunggio_id;
     }
 
-    public String getTitle() {
-        return title;
+    public int getId() {
+        return id;
     }
 
-    public String getContent() {
-        return content;
+    public void setId(int id) {
+        this.id = id;
     }
     public int getDoidangtin_id() {
         return doidangtin_id;
@@ -32,6 +50,30 @@ public class DangTin {
 
     public void setDoidangtin_id(int doidangtin_id) {
         this.doidangtin_id = doidangtin_id;
+    }
+
+    public int getDoibatdoi_id() {
+        return doibatdoi_id;
+    }
+
+    public void setDoibatdoi_id(int doibatdoi_id) {
+        this.doibatdoi_id = doibatdoi_id;
+    }
+
+    public String getNgay() {
+        return ngay;
+    }
+
+    public void setNgay(String ngay) {
+        this.ngay = ngay;
+    }
+
+    public String getKeo() {
+        return keo;
+    }
+
+    public void setKeo(String keo) {
+        this.keo = keo;
     }
 
     public int getSan_id() {
@@ -50,19 +92,43 @@ public class DangTin {
         this.khunggio_id = khunggio_id;
     }
 
-    public String getNgay() {
-        return ngay;
+    public Timestamp getCreated_at() {
+        return created_at;
     }
 
-    public void setNgay(String ngay) {
-        this.ngay = ngay;
+    public void setCreated_at(Timestamp created_at) {
+        this.created_at = created_at;
     }
 
-    public String getKeo() {
-        return keo;
+    public Timestamp getUpdated_at() {
+        return updated_at;
     }
 
-    public void setKeo(String keo) {
-        this.keo = keo;
+    public void setUpdated_at(Timestamp updated_at) {
+        this.updated_at = updated_at;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
     }
 }

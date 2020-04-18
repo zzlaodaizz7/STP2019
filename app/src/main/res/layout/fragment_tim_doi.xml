@@ -60,22 +60,49 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
-                    <EditText
-                        android:id="@+id/editTextTimTheoTenDoiHoacTenSan"
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="45dp"
-                        android:hint="Nhập tên hoặc địa chỉ"
-                        android:textSize="12sp"
-                        android:textColor="#000"
-                        android:inputType="textVisiblePassword"
-                        android:drawableRight="@drawable/search"
-                        android:paddingLeft="10dp"
-                        android:background="@android:color/transparent"
-                        />
+                        android:id="@+id/linearlayouttimkiemtheotenhoacsan">
+
+                        <Button
+                            android:id="@+id/btnChonTimKiemTheoTenHaySan"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="3"
+                            android:text="Tìm kiếm"
+                            android:drawableRight="@drawable/ic_search_black_18dp"
+                            android:background="#fff"
+                            android:textAllCaps="false"
+                            android:textSize="12sp"
+                            android:textColor="@color/mauChuNhat"/>
+                        <View
+                            android:layout_width="0.3dp"
+                            android:layout_height="match_parent"
+                            android:background="@color/mauChuNhat"
+                            android:layout_marginBottom="2dp"
+                            android:layout_marginTop="2dp"/>
+                        <EditText
+                            android:id="@+id/editTextTimTheoTenDoiHoacTenSan"
+                            android:layout_width="0dp"
+                            android:layout_weight="8"
+                            android:layout_marginLeft="5dp"
+                            android:layout_height="45dp"
+                            android:hint="Nhập tên hoặc địa chỉ"
+                            android:textSize="12sp"
+                            android:textColor="@color/mauChuNhat"
+                            android:inputType="textVisiblePassword"
+                            android:paddingLeft="10dp"
+                            android:background="@android:color/transparent"
+                            />
+
+                    </LinearLayout>
+
+
 
                     <androidx.constraintlayout.widget.ConstraintLayout android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_below="@id/editTextTimTheoTenDoiHoacTenSan"
+                        android:layout_below="@id/linearlayouttimkiemtheotenhoacsan"
                         android:background="#F4F3F3"
                         android:id="@+id/ConstrainLayoutChooseStatusAndLevelAndTime">
 
