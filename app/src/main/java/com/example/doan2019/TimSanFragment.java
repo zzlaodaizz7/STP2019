@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -112,6 +113,7 @@ public class TimSanFragment extends Fragment {
     private void KhoiTaoListViewSanBong() {
         arrSanBong = new ArrayList<>();
         Bitmap largeIcon = BitmapFactory.decodeResource(getResources(), R.drawable.icon_app);
+
 
         arrSanBong.add(new SanBongClass(1, "Sân Cầu Giấy", 11, "Số 123, Đường 321, Cầu Giấy, Hà Nội, Việt Nam", "", "0123456789", largeIcon));
         arrSanBong.add(new SanBongClass(1, "Sân Mễ Trì", 11, "Số 123, Đường 321, Mễ Trì, Hà Nội, Việt Nam", "", "0123456789", largeIcon));

@@ -14,22 +14,42 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.example.doan2019.Retrofit.APIUtils;
+import com.example.doan2019.Retrofit.JsonApiUser;
+import com.example.doan2019.Retrofit.User;
 import com.facebook.AccessToken;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.onesignal.OSSubscriptionObserver;
+import com.onesignal.OSSubscriptionStateChanges;
+import com.onesignal.OneSignal;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity implements LangNgheSuKienChuyenFragment {
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+public class MainActivity extends AppCompatActivity implements LangNgheSuKienChuyenFragment, OSSubscriptionObserver {
     BottomNavigationView bottomNavigationView;
     int menuHienTai = 1, menuDaChon = 0;
     int rootFragment = 0;
+    SharedPreferences sharedPreferencesDataLogin, sharedPreferencesOSId;
+    String Auth;
+    User user;
+    JsonApiUser jsonApiUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        jsonApiUser = APIUtils.getJsonApiUser();
         Mapping();
+
+        OneSignal.addSubscriptionObserver(this);
+
+        Log.d("OS", sharedPreferencesOSId.getString("id", "")+"");
+
 
         DangKySuKienLangNghe();
 
@@ -42,6 +62,11 @@ public class MainActivity extends AppCompatActivity implements LangNgheSuKienChu
     }
 
     private void Mapping() {
+
+        sharedPreferencesOSId = this.getSharedPreferences("OneSignalId", Context.MODE_PRIVATE);
+        sharedPreferencesDataLogin = this.getSharedPreferences("dataLogin", Context.MODE_PRIVATE);
+        Auth = sharedPreferencesDataLogin.getString("token","");
+
         bottomNavigationView = findViewById(R.id.bottom_navigation);
     }
 
@@ -95,5 +120,47 @@ public class MainActivity extends AppCompatActivity implements LangNgheSuKienChu
     public void ChuyenHuongFragment(Fragment x) {
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, x)
                 .addToBackStack(rootFragment + "").commit();
+    }
+    @Override
+    public void onOSSubscriptionChanged(OSSubscriptionStateChanges stateChanges) {
+        if (!stateChanges.getFrom().getSubscribed() &&
+                stateChanges.getTo().getSubscribed()) {
+            SharedPreferences.Editor editor = sharedPreferencesOSId.edit();
+            editor.putString("id", stateChanges.getTo().getUserId());
+            editor.putString("changed", "true");
+            editor.commit();
+
+            //truong hop cap nhat ung dung
+            if(sharedPreferencesDataLogin.getInt("id", -1) != -1){
+                Log.d("Debug", "da change");
+                user = new User();
+                Call<User> call = jsonApiUser.getNguoiDung(sharedPreferencesDataLogin.getInt("id", -1));
+                call.enqueue(new Callback<User>() {
+                    @Override
+                    public void onResponse(Call<User> call, Response<User> response) {
+                        user = response.body();
+                        user.setDevice(stateChanges.getTo().getUserId());
+                        Call<String> call1 = jsonApiUser.update(user, sharedPreferencesDataLogin.getInt("id", -1));
+                        call1.enqueue(new Callback<String>() {
+                            @Override
+                            public void onResponse(Call<String> call, Response<String> response) {
+                                Log.d("Debug", "success"+response.body());
+                            }
+                            @Override
+                            public void onFailure(Call<String> call, Throwable t) {
+                                Log.d("Debug", ""+t);
+                            }
+                        });
+                    }
+                    @Override
+                    public void onFailure(Call<User> call, Throwable t) {
+                    }
+                });
+            }
+            Log.d("OS", sharedPreferencesOSId.getString("id", "")+"");
+
+            Log.i("Debug", "onOSPermissionChanged: " + stateChanges);
+
+        }
     }
 }

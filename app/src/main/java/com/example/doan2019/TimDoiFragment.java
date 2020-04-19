@@ -28,7 +28,6 @@ import com.example.doan2019.Mapper.ModelMapper;
 import com.example.doan2019.Retrofit.DangTin;
 import com.example.doan2019.Retrofit.DoiBong_NguoiDung;
 import com.example.doan2019.Retrofit.JsonApiDoiBongNGuoiDung;
-import com.example.doan2019.Retrofit.JsonApiUser;
 import com.example.doan2019.Retrofit.KhungGio;
 import com.example.doan2019.Retrofit.APIUtils;
 import com.example.doan2019.Retrofit.DoiBong;
@@ -37,10 +36,8 @@ import com.example.doan2019.Retrofit.JsonApiDoiBong;
 import com.example.doan2019.Retrofit.JsonApiKhungGio;
 import com.example.doan2019.Retrofit.JsonApiSanBong;
 import com.example.doan2019.Retrofit.SanBong;
-import com.example.doan2019.Retrofit.User;
 import com.onesignal.OSSubscriptionObserver;
 import com.onesignal.OSSubscriptionStateChanges;
-import com.onesignal.OneSignal;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -71,7 +68,7 @@ public class TimDoiFragment extends Fragment implements OSSubscriptionObserver {
     TextView txtChonNgay;
     ImageButton btnThongBao;
     String doibongTK, sanbongTK, trangthaiTK, trinhdoTK, thoigianTK, danhmucTK;
-    int doitruongdoibatdoi_id, doitruongdoidangtin_id;
+    int doitruongdoidangtin_id, doitruongdoibatdoi_id;
     View view;
     String Auth = "";
     Map<String,String> header;
@@ -86,15 +83,9 @@ public class TimDoiFragment extends Fragment implements OSSubscriptionObserver {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        sharedPreferences = getActivity().getSharedPreferences("dataLogin", Context.MODE_PRIVATE);
+
         view = inflater.inflate(R.layout.fragment_tim_doi, container, false);
         langNgheSuKienChuyenFragment = (LangNgheSuKienChuyenFragment) getActivity();
-        Auth = sharedPreferences.getString("token","");
-        jsonApiKhungGio = APIUtils.getJsonApiKhungGio();
-        jsonApiDoiBong = APIUtils.getJsonApiDoiBong();
-        jsonApiSanBong = APIUtils.getJsonApiSanBong();
-        jsonApiDangTin = APIUtils.getJsonApiDangTin();
-        jsonApiDoiBongNGuoiDung = APIUtils.getJsonApiDoiBongNguoiDung();
 
         mapping();
 
@@ -147,7 +138,7 @@ public class TimDoiFragment extends Fragment implements OSSubscriptionObserver {
                                 List<DoiBong> doiBongs = response.body();
                                 for (DoiBong doiBong : doiBongs) {
                                     doiBongArrayList.add(doiBong);
-                                    Log.d("test", doiBongArrayList + "");
+                                    Log.d("test", doiBong.getTen() + "");
                                 }
                                 Call<List<DoiBong_NguoiDung>> call3 = jsonApiDoiBongNGuoiDung.getThanhViens(header);
                                 call3.enqueue(new Callback<List<DoiBong_NguoiDung>>() {
@@ -259,11 +250,20 @@ public class TimDoiFragment extends Fragment implements OSSubscriptionObserver {
     }
 
     private void mapping(){
+        sharedPreferences = getActivity().getSharedPreferences("dataLogin", Context.MODE_PRIVATE);
+        Auth = sharedPreferences.getString("token","");
         header = new HashMap<>();
         header.put("value","application/json");
         header.put("Accept","application/json");
         header.put("Authorization","Bearer "+Auth);
-        doibongTK = ""; sanbongTK = ""; trangthaiTK = ""; trinhdoTK = ""; thoigianTK = ""; danhmucTK = ""; doitruongdoibatdoi_id = -1; doitruongdoidangtin_id = -1;
+
+        jsonApiKhungGio = APIUtils.getJsonApiKhungGio();
+        jsonApiDoiBong = APIUtils.getJsonApiDoiBong();
+        jsonApiSanBong = APIUtils.getJsonApiSanBong();
+        jsonApiDangTin = APIUtils.getJsonApiDangTin();
+        jsonApiDoiBongNGuoiDung = APIUtils.getJsonApiDoiBongNguoiDung();
+
+        doibongTK = ""; sanbongTK = ""; trangthaiTK = ""; trinhdoTK = ""; thoigianTK = ""; danhmucTK = "";
         dangTinArrayList = new ArrayList<>();
         khungGioArrayList = new ArrayList<>();
         doiBongArrayList = new ArrayList<>();

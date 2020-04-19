@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +13,10 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.doan2019.Retrofit.APIUtils;
 import com.example.doan2019.Retrofit.JsonApiSanBong;
+import com.example.doan2019.Retrofit.JsonApiUser;
+import com.example.doan2019.Retrofit.User;
 import com.example.doan2019.Retrofit.UserLogin;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -44,10 +48,13 @@ public class DangNhapFragment extends Fragment {
     private CheckBox cbLuuThongTin;
     private String token;
     private int id;
+    User user;
     LangNgheSuKienChuyenFragment langNgheSuKienChuyenFragment;
     SharedPreferences sharedPreferences;
+    SharedPreferences sharedPreferencesOneSignal;
     Retrofit retrofit;
     JsonApiSanBong jsonApiSanBong;
+    JsonApiUser jsonApiUser;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -58,11 +65,12 @@ public class DangNhapFragment extends Fragment {
         langNgheSuKienChuyenFragment = (LangNgheSuKienChuyenFragment) getActivity();
 
         view = inflater.inflate(R.layout.fragment_dang_nhap, container, false);
-        retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.1.4/DoAn/public/api/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-        jsonApiSanBong = retrofit.create(JsonApiSanBong.class);
+//        retrofit = new Retrofit.Builder()
+//                .baseUrl("http://192.168.1.4/DoAn/public/api/")
+//                .addConverterFactory(GsonConverterFactory.create())
+//                .build();
+        jsonApiUser = APIUtils.getJsonApiUser();
+        jsonApiSanBong = APIUtils.getJsonApiSanBong();
 
 
         Mapping();
@@ -101,13 +109,45 @@ public class DangNhapFragment extends Fragment {
                     public void onResponse(Call<UserLogin> call, Response<UserLogin> response) {
                         if (response.code() == 200){
                             SharedPreferences.Editor editor = sharedPreferences.edit();
+                            sharedPreferences = getActivity().getSharedPreferences("dataLogin", Context.MODE_PRIVATE);
                             editor.putBoolean("checked", true);
                             editor.putString("token", response.body().getToken());
                             editor.putInt("id",response.body().getId());
                             editor.putString("email",response.body().getEmail());
                             editor.putString("ten",response.body().getTen());
                             editor.commit();
+                            if(sharedPreferencesOneSignal.getString("changed", "").equals("true")){
+                                user = new User();
+                                Call<User> calluser = jsonApiUser.getNguoiDung(sharedPreferences.getInt("id", -1));
+                                calluser.enqueue(new Callback<User>() {
+                                    @Override
+                                    public void onResponse(Call<User> call, Response<User> response) {
+                                        user = response.body();
+
+                                        user.setDevice(sharedPreferencesOneSignal.getString("id", ""));
+                                        Call<String> call1 = jsonApiUser.update(user, sharedPreferences.getInt("id", -1));
+                                        call1.enqueue(new Callback<String>() {
+                                            @Override
+                                            public void onResponse(Call<String> call, Response<String> response) {
+                                                SharedPreferences.Editor editor = sharedPreferencesOneSignal.edit();
+                                                editor.putString("changed", "false");
+                                                editor.commit();
+                                                Log.d("dangnhap", "changed: "+sharedPreferencesOneSignal.getString("changed", ""));
+                                                Log.d("dangnhap", "success"+response.body());
+                                            }
+                                            @Override
+                                            public void onFailure(Call<String> call, Throwable t) {
+                                                Log.d("dangnhap", "failed "+t);
+                                            }
+                                        });
+                                    }
+                                    @Override
+                                    public void onFailure(Call<User> call, Throwable t) {
+                                    }
+                                });
+                            }
                             System.out.println("token:" +response.body().getToken());
+
                             langNgheSuKienChuyenFragment.ChuyenHuongFragment(new TaiKhoanDaLoginFragment());
                         }else{
                             Toast.makeText(getContext(), "Sai email hoặc mật khẩu", Toast.LENGTH_SHORT).show();
@@ -120,28 +160,6 @@ public class DangNhapFragment extends Fragment {
                         System.out.println("Quá thời gian truy xuất");
                     }
                 });
-//                -----------------
-
-//                String token = "123456";
-//                if (taiKhoan.equals("admin") && matKhau.equals("1234")) {
-//                    Toast.makeText(getActivity(), "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
-//                    if (cbLuuThongTin.isChecked()) {
-//                        SharedPreferences.Editor editor = sharedPreferences.edit();
-//                        editor.putString("taikhoan", taiKhoan);
-//                        editor.putString("matkhau", matKhau);
-//                        editor.putBoolean("checked", true);
-//                        editor.putString("token", token);
-//                        editor.commit();
-//                    } else {
-//                        SharedPreferences.Editor editor = sharedPreferences.edit();
-//                        editor.remove("taikhoan");
-//                        editor.remove("matkhau");
-//                        editor.remove("checked");
-//                        editor.remove("token");
-//                        editor.commit();
-//                    }
-//                } else
-//                    Toast.makeText(getActivity(), "Lỗi đăng nhập", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -179,6 +197,7 @@ public class DangNhapFragment extends Fragment {
     }
 
     private void Mapping() {
+        sharedPreferencesOneSignal = getActivity().getSharedPreferences("OneSignalId", Context.MODE_PRIVATE);
         cbLuuThongTin = view.findViewById(R.id.CheckBoxLuuThongTinDangNhap);
         edtTaiKhoan = view.findViewById(R.id.EditTextTaiKhoan);
         edtMatKhau = view.findViewById(R.id.EditTextMatKhau);

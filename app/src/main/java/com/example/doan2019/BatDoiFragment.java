@@ -1,13 +1,18 @@
 package com.example.doan2019;
 
+import android.app.Dialog;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -16,15 +21,19 @@ import androidx.fragment.app.Fragment;
 import com.example.doan2019.DTO.DangTinDTO;
 import com.example.doan2019.Retrofit.BatDoi;
 import com.example.doan2019.Retrofit.APIUtils;
+import com.example.doan2019.Retrofit.DoiBong;
 import com.example.doan2019.Retrofit.JsonApiBatDoi;
 import com.example.doan2019.Retrofit.JsonApiDoiBongNGuoiDung;
+import com.example.doan2019.Retrofit.JsonApiThongBao;
 import com.example.doan2019.Retrofit.JsonApiUser;
+import com.example.doan2019.Retrofit.ThongBao;
 import com.example.doan2019.Retrofit.User;
 import com.onesignal.OneSignal;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -39,12 +48,18 @@ public class BatDoiFragment extends Fragment {
     TextView txtTime, txtPitch, txtRatio, txtState, txtLevel, txtTeamHost, txtTeamGuest, txtVS;
     Button btnBatDoi;
     Bundle bundle;
-    JsonApiBatDoi jsonApiBatDoi;
-    JsonApiUser jsonApiUser;
+    JsonApiBatDoi jsonApiBatDoi; JsonApiUser jsonApiUser; JsonApiThongBao jsonApiThongBao; JsonApiDoiBongNGuoiDung jsonApiDoiBongNGuoiDung;
     DangTinDTO dangTinDTO;
-    String Auth = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIzIiwianRpIjoiMzc1NGJmYTFiNjI4YmRiZjA1ZGNhY2UwZjdjYmEyZjFlMzcyMjNiNTJiMTE4ZjI5MDZjYWRkNjMwMjAzM2RmYTNjMzZjNmJhM2YxMTE5OTgiLCJpYXQiOjE1ODcxMzU3ODQsIm5iZiI6MTU4NzEzNTc4NCwiZXhwIjoxNjE4NjcxNzg0LCJzdWIiOiIxNyIsInNjb3BlcyI6W119.cxhKdPiQEmmpeDq01XQ3ea59yYJFsylDzaABUsft3dQ8KWK1RFFsYQzX6lFyZ4SqE5T3Li4tCvk_yjE4NxkEiYUbTA3YpDgckbRh9Bzbjjpc6_0fI-mZyQyxc8GhNzz1XhhBEwOIt4zKrgy6t-iS8Km3NPyMs65UwqL_FrlB0P830uLh9-W8uOYVpGo99oXGPcweW50D_H2cO0JX-ZCUpkhppVjy-xjg9Eh_0xm3NtYyBdHQ1O6meWxdf6-MzO6btCJouIyi8ASsiuUerg6OPRfDc9NzkUjWZRGIy1jSeD307sZI5DNX3fg6-dykiowj1qHeb_ufIaSg3M-6KsN-1HLS3gNkrVrChRq7StOf77l-YVBrXEdITiQQnJTmqajkIfHz2wJQtxCNLg7AVx75fbIBbj9S1U79I9hGVxxtTMJPMvoyFT5y7VopDblwbiO8Ef2wg4kRHroUirg3ECzDEZD7TdIwCYLL-vSeWdgNqhyvknMmeY8LDSKZOkM86AhUElLTOAWmwwDmIzF04Ao-B4uLWdRM5S0WIpstvRe2imLDdQ8jkZzIVcMclVorSoUMUdZ0Zf92twYZtkB--FBRQqyKhB2qzSbxoOt5UjbhLtDhkOr67shbGO1PJGWtNmpZv0cOhJwEFEgpcp3_JSOzQ2WYhOg3VqYDXEyNUZkd4cE";
+    Dialog dialogChonDoi;
     int dangtin_id, doitimdoi_id, doibatdoi_id;
+    String doidangtin_device;
+    SharedPreferences sharedPreferences;
+    String Auth = "";
+    ArrayList<DoiBong> doiBongArrayList;
     Map<String,String> header;
+    ListView listViewDoiBong;
+    ArrayList<String> tenDoiBongArrayList;
+    String doibatdoi_ten;
 
     @Nullable
     @Override
@@ -52,17 +67,25 @@ public class BatDoiFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_bat_doi, container, false);
         jsonApiBatDoi = APIUtils.getJsonApiBatDoi();
         jsonApiUser = APIUtils.getJsonApiUser();
+        jsonApiThongBao = APIUtils.getJsonApiThongBao();
+        jsonApiDoiBongNGuoiDung = APIUtils.getJsonApiDoiBongNguoiDung();
+
         mapping();
+        loadDoiDangTin_device();
+        LoadListDoiBong();
         clickBtnBatDoi();
 
         return view;
     }
 
     private void mapping(){
+        sharedPreferences = getActivity().getSharedPreferences("dataLogin", Context.MODE_PRIVATE);
+        Auth = sharedPreferences.getString("token","");
         header = new HashMap<>();
         header.put("value","application/json");
         header.put("Accept","application/json");
         header.put("Authorization","Bearer "+Auth);
+
         txtLevel = view.findViewById(R.id.txtLevel);
         txtTime = view.findViewById(R.id.txtTime);
         txtPitch = view.findViewById(R.id.txtPitch);
@@ -93,53 +116,116 @@ public class BatDoiFragment extends Fragment {
         txtLevel.setText(dangTinDTO.getTrinhdo());
     }
 
+    private void loadDoiDangTin_device(){
+        Call<User> userCall = jsonApiUser.getNguoiDung(dangTinDTO.getDoitruongdoidangtin_id());
+        userCall.enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                doidangtin_device = response.body().getDevice();
+                Log.d("batdoi", "da lay duoc thiet bi doi dang tin");
+            }
+
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+
+            }
+        });
+    }
+
+    private void LoadListDoiBong() {
+        doiBongArrayList = new ArrayList<>();
+        Call<List<DoiBong>> call = jsonApiDoiBongNGuoiDung.getDoitruongcacdois(sharedPreferences.getInt("id", -1));
+        call.enqueue(new Callback<List<DoiBong>>() {
+            @Override
+            public void onResponse(Call<List<DoiBong>> call, Response<List<DoiBong>> response) {
+                List<DoiBong> doiBongs = response.body();
+                for (DoiBong doiBong : doiBongs){
+                    doiBongArrayList.add(doiBong);
+                }
+                Log.d("batdoi", doiBongArrayList+"555");
+            }
+            @Override
+            public void onFailure(Call<List<DoiBong>> call, Throwable t) {
+                System.out.println("loi: "+t.getMessage());
+            }
+        });
+    }
+
+    void clickDialogChonDoi() {
+        listViewDoiBong.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                //btnBatDoi.setText();
+                doibatdoi_ten = tenDoiBongArrayList.get(position);
+                Log.d("batdoi", "tendoibat" + doibatdoi_ten);
+                dialogChonDoi.cancel();
+            }
+        });
+    }
+
+    private void showDialogChonDoi() {
+        dialogChonDoi = new Dialog(getActivity());
+        dialogChonDoi.setContentView(R.layout.dialog_chon_doi);
+        dialogChonDoi.show();
+
+        listViewDoiBong = dialogChonDoi.findViewById(R.id.ListViewDoiBong);
+        tenDoiBongArrayList = new ArrayList<>();
+
+        for(DoiBong doiBong2 : doiBongArrayList){
+            tenDoiBongArrayList.add(doiBong2.getTen());
+        }
+
+        ArrayAdapter statusAdapter = new ArrayAdapter(getActivity(), android.R.layout.simple_list_item_1, tenDoiBongArrayList);
+
+        listViewDoiBong.setAdapter(statusAdapter);
+    }
+
     // tao thong bao
     private void clickBtnBatDoi(){
         btnBatDoi.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //tao bat doi
-                BatDoi batDoi = new BatDoi(doibatdoi_id, doitimdoi_id, dangtin_id);
-
-                Call<BatDoi> call1 = jsonApiBatDoi.createBatDoi(header, batDoi);
-                call1.enqueue(new Callback<BatDoi>() {
+                showDialogChonDoi();
+                listViewDoiBong.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
-                    public void onResponse(Call<BatDoi> call, Response<BatDoi> response) {
-                        Log.d("batdoi", "Bat doi thanh cong");
-                    }
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        //btnBatDoi.setText();
+                        doibatdoi_ten = tenDoiBongArrayList.get(position);
+                        Log.d("batdoi", "tendoibat" + doibatdoi_ten);
+                        dialogChonDoi.cancel();
+                        BatDoi batDoi = new BatDoi(doibatdoi_id, doitimdoi_id, dangtin_id);
 
-                    @Override
-                    public void onFailure(Call<BatDoi> call, Throwable t) {
-                        Log.d("batdoi", "Bat doi that bai "+t );
+                        Call<BatDoi> call1 = jsonApiBatDoi.createBatDoi(header, batDoi);
+                        call1.enqueue(new Callback<BatDoi>() {
+                            @Override
+                            public void onResponse(Call<BatDoi> call, Response<BatDoi> response) {
+                                Log.d("batdoi", "Bat doi thanh cong");
+                                // tao thong bao
+                                ThongBao thongBao = new ThongBao(dangTinDTO.getDoitruongdoidangtin_id(), doibatdoi_ten + " muốn bắt đối với bạn", "batdoi", doidangtin_device);
+                                Call<ThongBao> call2 = jsonApiThongBao.createThongBao(thongBao);
+                                call2.enqueue(new Callback<ThongBao>() {
+                                    @Override
+                                    public void onResponse(Call<ThongBao> call, Response<ThongBao> response) {
+                                        Log.d("batdoi", "tao thong bao thanh cong");
+                                        dayThongBaoOneSignal(doibatdoi_ten+" muốn bắt đối với bạn", doidangtin_device);
+                                    }
+
+                                    @Override
+                                    public void onFailure(Call<ThongBao> call, Throwable t) {
+
+                                    }
+                                });
+                                //
+                            }
+
+                            @Override
+                            public void onFailure(Call<BatDoi> call, Throwable t) {
+                                Log.d("batdoi", "Bat doi that bai "+t );
+                            }
+                        });
                     }
                 });
-
-
-//                Call<List<BatDoi>> call = jsonApiBatDoi.getBatDois(header);
-//                call.enqueue(new Callback<List<BatDoi>>() {
-//                    @Override
-//                    public void onResponse(Call<List<BatDoi>> call, Response<List<BatDoi>> response) {
-//                        List<BatDoi> batDois = response.body();
-//                        int check = 0;
-//                        for(BatDoi batDoi1 : batDois){
-//                            if(batDoi1.getDangtin_id() == dangtin_id && batDoi1.getDoibatdoi_id()==doibatdoi_id && batDoi1.getDoitimdoi_id()==doitimdoi_id){
-//                                check = 1;
-//                                Toast.makeText(getActivity(), "Bạn đã thực hiện bắt đối, hãy chờ câu trả lời của đội" + dangTinDTO.getDoidangtin_ten() , Toast.LENGTH_LONG).show();
-//                            }
-//                        }
-//                        if(true){
-//                        }
-//                    }
-//
-//                    @Override
-//                    public void onFailure(Call<List<BatDoi>> call, Throwable t) {
-//
-//                    }
-//                });
-
-
-
-
                 //push thong bao qua onesignal
 
                 //dayThongBaoOneSignal();
@@ -148,12 +234,12 @@ public class BatDoiFragment extends Fragment {
 
     }
     //day thong bao voi onesignal
-    private void dayThongBaoOneSignal(String userId ){
+    private void dayThongBaoOneSignal(String noidung, String userId ){
         try {
             //
              // id người nhận, id do oneSignal cấp cho thiết bị android ngay sau khi ứng dụng thiết lập trên thiết bị
-            String headings = "Đây là tiêu đề thông báo";
-            String contents = "Đây là nội dung thông báo. Bạn vừa bắt đối.";
+            String headings = "Thông báo";
+            String contents = noidung;
             JSONObject notification = new JSONObject("{'contents': {'en':'"+contents+"'}, " +
                     "'include_player_ids': ['" + userId + "']," +
                     "'headings':{'en':'"+headings+"'}}");

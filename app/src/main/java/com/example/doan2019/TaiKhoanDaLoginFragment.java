@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,7 +51,7 @@ public class TaiKhoanDaLoginFragment extends Fragment {
     ArrayList<DoiBong> arrFCThamGia;
     ArrayList<String> arrTenCacFCThamGia;
     ArrayList<ThanhVienDoiBongClass> listThanhVienDoiBong;
-    SharedPreferences sharedPreferences;
+    SharedPreferences sharedPreferences, sharedPreferencesOneSignal;
     Retrofit retrofit;
     JsonApiSanBong jsonApiSanBong;
     ArrayAdapter arrayAdapter;
@@ -225,6 +226,10 @@ public class TaiKhoanDaLoginFragment extends Fragment {
                 editor.remove("token");
                 editor.remove("id");
                 editor.commit();
+                editor = sharedPreferencesOneSignal.edit();
+                editor.putString("changed", "true");
+                editor.commit();
+                Log.d("dangnhap", "changed: "+sharedPreferencesOneSignal.getString("changed", ""));
                 LoginManager.getInstance().logOut();
                 langNgheSuKienChuyenFragment.ChuyenHuongFragment(new TaiKhoanFragment());
             }
@@ -232,6 +237,7 @@ public class TaiKhoanDaLoginFragment extends Fragment {
     }
 
     public void Mapping() {
+        sharedPreferencesOneSignal = getActivity().getSharedPreferences("OneSignalId", Context.MODE_PRIVATE);
         btnTimDoi = view.findViewById(R.id.ButtonTimKiemDoi);
         lvCacFCDangThamGia = view.findViewById(R.id.ListViewCacDoiThamGia);
         btnTaoDoiBong = view.findViewById(R.id.ButtonTaoDoiBong);
