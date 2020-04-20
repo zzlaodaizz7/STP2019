@@ -1,5 +1,7 @@
 package com.example.doan2019;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,8 +13,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.doan2019.Retrofit.DoiBong;
-
+import java.sql.Date;
 import java.util.ArrayList;
 
 import androidx.annotation.NonNull;
@@ -25,10 +26,12 @@ public class ChiTietDoiBongXepHangFragment extends Fragment {
     Bundle bundle;
     Button btnThamGiaFC;
     ImageView imgAnhBia, imgDaiDien;
-    ListView lvDanhSachThanhVien;
+    ListView lvDanhSachThanhVien, lvLichSuTranDau;
     ArrayList<ThanhVienDoiBongClass> arrThanhVien;
     DanhSachThanhVienAdapter adapter;
+    ArrayList<TranDauDuongClass> arrLichSuTranDau;
     LangNgheSuKienChuyenFragment langNgheSuKienChuyenFragment;
+    LichSuTranDauAdapter adapterLichSuTranDau;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -40,6 +43,8 @@ public class ChiTietDoiBongXepHangFragment extends Fragment {
         ClickQuayLai();
 
         GanDuLieu();
+
+        GanNoiDungListViewLichSuTranDau();
 
         ClickThamGiaFC();
 
@@ -62,6 +67,58 @@ public class ChiTietDoiBongXepHangFragment extends Fragment {
                 langNgheSuKienChuyenFragment.ChuyenHuongFragment(chiTietThanhVienFragment);
             }
         });
+    }
+
+    private void GanNoiDungListViewLichSuTranDau() {
+        arrLichSuTranDau = new ArrayList<>();
+
+        DoiBongClass doiBong1, doiBong2, doiBong3, doiBong4, doiBong5;
+        Bitmap anhDaiDien = BitmapFactory.decodeResource(getResources(), R.drawable.icon_app);
+        Bitmap anhBia = BitmapFactory.decodeResource(getResources(), R.drawable.anh_test_doi_bong);
+
+        doiBong1 = new DoiBongClass("FC fb", 3.02, "Hà Nội, Việt Nam", "Khá", "11/10/2010",
+                "0123456789", anhBia, anhDaiDien, arrThanhVien);
+        doiBong2 = new DoiBongClass("FC Lê Đức Thọ", 3.02, "Hà Nội, Việt Nam", "Khá",
+                "11/10/2010", "0123456789",anhBia, anhDaiDien, arrThanhVien);
+        doiBong3 = new DoiBongClass("FC Linh Đàm", 3.02, "Hà Nội, Việt Nam", "Khá",
+                "11/10/2010", "0123456789",anhBia, anhDaiDien, arrThanhVien);
+        doiBong4 = new DoiBongClass("FC Cầu Giấy", 3.02, "Hà Nội, Việt Nam", "Khá",
+                "11/10/2010", "0123456789",anhBia, anhDaiDien, arrThanhVien);
+        doiBong5 = new DoiBongClass("FC Mễ Trì", 3.02, "Hà Nội, Việt Nam", "Khá",
+                "11/10/2010", "0123456789",anhBia, anhDaiDien, arrThanhVien);
+        long date = 123456789;
+        Date convertDate = new Date(date);
+
+        arrLichSuTranDau.add(new TranDauDuongClass(1, doiBong1, doiBong5, convertDate, 1, 1, 6));
+        arrLichSuTranDau.add(new TranDauDuongClass(1, doiBong2, doiBong4, convertDate, 2, 2, 5));
+        arrLichSuTranDau.add(new TranDauDuongClass(1, doiBong3, doiBong1, convertDate, 3, 3, 4));
+        arrLichSuTranDau.add(new TranDauDuongClass(1, doiBong5, doiBong2, convertDate, 1, 4, 3));
+        arrLichSuTranDau.add(new TranDauDuongClass(1, doiBong4, doiBong3, convertDate, 2, 5, 2));
+        arrLichSuTranDau.add(new TranDauDuongClass(1, doiBong1, doiBong4, convertDate, 3, 6, 1));
+
+        adapterLichSuTranDau = new LichSuTranDauAdapter(getActivity(), R.layout.dong_lich_su_tran_dau, arrLichSuTranDau);
+        lvLichSuTranDau.setAdapter(adapterLichSuTranDau);
+        SetListViewHeightBasedOnChildrenLichSuTranDau(adapterLichSuTranDau, lvLichSuTranDau);
+    }
+
+    private void SetListViewHeightBasedOnChildrenLichSuTranDau(LichSuTranDauAdapter matchAdapter, ListView listView) {
+        if (matchAdapter == null) {
+            return;
+        }
+        int desiredWidth = View.MeasureSpec.makeMeasureSpec(listView.getWidth(), View.MeasureSpec.UNSPECIFIED);
+        int totalHeight = 0;
+        View view = null;
+        for (int i = 0; i < matchAdapter.getCount(); i++) {
+            view = matchAdapter.getView(i, view, listView);
+            if (i == 0)
+                view.setLayoutParams(new ViewGroup.LayoutParams(desiredWidth, ViewGroup.LayoutParams.WRAP_CONTENT));
+
+            view.measure(desiredWidth, View.MeasureSpec.UNSPECIFIED);
+            totalHeight += view.getMeasuredHeight();
+        }
+        ViewGroup.LayoutParams params = listView.getLayoutParams();
+        params.height = totalHeight + (listView.getDividerHeight() * (matchAdapter.getCount() - 1));
+        listView.setLayoutParams(params);
     }
 
     private void ClickQuayLai() {
@@ -122,6 +179,7 @@ public class ChiTietDoiBongXepHangFragment extends Fragment {
     }
 
     private void Mapping() {
+        lvLichSuTranDau = view.findViewById(R.id.ListViewLichSuTranDau);
         lvDanhSachThanhVien = view.findViewById(R.id.ListViewDanhSachThanhVien);
         txtQuayLai = view.findViewById(R.id.TextViewQuayLai);
         imgAnhBia = view.findViewById(R.id.ImageViewBiaDoiBong);

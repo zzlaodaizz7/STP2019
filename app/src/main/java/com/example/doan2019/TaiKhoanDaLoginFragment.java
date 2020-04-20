@@ -11,7 +11,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
@@ -32,13 +31,15 @@ import androidx.fragment.app.Fragment;
 public class TaiKhoanDaLoginFragment extends Fragment {
     ProfilePictureView profilePictureView;
     Button btnTaoDoiBong, btnTimDoi;
-    TextView txtName, txtEmail, txtDiaChi, txtDangXuat, txtChinhSua;
+    TextView txtName, txtEmail, txtDiaChi, txtDangXuat, txtChinhSua, txtNoiDungCacFCDangThamGia;
     private View view;
-    ListView lvCacFCDangThamGia;
+    ListView lvCacFCDangThamGia, lvTranDauSapToi;
+    TranDauSapToiAdapter adapterTranDauSapToi;
     LangNgheSuKienChuyenFragment langNgheSuKienChuyenFragment;
     ArrayList<DoiBongClass> arrFCThamGia;
     ArrayList<String> arrTenCacFCThamGia;
     ArrayList<ThanhVienDoiBongClass> listThanhVienDoiBong;
+    ArrayList<TranDauDuongClass> arrTranDauSapToi;
 
     @Nullable
     @Override
@@ -52,6 +53,8 @@ public class TaiKhoanDaLoginFragment extends Fragment {
 
         GanNoiDungListCacFCDangThamGia();
 
+        GanNoiDungListViewTranDauSapToi();
+
         ClickTaoDoiBong();
 
         ClickDangXuat();
@@ -63,6 +66,58 @@ public class TaiKhoanDaLoginFragment extends Fragment {
         ClickListViewCacFCDangThamGia();
 
         return view;
+    }
+
+    private void GanNoiDungListViewTranDauSapToi() {
+        arrTranDauSapToi = new ArrayList<>();
+
+        DoiBongClass doiBong1, doiBong2, doiBong3, doiBong4, doiBong5;
+        Bitmap anhDaiDien = BitmapFactory.decodeResource(getResources(), R.drawable.icon_app);
+        Bitmap anhBia = BitmapFactory.decodeResource(getResources(), R.drawable.anh_test_doi_bong);
+
+        doiBong1 = new DoiBongClass("FC fb", 3.02, "Hà Nội, Việt Nam", "Khá", "11/10/2010",
+                "0123456789", anhBia, anhDaiDien, listThanhVienDoiBong);
+        doiBong2 = new DoiBongClass("FC Lê Đức Thọ", 3.02, "Hà Nội, Việt Nam", "Khá",
+                "11/10/2010", "0123456789",anhBia, anhDaiDien, listThanhVienDoiBong);
+        doiBong3 = new DoiBongClass("FC Linh Đàm", 3.02, "Hà Nội, Việt Nam", "Khá",
+                "11/10/2010", "0123456789",anhBia, anhDaiDien, listThanhVienDoiBong);
+        doiBong4 = new DoiBongClass("FC Cầu Giấy", 3.02, "Hà Nội, Việt Nam", "Khá",
+                "11/10/2010", "0123456789",anhBia, anhDaiDien, listThanhVienDoiBong);
+        doiBong5 = new DoiBongClass("FC Mễ Trì", 3.02, "Hà Nội, Việt Nam", "Khá",
+                "11/10/2010", "0123456789",anhBia, anhDaiDien, listThanhVienDoiBong);
+        long date = 123456789;
+        Date convertDate = new Date(date);
+
+        arrTranDauSapToi.add(new TranDauDuongClass(1, doiBong1, doiBong2, convertDate, 1, 0, 0));
+        arrTranDauSapToi.add(new TranDauDuongClass(1, doiBong2, doiBong1, convertDate, 2, 0, 0));
+        arrTranDauSapToi.add(new TranDauDuongClass(1, doiBong3, doiBong4, convertDate, 3, 0, 0));
+        arrTranDauSapToi.add(new TranDauDuongClass(1, doiBong4, doiBong1, convertDate, 3, 0, 0));
+        arrTranDauSapToi.add(new TranDauDuongClass(1, doiBong2, doiBong5, convertDate, 2, 0, 0));
+        arrTranDauSapToi.add(new TranDauDuongClass(1, doiBong3, doiBong5, convertDate, 1, 0, 0));
+
+        adapterTranDauSapToi = new TranDauSapToiAdapter(getActivity(), R.layout.dong_tran_dau_sap_toi, arrTranDauSapToi);
+        lvTranDauSapToi.setAdapter(adapterTranDauSapToi);
+        SetListViewHeightBasedOnChildrenTranDauSapToi(adapterTranDauSapToi, lvTranDauSapToi);
+    }
+
+    private void SetListViewHeightBasedOnChildrenTranDauSapToi(TranDauSapToiAdapter matchAdapter, ListView listView) {
+        if (matchAdapter == null) {
+            return;
+        }
+        int desiredWidth = View.MeasureSpec.makeMeasureSpec(listView.getWidth(), View.MeasureSpec.UNSPECIFIED);
+        int totalHeight = 0;
+        View view = null;
+        for (int i = 0; i < matchAdapter.getCount(); i++) {
+            view = matchAdapter.getView(i, view, listView);
+            if (i == 0)
+                view.setLayoutParams(new ViewGroup.LayoutParams(desiredWidth, ViewGroup.LayoutParams.WRAP_CONTENT));
+
+            view.measure(desiredWidth, View.MeasureSpec.UNSPECIFIED);
+            totalHeight += view.getMeasuredHeight();
+        }
+        ViewGroup.LayoutParams params = listView.getLayoutParams();
+        params.height = totalHeight + (listView.getDividerHeight() * (matchAdapter.getCount() - 1));
+        listView.setLayoutParams(params);
     }
 
     private void ClickListViewCacFCDangThamGia() {
@@ -122,6 +177,10 @@ public class TaiKhoanDaLoginFragment extends Fragment {
         ArrayAdapter arrayAdapter = new ArrayAdapter(getActivity(), android.R.layout.simple_list_item_1, arrTenCacFCThamGia);
         lvCacFCDangThamGia.setAdapter(arrayAdapter);
         setListViewHeightBasedOnChildren(arrayAdapter, lvCacFCDangThamGia);
+        if(arrTenCacFCThamGia.size() == 0)
+            txtNoiDungCacFCDangThamGia.setVisibility(View.VISIBLE);
+        else
+            txtNoiDungCacFCDangThamGia.setVisibility(View.GONE);
     }
 
     private void setListViewHeightBasedOnChildren(ArrayAdapter matchAdapter, ListView listView) {
@@ -197,6 +256,8 @@ public class TaiKhoanDaLoginFragment extends Fragment {
     }
 
     public void Mapping() {
+        lvTranDauSapToi = view.findViewById(R.id.ListViewTranDauSapToi);
+        txtNoiDungCacFCDangThamGia = view.findViewById(R.id.TextViewNoiDungCacFCDangThamGia);
         btnTimDoi = view.findViewById(R.id.ButtonTimKiemDoi);
         lvCacFCDangThamGia = view.findViewById(R.id.ListViewCacDoiThamGia);
         btnTaoDoiBong = view.findViewById(R.id.ButtonTaoDoiBong);

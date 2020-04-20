@@ -7,11 +7,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.sql.Date;
 import java.util.ArrayList;
@@ -25,10 +23,14 @@ public class ChiTietDoiBongDaThamGiaFragment extends Fragment {
     TextView txtTenDoiBong, txtDiem, txtDiaChi, txtTrinhDo, txtNgayThanhlap, txtPhone, txtDanhSachCacTinDaDang, txtQuayLai;
     ImageView imgAnhBia, imgAnhDaiDien;
     Bundle bundle;
-    ListView lvDanhSachThanhVien;
+    ListView lvDanhSachThanhVien, lvTranDauSapToi, lvLichSuTranDau;
     DoiBongClass doiBong;
     DanhSachThanhVienAdapter adapter;
+    TranDauSapToiAdapter adapterTranDauSapToi;
+    LichSuTranDauAdapter adapterLichSuTranDau;
     ArrayList<ThanhVienDoiBongClass> arrThanhVien;
+    ArrayList<TranDauDuongClass> arrTranDauSapToi;
+    ArrayList<TranDauDuongClass> arrLichSuTranDau;
     LangNgheSuKienChuyenFragment langNgheSuKienChuyenFragment;
 
     @Nullable
@@ -45,9 +47,117 @@ public class ChiTietDoiBongDaThamGiaFragment extends Fragment {
 
         GanNoiDungThongTinDoiBong();
 
+        GanNoiDungListViewTranDauSapToi();
+
+        GanNoiDungListViewLichSuTranDau();
+
         ClickDanhSachCacTinDaDang();
 
         return view;
+    }
+
+    private void GanNoiDungListViewLichSuTranDau() {
+        arrLichSuTranDau = new ArrayList<>();
+
+        DoiBongClass doiBong1, doiBong2, doiBong3, doiBong4, doiBong5;
+        Bitmap anhDaiDien = BitmapFactory.decodeResource(getResources(), R.drawable.icon_app);
+        Bitmap anhBia = BitmapFactory.decodeResource(getResources(), R.drawable.anh_test_doi_bong);
+
+        doiBong1 = new DoiBongClass("FC fb", 3.02, "Hà Nội, Việt Nam", "Khá", "11/10/2010",
+                "0123456789", anhBia, anhDaiDien, arrThanhVien);
+        doiBong2 = new DoiBongClass("FC Lê Đức Thọ", 3.02, "Hà Nội, Việt Nam", "Khá",
+                "11/10/2010", "0123456789",anhBia, anhDaiDien, arrThanhVien);
+        doiBong3 = new DoiBongClass("FC Linh Đàm", 3.02, "Hà Nội, Việt Nam", "Khá",
+                "11/10/2010", "0123456789",anhBia, anhDaiDien, arrThanhVien);
+        doiBong4 = new DoiBongClass("FC Cầu Giấy", 3.02, "Hà Nội, Việt Nam", "Khá",
+                "11/10/2010", "0123456789",anhBia, anhDaiDien, arrThanhVien);
+        doiBong5 = new DoiBongClass("FC Mễ Trì", 3.02, "Hà Nội, Việt Nam", "Khá",
+                "11/10/2010", "0123456789",anhBia, anhDaiDien, arrThanhVien);
+        long date = 123456789;
+        Date convertDate = new Date(date);
+
+        arrLichSuTranDau.add(new TranDauDuongClass(1, doiBong1, doiBong5, convertDate, 1, 1, 6));
+        arrLichSuTranDau.add(new TranDauDuongClass(1, doiBong2, doiBong4, convertDate, 2, 2, 5));
+        arrLichSuTranDau.add(new TranDauDuongClass(1, doiBong3, doiBong1, convertDate, 3, 3, 4));
+        arrLichSuTranDau.add(new TranDauDuongClass(1, doiBong5, doiBong2, convertDate, 1, 4, 3));
+        arrLichSuTranDau.add(new TranDauDuongClass(1, doiBong4, doiBong3, convertDate, 2, 5, 2));
+        arrLichSuTranDau.add(new TranDauDuongClass(1, doiBong1, doiBong4, convertDate, 3, 6, 1));
+
+        adapterLichSuTranDau = new LichSuTranDauAdapter(getActivity(), R.layout.dong_lich_su_tran_dau, arrLichSuTranDau);
+        lvLichSuTranDau.setAdapter(adapterLichSuTranDau);
+        SetListViewHeightBasedOnChildrenLichSuTranDau(adapterLichSuTranDau, lvLichSuTranDau);
+    }
+
+    private void SetListViewHeightBasedOnChildrenLichSuTranDau(LichSuTranDauAdapter matchAdapter, ListView listView) {
+        if (matchAdapter == null) {
+            return;
+        }
+        int desiredWidth = View.MeasureSpec.makeMeasureSpec(listView.getWidth(), View.MeasureSpec.UNSPECIFIED);
+        int totalHeight = 0;
+        View view = null;
+        for (int i = 0; i < matchAdapter.getCount(); i++) {
+            view = matchAdapter.getView(i, view, listView);
+            if (i == 0)
+                view.setLayoutParams(new ViewGroup.LayoutParams(desiredWidth, ViewGroup.LayoutParams.WRAP_CONTENT));
+
+            view.measure(desiredWidth, View.MeasureSpec.UNSPECIFIED);
+            totalHeight += view.getMeasuredHeight();
+        }
+        ViewGroup.LayoutParams params = listView.getLayoutParams();
+        params.height = totalHeight + (listView.getDividerHeight() * (matchAdapter.getCount() - 1));
+        listView.setLayoutParams(params);
+    }
+
+    private void GanNoiDungListViewTranDauSapToi() {
+        arrTranDauSapToi = new ArrayList<>();
+
+        DoiBongClass doiBong1, doiBong2, doiBong3, doiBong4, doiBong5;
+        Bitmap anhDaiDien = BitmapFactory.decodeResource(getResources(), R.drawable.icon_app);
+        Bitmap anhBia = BitmapFactory.decodeResource(getResources(), R.drawable.anh_test_doi_bong);
+
+        doiBong1 = new DoiBongClass("FC fb", 3.02, "Hà Nội, Việt Nam", "Khá", "11/10/2010",
+                "0123456789", anhBia, anhDaiDien, arrThanhVien);
+        doiBong2 = new DoiBongClass("FC Lê Đức Thọ", 3.02, "Hà Nội, Việt Nam", "Khá",
+                "11/10/2010", "0123456789",anhBia, anhDaiDien, arrThanhVien);
+        doiBong3 = new DoiBongClass("FC Linh Đàm", 3.02, "Hà Nội, Việt Nam", "Khá",
+                "11/10/2010", "0123456789",anhBia, anhDaiDien, arrThanhVien);
+        doiBong4 = new DoiBongClass("FC Cầu Giấy", 3.02, "Hà Nội, Việt Nam", "Khá",
+                "11/10/2010", "0123456789",anhBia, anhDaiDien, arrThanhVien);
+        doiBong5 = new DoiBongClass("FC Mễ Trì", 3.02, "Hà Nội, Việt Nam", "Khá",
+                "11/10/2010", "0123456789",anhBia, anhDaiDien, arrThanhVien);
+        long date = 123456789;
+        Date convertDate = new Date(date);
+
+        arrTranDauSapToi.add(new TranDauDuongClass(1, doiBong1, doiBong2, convertDate, 1, 0, 0));
+        arrTranDauSapToi.add(new TranDauDuongClass(1, doiBong2, doiBong1, convertDate, 2, 0, 0));
+        arrTranDauSapToi.add(new TranDauDuongClass(1, doiBong3, doiBong4, convertDate, 3, 0, 0));
+        arrTranDauSapToi.add(new TranDauDuongClass(1, doiBong4, doiBong1, convertDate, 3, 0, 0));
+        arrTranDauSapToi.add(new TranDauDuongClass(1, doiBong2, doiBong5, convertDate, 2, 0, 0));
+        arrTranDauSapToi.add(new TranDauDuongClass(1, doiBong3, doiBong5, convertDate, 1, 0, 0));
+
+        adapterTranDauSapToi = new TranDauSapToiAdapter(getActivity(), R.layout.dong_tran_dau_sap_toi, arrTranDauSapToi);
+        lvTranDauSapToi.setAdapter(adapterTranDauSapToi);
+        SetListViewHeightBasedOnChildrenTranDauSapToi(adapterTranDauSapToi, lvTranDauSapToi);
+    }
+
+    private void SetListViewHeightBasedOnChildrenTranDauSapToi(TranDauSapToiAdapter matchAdapter, ListView listView) {
+        if (matchAdapter == null) {
+            return;
+        }
+        int desiredWidth = View.MeasureSpec.makeMeasureSpec(listView.getWidth(), View.MeasureSpec.UNSPECIFIED);
+        int totalHeight = 0;
+        View view = null;
+        for (int i = 0; i < matchAdapter.getCount(); i++) {
+            view = matchAdapter.getView(i, view, listView);
+            if (i == 0)
+                view.setLayoutParams(new ViewGroup.LayoutParams(desiredWidth, ViewGroup.LayoutParams.WRAP_CONTENT));
+
+            view.measure(desiredWidth, View.MeasureSpec.UNSPECIFIED);
+            totalHeight += view.getMeasuredHeight();
+        }
+        ViewGroup.LayoutParams params = listView.getLayoutParams();
+        params.height = totalHeight + (listView.getDividerHeight() * (matchAdapter.getCount() - 1));
+        listView.setLayoutParams(params);
     }
 
     private void ClickQuayLai() {
@@ -130,6 +240,8 @@ public class ChiTietDoiBongDaThamGiaFragment extends Fragment {
     }
 
     private void Mapping() {
+        lvTranDauSapToi = view.findViewById(R.id.ListViewTranDauSapToi);
+        lvLichSuTranDau = view.findViewById(R.id.ListViewLichSuTranDau);
         txtQuayLai = view.findViewById(R.id.TextViewQuayLai);
         lvDanhSachThanhVien = view.findViewById(R.id.ListViewDanhSachThanhVien);
         txtDanhSachCacTinDaDang = view.findViewById(R.id.TextViewDanhSachCacTinDaDang);
