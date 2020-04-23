@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/scrollView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -10,7 +11,9 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="30dp">
+        android:paddingTop="10dp"
+        android:paddingLeft="30dp"
+        android:paddingRight="30dp">
 
         <TextView
             android:id="@+id/TextViewTen"
@@ -74,8 +77,10 @@
             android:layout_marginTop="5dp"
             android:background="@drawable/custom_edittext"
             android:hint="Nhập mật khẩu"
+            android:inputType="textPassword"
             android:textSize="12sp"
-            app:layout_constraintTop_toBottomOf="@id/TextViewMatKhau" />
+            app:layout_constraintTop_toBottomOf="@id/TextViewMatKhau"
+            tools:layout_editor_absoluteX="30dp" />
 
         <TextView
             android:id="@+id/TextViewNhapLaiMatKhau"
@@ -93,18 +98,51 @@
             android:id="@+id/EditTextNhapLaiMatKhau"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:inputType="textPassword"
             android:layout_marginTop="5dp"
             android:background="@drawable/custom_edittext"
             android:hint="Nhập lại mật khẩu"
             android:textSize="12sp"
             app:layout_constraintTop_toBottomOf="@id/TextViewNhapLaiMatKhau" />
 
+        <CheckBox
+            android:id="@+id/CheckBoxHienMatKhau"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="invisible"
+            android:layout_marginTop="10dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/EditTextNhapLaiMatKhau" />
+
+        <ImageView
+            android:id="@+id/ImageViewVisibility"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingRight="10dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:clickable="true"
+            android:src="@drawable/ic_visibility_off_black_24dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/EditTextNhapLaiMatKhau"/>
+
+        <TextView
+            android:id="@+id/TextViewTrangThaiPass"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ẩn"
+            android:textColor="@android:color/black"
+            android:textSize="13sp"
+            app:layout_constraintBottom_toBottomOf="@id/ImageViewVisibility"
+            app:layout_constraintLeft_toRightOf="@id/ImageViewVisibility"
+            app:layout_constraintTop_toTopOf="@id/ImageViewVisibility"/>
+
         <Button
             android:id="@+id/ButtonDangKy"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="75dp"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="5dp"
             android:layout_marginRight="75dp"
             android:background="@drawable/custom_button_default_dx"
             android:text="Đăng Ký"
@@ -113,7 +151,7 @@
             android:textSize="13sp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/EditTextNhapLaiMatKhau" />
+            app:layout_constraintTop_toBottomOf="@id/ImageViewVisibility" />
 
         <View
             android:layout_width="match_parent"

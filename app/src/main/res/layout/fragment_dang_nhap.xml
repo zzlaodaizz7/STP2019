@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="30dp">
+    android:paddingLeft="30dp"
+    android:paddingTop="10dp"
+    android:paddingRight="30dp">
 
     <com.facebook.login.widget.LoginButton
         android:id="@+id/login_button"
@@ -82,19 +84,50 @@
         android:layout_marginTop="5dp"
         android:background="@drawable/custom_edittext"
         android:hint="Nhập mật khẩu"
+        android:inputType="textPassword"
         android:textSize="12sp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@id/TextViewMatKhau" />
 
     <CheckBox
-        android:id="@+id/CheckBoxLuuThongTinDangNhap"
+        android:id="@+id/CheckBoxHienMatKhau"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
-        android:text="Lưu thông tin đăng nhập"
+        android:visibility="invisible"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@id/EditTextMatKhau" />
 
+    <ImageView
+        android:id="@+id/ImageViewVisibility"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:paddingTop="10dp"
+        android:paddingRight="10dp"
+        android:paddingBottom="10dp"
+        android:src="@drawable/ic_visibility_off_black_24dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/EditTextMatKhau" />
+
+    <CheckBox
+        android:id="@+id/CheckBoxLuuThongTinDangNhap"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Lưu thông tin đăng nhập"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ImageViewVisibility" />
+
+    <TextView
+        android:id="@+id/TextViewTrangThaiPass"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Ẩn"
+        android:textColor="@android:color/black"
+        android:textSize="13sp"
+        app:layout_constraintBottom_toBottomOf="@id/ImageViewVisibility"
+        app:layout_constraintLeft_toRightOf="@id/ImageViewVisibility"
+        app:layout_constraintTop_toTopOf="@id/ImageViewVisibility"/>
 
     <Button
         android:id="@+id/ButtonQuenMatKhau"

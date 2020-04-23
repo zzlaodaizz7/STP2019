@@ -17,7 +17,7 @@ import androidx.fragment.app.Fragment;
 public class ChiTietThanhVienFragment extends Fragment {
     Bundle bundle;
     private View view;
-    TextView txtTen, txtngayGiaNhap, txtDiaChi, txtQuayLai;
+    TextView txtTen, txtngayGiaNhap, txtDiaChi, txtQuayLai, txtSoDienThoai;
     ImageView imgDaiDien;
     @Nullable
     @Override
@@ -53,9 +53,11 @@ public class ChiTietThanhVienFragment extends Fragment {
         txtTen.setText(thanhVienDoiBongClass.getTen());
         txtngayGiaNhap.setText(time);
         txtDiaChi.setText(thanhVienDoiBongClass.getDiaChi());
+        txtSoDienThoai.setText(thanhVienDoiBongClass.getSoDienThoai());
     }
 
     private void Mapping() {
+        txtSoDienThoai = view.findViewById(R.id.TextViewSoDienThoai);
         txtQuayLai = view.findViewById(R.id.TextViewQuayLai);
         imgDaiDien = view.findViewById(R.id.ImageViewDaiDienThanhVien);
         txtTen = view.findViewById(R.id.TextViewName);

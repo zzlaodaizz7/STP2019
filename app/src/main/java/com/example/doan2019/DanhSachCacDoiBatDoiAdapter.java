@@ -64,6 +64,7 @@ public class DanhSachCacDoiBatDoiAdapter extends BaseAdapter{
         ImageView imgDoiBong;
         TextView txtTen;
         TextView txtDiem;
+        Button btnDelete;
     }
 
     @Override
@@ -78,6 +79,7 @@ public class DanhSachCacDoiBatDoiAdapter extends BaseAdapter{
             viewHolder.imgDoiBong = view.findViewById(R.id.ImageViewDongDoiBatDoi);
             viewHolder.txtTen = view.findViewById(R.id.TextViewTenDoiBongBatDoi);
             viewHolder.txtDiem = view.findViewById(R.id.TextViewDiemDoiBongBatDoi);
+            viewHolder.btnDelete = view.findViewById(R.id.ButtonDongYBatDoi);
 
             view.setTag(viewHolder);
         } else
@@ -88,9 +90,8 @@ public class DanhSachCacDoiBatDoiAdapter extends BaseAdapter{
         viewHolder.imgDoiBong.setImageBitmap(doiBong.getImageDaiDien());
         viewHolder.txtTen.setText(doiBong.getTen());
         viewHolder.txtDiem.setText(doiBong.getDiem() + " Điểm");
-        sharedPreferences = view.getContext().getSharedPreferences("dataLogin", Context.MODE_PRIVATE);
-        Button btnDelete = view.findViewById(R.id.ButtonDongYBatDoi);
-        btnDelete.setOnClickListener(new View.OnClickListener() {
+
+        viewHolder.btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Toast.makeText(context, "Click Đồng ý: " + doiBongList.get(i).getBatdoi_id() + "\nBắt sự kiện trong Adapter nhé", Toast.LENGTH_SHORT).show();

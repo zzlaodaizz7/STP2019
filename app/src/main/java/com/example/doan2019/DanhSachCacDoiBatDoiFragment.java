@@ -13,6 +13,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -125,11 +126,13 @@ public class DanhSachCacDoiBatDoiFragment extends Fragment {
                     listDoiBong.add(new DoiBongClass(doiBongClass.getId(),doiBongClass.getBatdoi_id(),doiBongClass.getTen(), doiBongClass.getDiem(), doiBongClass.getDiaChi(), doiBongClass.getTrinhDo(), doiBongClass.getSoDienThoai(), doiBongClass.getCreated_at(), anhBia, anhDaiDien, listThanhVienDoiBong));
 
                 }
-                listThanhVienDoiBong.add(new ThanhVienDoiBongClass("Nguyễn Văn A", "Đội trưởng", 1));
-                listThanhVienDoiBong.add(new ThanhVienDoiBongClass("Nguyễn Văn B", "Cầu thủ", 2));
-                listThanhVienDoiBong.add(new ThanhVienDoiBongClass("Nguyễn Văn C", "Cầu thủ", 3));
-                listThanhVienDoiBong.add(new ThanhVienDoiBongClass("Nguyễn Văn D", "Cầu thủ", 4));
-                listThanhVienDoiBong.add(new ThanhVienDoiBongClass("Nguyễn Văn E", "Đội phó", 5));
+                long ngayTemp = 1234596789;
+                Date dateConvert = new Date(ngayTemp);
+
+                listThanhVienDoiBong.add(new ThanhVienDoiBongClass("Nguyễn Văn A", "Thành viên", 1, anhDaiDien, "Hà Nội, Việt Nam", dateConvert, "0123456789"));
+                listThanhVienDoiBong.add(new ThanhVienDoiBongClass("Nguyễn Văn B", "Thành viên", 1, anhDaiDien, "Hà Nội, Việt Nam", dateConvert, "0123456789"));
+                listThanhVienDoiBong.add(new ThanhVienDoiBongClass("Nguyễn Văn C", "Thành viên", 1, anhDaiDien, "Hà Nội, Việt Nam", dateConvert, "0123456789"));
+
                 adapter = new DanhSachCacDoiBatDoiAdapter(getActivity(), R.layout.dong_doi_bat_doi, listDoiBong);
                 lvDoiBongBatDoi.setAdapter(adapter);
                 SetListViewHeightBasedOnChildren(adapter, lvDoiBongBatDoi);
