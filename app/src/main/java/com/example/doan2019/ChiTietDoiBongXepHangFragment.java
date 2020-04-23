@@ -140,6 +140,7 @@ public class ChiTietDoiBongXepHangFragment extends Fragment {
             view.measure(desiredWidth, View.MeasureSpec.UNSPECIFIED);
             totalHeight += view.getMeasuredHeight();
         }
+        totalHeight -= view.getMeasuredHeight();
         ViewGroup.LayoutParams params = listView.getLayoutParams();
         params.height = totalHeight + (listView.getDividerHeight() * (matchAdapter.getCount() - 1));
         listView.setLayoutParams(params);

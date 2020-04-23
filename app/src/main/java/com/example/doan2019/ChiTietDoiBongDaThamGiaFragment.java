@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -32,6 +33,7 @@ public class ChiTietDoiBongDaThamGiaFragment extends Fragment {
     ArrayList<TranDauDuongClass> arrTranDauSapToi;
     ArrayList<TranDauDuongClass> arrLichSuTranDau;
     LangNgheSuKienChuyenFragment langNgheSuKienChuyenFragment;
+    Button btnDonXinGiaNhap;
 
     @Nullable
     @Override
@@ -57,7 +59,20 @@ public class ChiTietDoiBongDaThamGiaFragment extends Fragment {
 
         ClickDanhSachCacTinDaDang();
 
+        ClickDuyetDon();
+
         return view;
+    }
+
+    private void ClickDuyetDon() {
+        btnDonXinGiaNhap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                DanhSachDonXinGiaNhapFCFragment danhSachDonXinGiaNhapFCFragment = new DanhSachDonXinGiaNhapFCFragment();
+
+                langNgheSuKienChuyenFragment.ChuyenHuongFragment(danhSachDonXinGiaNhapFCFragment);
+            }
+        });
     }
 
     private void ClickListViewLichSuTranDau() {
@@ -143,6 +158,7 @@ public class ChiTietDoiBongDaThamGiaFragment extends Fragment {
             view.measure(desiredWidth, View.MeasureSpec.UNSPECIFIED);
             totalHeight += view.getMeasuredHeight();
         }
+        totalHeight -= view.getMeasuredHeight();
         ViewGroup.LayoutParams params = listView.getLayoutParams();
         params.height = totalHeight + (listView.getDividerHeight() * (matchAdapter.getCount() - 1));
         listView.setLayoutParams(params);
@@ -201,6 +217,7 @@ public class ChiTietDoiBongDaThamGiaFragment extends Fragment {
             view.measure(desiredWidth, View.MeasureSpec.UNSPECIFIED);
             totalHeight += view.getMeasuredHeight();
         }
+        totalHeight -= view.getMeasuredHeight();
         ViewGroup.LayoutParams params = listView.getLayoutParams();
         params.height = totalHeight + (listView.getDividerHeight() * (matchAdapter.getCount() - 1));
         listView.setLayoutParams(params);
@@ -286,6 +303,7 @@ public class ChiTietDoiBongDaThamGiaFragment extends Fragment {
     }
 
     private void Mapping() {
+        btnDonXinGiaNhap = view.findViewById(R.id.ButtonDuyetDon);
         lvTranDauSapToi = view.findViewById(R.id.ListViewTranDauSapToi);
         lvLichSuTranDau = view.findViewById(R.id.ListViewLichSuTranDau);
         txtQuayLai = view.findViewById(R.id.TextViewQuayLai);
