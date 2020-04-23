@@ -39,6 +39,7 @@ public class BatDoiFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_bat_doi, container, false);
 
         mapping();
+
         clickBtnBatDoi();
 
         return view;
@@ -57,7 +58,6 @@ public class BatDoiFragment extends Fragment {
         bundle = getArguments();
 
         Match match = (Match) bundle.getSerializable("batdoi");
-
         DateFormat dateFormat = new SimpleDateFormat("dd/mm/yyyy hh:mm");
         String time = dateFormat.format(match.getTime());
         txtTeamHost.setText(match.getTeamHost());

@@ -55,6 +55,8 @@ public class TaiKhoanDaLoginFragment extends Fragment {
 
         GanNoiDungListViewTranDauSapToi();
 
+        ClickListViewTranDauSapToi();
+
         ClickTaoDoiBong();
 
         ClickDangXuat();
@@ -66,6 +68,21 @@ public class TaiKhoanDaLoginFragment extends Fragment {
         ClickListViewCacFCDangThamGia();
 
         return view;
+    }
+
+    private void ClickListViewTranDauSapToi() {
+        lvTranDauSapToi.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                ChiTietTranDauSapToiFragment chiTietTranDauSapToiFragment = new ChiTietTranDauSapToiFragment();
+
+                Bundle bundleTranDauSapToi = new Bundle();
+                TranDauDuongClass tranDau = arrTranDauSapToi.get(i);
+                bundleTranDauSapToi.putSerializable("trandauduong", tranDau);
+                chiTietTranDauSapToiFragment.setArguments(bundleTranDauSapToi);
+                langNgheSuKienChuyenFragment.ChuyenHuongFragment(chiTietTranDauSapToiFragment);
+            }
+        });
     }
 
     private void GanNoiDungListViewTranDauSapToi() {
@@ -88,12 +105,12 @@ public class TaiKhoanDaLoginFragment extends Fragment {
         long date = 123456789;
         Date convertDate = new Date(date);
 
-        arrTranDauSapToi.add(new TranDauDuongClass(1, doiBong1, doiBong2, convertDate, 1, 0, 0));
-        arrTranDauSapToi.add(new TranDauDuongClass(1, doiBong2, doiBong1, convertDate, 2, 0, 0));
-        arrTranDauSapToi.add(new TranDauDuongClass(1, doiBong3, doiBong4, convertDate, 3, 0, 0));
-        arrTranDauSapToi.add(new TranDauDuongClass(1, doiBong4, doiBong1, convertDate, 3, 0, 0));
-        arrTranDauSapToi.add(new TranDauDuongClass(1, doiBong2, doiBong5, convertDate, 2, 0, 0));
-        arrTranDauSapToi.add(new TranDauDuongClass(1, doiBong3, doiBong5, convertDate, 1, 0, 0));
+        arrTranDauSapToi.add(new TranDauDuongClass(1, doiBong3, doiBong4, convertDate, 3, 0, 0, 0, "Nước", false));
+        arrTranDauSapToi.add(new TranDauDuongClass(1, doiBong1, doiBong2, convertDate, 3, 0, 0, 0, "Nước", false));
+        arrTranDauSapToi.add(new TranDauDuongClass(1, doiBong4, doiBong5, convertDate, 3, 0, 0, 0, "Nước", false));
+        arrTranDauSapToi.add(new TranDauDuongClass(1, doiBong2, doiBong5, convertDate, 3, 0, 0, 0, "Nước", false));
+        arrTranDauSapToi.add(new TranDauDuongClass(1, doiBong1, doiBong3, convertDate, 3, 0, 0, 0, "Nước", false));
+        arrTranDauSapToi.add(new TranDauDuongClass(1, doiBong3, doiBong5, convertDate, 3, 0, 0, 0, "Nước", false));
 
         adapterTranDauSapToi = new TranDauSapToiAdapter(getActivity(), R.layout.dong_tran_dau_sap_toi, arrTranDauSapToi);
         lvTranDauSapToi.setAdapter(adapterTranDauSapToi);

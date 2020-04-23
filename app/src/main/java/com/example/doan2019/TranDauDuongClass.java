@@ -9,17 +9,47 @@ public class TranDauDuongClass implements Serializable {
     DoiBongClass doiMinh;
     Date ngay;
     int khungGio;
+    int idSan;
     int soBanThangBenMinh;
     int soBanThangDoiThu;
+    String keo;
+    Boolean voted;
 
-    public TranDauDuongClass(int idTranDau, DoiBongClass doiBongDoiThu, DoiBongClass doiMinh, Date ngay, int khungGio, int soBanThangBenMinh, int soBanThangDoiThu) {
+    public TranDauDuongClass(int idTranDau, DoiBongClass doiBongDoiThu, DoiBongClass doiMinh, Date ngay, int khungGio, int idSan, int soBanThangBenMinh, int soBanThangDoiThu, String keo, Boolean voted) {
         this.idTranDau = idTranDau;
         this.doiBongDoiThu = doiBongDoiThu;
         this.doiMinh = doiMinh;
         this.ngay = ngay;
         this.khungGio = khungGio;
+        this.idSan = idSan;
         this.soBanThangBenMinh = soBanThangBenMinh;
         this.soBanThangDoiThu = soBanThangDoiThu;
+        this.keo = keo;
+        this.voted = voted;
+    }
+
+    public Boolean getVoted() {
+        return voted;
+    }
+
+    public void setVoted(Boolean voted) {
+        this.voted = voted;
+    }
+
+    public String getKeo() {
+        return keo;
+    }
+
+    public void setKeo(String keo) {
+        this.keo = keo;
+    }
+
+    public int getIdSan() {
+        return idSan;
+    }
+
+    public void setIdSan(int idSan) {
+        this.idSan = idSan;
     }
 
     public DoiBongClass getDoiMinh() {

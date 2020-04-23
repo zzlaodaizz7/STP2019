@@ -46,11 +46,29 @@ public class ChiTietDoiBongXepHangFragment extends Fragment {
 
         GanNoiDungListViewLichSuTranDau();
 
+        ClickListViewLichSuTranDau();
+
         ClickThamGiaFC();
 
         ClickListViewThanhVien();
 
         return view;
+    }
+
+    private void ClickListViewLichSuTranDau() {
+        lvLichSuTranDau.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                ChiTietLichSuTranDauFragment chiTietLichSuTranDauFragment = new ChiTietLichSuTranDauFragment();
+
+                Bundle bundleTranDauSapToi = new Bundle();
+                TranDauDuongClass tranDau = arrLichSuTranDau.get(i);
+                bundleTranDauSapToi.putSerializable("trandauduong", tranDau);
+                bundleTranDauSapToi.putSerializable("checkXepHangFragment", true);
+                chiTietLichSuTranDauFragment.setArguments(bundleTranDauSapToi);
+                langNgheSuKienChuyenFragment.ChuyenHuongFragment(chiTietLichSuTranDauFragment);
+            }
+        });
     }
 
     private void ClickListViewThanhVien() {
@@ -89,12 +107,18 @@ public class ChiTietDoiBongXepHangFragment extends Fragment {
         long date = 123456789;
         Date convertDate = new Date(date);
 
-        arrLichSuTranDau.add(new TranDauDuongClass(1, doiBong1, doiBong5, convertDate, 1, 1, 6));
-        arrLichSuTranDau.add(new TranDauDuongClass(1, doiBong2, doiBong4, convertDate, 2, 2, 5));
-        arrLichSuTranDau.add(new TranDauDuongClass(1, doiBong3, doiBong1, convertDate, 3, 3, 4));
-        arrLichSuTranDau.add(new TranDauDuongClass(1, doiBong5, doiBong2, convertDate, 1, 4, 3));
-        arrLichSuTranDau.add(new TranDauDuongClass(1, doiBong4, doiBong3, convertDate, 2, 5, 2));
-        arrLichSuTranDau.add(new TranDauDuongClass(1, doiBong1, doiBong4, convertDate, 3, 6, 1));
+        arrLichSuTranDau.add(new TranDauDuongClass(1, doiBong1, doiBong5, convertDate, 1, 1, 0, 0, "Nước", false));
+        arrLichSuTranDau.add(new TranDauDuongClass(1, doiBong2, doiBong4, convertDate, 2, 2, 0,  0, "Nước", false));
+        arrLichSuTranDau.add(new TranDauDuongClass(1, doiBong3, doiBong1, convertDate, 3, 3, 4,  2, "Nước", true));
+        arrLichSuTranDau.add(new TranDauDuongClass(1, doiBong5, doiBong2, convertDate, 1, 4, 3,  2, "Nước", true));
+        arrLichSuTranDau.add(new TranDauDuongClass(1, doiBong4, doiBong3, convertDate, 2, 5, 2,  2, "Nước", true));
+        arrLichSuTranDau.add(new TranDauDuongClass(1, doiBong1, doiBong4, convertDate, 3, 6, 1,  2, "Nước", true));
+        arrLichSuTranDau.add(new TranDauDuongClass(1, doiBong1, doiBong5, convertDate, 1, 1, 6, 2, "Nước", true));
+        arrLichSuTranDau.add(new TranDauDuongClass(1, doiBong2, doiBong4, convertDate, 2, 2, 5,  2, "Nước", true));
+        arrLichSuTranDau.add(new TranDauDuongClass(1, doiBong3, doiBong1, convertDate, 3, 3, 4,  2, "Nước", true));
+        arrLichSuTranDau.add(new TranDauDuongClass(1, doiBong5, doiBong2, convertDate, 1, 4, 3,  2, "Nước", true));
+        arrLichSuTranDau.add(new TranDauDuongClass(1, doiBong4, doiBong3, convertDate, 2, 5, 2,  2, "Nước", true));
+        arrLichSuTranDau.add(new TranDauDuongClass(1, doiBong1, doiBong4, convertDate, 3, 6, 1,  2, "Nước", true));
 
         adapterLichSuTranDau = new LichSuTranDauAdapter(getActivity(), R.layout.dong_lich_su_tran_dau, arrLichSuTranDau);
         lvLichSuTranDau.setAdapter(adapterLichSuTranDau);
