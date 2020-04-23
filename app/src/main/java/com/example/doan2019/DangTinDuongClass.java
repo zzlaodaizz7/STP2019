@@ -5,31 +5,52 @@ import java.sql.Date;
 import java.sql.Timestamp;
 
 public class DangTinDuongClass implements Serializable {
-    private int ID;
-    private Date ngayDienRaTranDau;
-    private int idSanBong;
-    private int khungGio;
+    private int id;
+    private String ngay;
+    private int doidangtin_id;
+    private int sanbong_id;
+    private int khunggio_id;
     private String keo;
     private Timestamp created_at, updated_at;
-    private int idDoiBatDoi;
+    private int doibatdoi_id;
 
-    public DangTinDuongClass(int ID, Date ngayDienRaTranDau, int idSanBong, int khungGio, String keo, Timestamp created_at, Timestamp updated_at, int idDoiBatDoi) {
-        this.ID = ID;
-        this.ngayDienRaTranDau = ngayDienRaTranDau;
-        this.idSanBong = idSanBong;
-        this.khungGio = khungGio;
+    public DangTinDuongClass(int id, String ngay, int doidangtin_id, int sanbong_id, int khunggio_id, String keo, Timestamp created_at, Timestamp updated_at, int doibatdoi_id) {
+        this.id = id;
+        this.ngay = ngay;
+        this.doidangtin_id = doidangtin_id;
+        this.sanbong_id = sanbong_id;
+        this.khunggio_id = khunggio_id;
         this.keo = keo;
         this.created_at = created_at;
         this.updated_at = updated_at;
-        this.idDoiBatDoi = idDoiBatDoi;
+        this.doibatdoi_id = doibatdoi_id;
     }
 
-    public int getID() {
-        return ID;
+    public DangTinDuongClass(int id, String ngay, int sanbong_id, int khunggio_id, String keo, Timestamp created_at, Timestamp updated_at, int doibatdoi_id) {
+        this.id = id;
+        this.ngay = ngay;
+        this.sanbong_id = sanbong_id;
+        this.khunggio_id = khunggio_id;
+        this.keo = keo;
+        this.created_at = created_at;
+        this.updated_at = updated_at;
+        this.doibatdoi_id = doibatdoi_id;
     }
 
-    public void setID(int ID) {
-        this.ID = ID;
+    public int getDoidangtin_id() {
+        return doidangtin_id;
+    }
+
+    public void setDoidangtin_id(int doidangtin_id) {
+        this.doidangtin_id = doidangtin_id;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public Timestamp getCreated_at() {
@@ -48,36 +69,36 @@ public class DangTinDuongClass implements Serializable {
         this.updated_at = updated_at;
     }
 
-    public int getIdDoiBatDoi() {
-        return idDoiBatDoi;
+    public int getDoibatdoi_id() {
+        return doibatdoi_id;
     }
 
-    public void setIdDoiBatDoi(int idDoiBatDoi) {
-        this.idDoiBatDoi = idDoiBatDoi;
+    public void setDoibatdoi_id(int doibatdoi_id) {
+        this.doibatdoi_id = doibatdoi_id;
     }
 
-    public Date getNgayDienRaTranDau() {
-        return ngayDienRaTranDau;
+    public String getNgay() {
+        return ngay;
     }
 
-    public void setNgayDienRaTranDau(Date ngayDienRaTranDau) {
-        this.ngayDienRaTranDau = ngayDienRaTranDau;
+    public void setNgay(String ngay) {
+        this.ngay = ngay;
     }
 
-    public int getIdSanBong() {
-        return idSanBong;
+    public int getSanbong_id() {
+        return sanbong_id;
     }
 
-    public void setIdSanBong(int idSanBong) {
-        this.idSanBong = idSanBong;
+    public void setSanbong_id(int sanbong_id) {
+        this.sanbong_id = sanbong_id;
     }
 
-    public int getKhungGio() {
-        return khungGio;
+    public int getKhunggio_id() {
+        return khunggio_id;
     }
 
-    public void setKhungGio(int khungGio) {
-        this.khungGio = khungGio;
+    public void setKhunggio_id(int khunggio_id) {
+        this.khunggio_id = khunggio_id;
     }
 
     public String getKeo() {

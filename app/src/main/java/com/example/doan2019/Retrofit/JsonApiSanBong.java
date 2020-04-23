@@ -1,5 +1,8 @@
 package com.example.doan2019.Retrofit;
 
+import com.example.doan2019.DangTinDuongClass;
+import com.example.doan2019.DoiBongClass;
+
 import java.util.List;
 import java.util.Map;
 
@@ -8,6 +11,7 @@ import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.HeaderMap;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Path;
 
 public interface JsonApiSanBong {
@@ -34,4 +38,14 @@ public interface JsonApiSanBong {
     Call<DoiBong> postTaodoibongs(@HeaderMap Map<String, String> headers,
                                   @Body DoiBong doiBong
                                     );
+    @GET("cactindadang/{id}")
+    Call<List<DangTinDuongClass>> getDanhsachdangtins(@Path("id") int id);
+    @GET("batdoi/{id}")
+    Call<List<DoiBongClass>> getCacdoibatdoi(@HeaderMap Map<String,String> headers,
+            @Path("id") int id);
+    @PUT("batdoi/{id}")
+    Call<DangTin> chotkeo(@HeaderMap Map<String,String> headers,
+                   @Path("id") int id);
+    @GET("chitietdoibong/{id}")
+    Call<DoiBong> getChitietdoibong(@Path("id") int id);
 }

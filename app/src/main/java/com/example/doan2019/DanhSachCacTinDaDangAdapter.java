@@ -1,23 +1,31 @@
 package com.example.doan2019;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.example.doan2019.Retrofit.APIUtils;
+import com.example.doan2019.Retrofit.DoiBong;
+import com.example.doan2019.Retrofit.JsonApiSanBong;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class DanhSachCacTinDaDangAdapter extends BaseAdapter {
     private Context context;
     private int layout;
     private List<DangTinDuongClass> arrDangTin;
     private int idDoiBatDoi;
-
+    JsonApiSanBong jsonApiSanBong;
     public DanhSachCacTinDaDangAdapter(Context context, int layout, List<DangTinDuongClass> arrDangTin) {
         this.context = context;
         this.layout = layout;
@@ -26,6 +34,9 @@ public class DanhSachCacTinDaDangAdapter extends BaseAdapter {
 
     public DanhSachCacTinDaDangAdapter() {
     }
+
+
+
 
     @Override
     public int getCount() {
@@ -66,16 +77,40 @@ public class DanhSachCacTinDaDangAdapter extends BaseAdapter {
 
         //Gan gia tri
         DangTinDuongClass dangTin = arrDangTin.get(i);
-        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-        String time = dateFormat.format(dangTin.getCreated_at());
+        int timeId = dangTin.getKhunggio_id();
+        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+//        System.out.println("AAAA"+dangTin.getNgay());
+        String time = dangTin.getNgay();
+        Log.e("AAA", time);
+        if(timeId == 1)
+            time += " 17:30 - 19:00";
+        else if(timeId == 2){
+            time += " 19:00 - 20:30";
+        }
+        else if(timeId == 3){
+            time += " 20:30 - 22:00";
+        }
 
         viewHolder.txtThuTuTinDang.setText(i + 1 + "");
         viewHolder.txtNgayDangTin.setText(time);
-        if(dangTin.getIdDoiBatDoi() != -1){
-            viewHolder.txtDoiBatDoi.setText("Tên đội bóng bắt đối");
+        if(dangTin.getDoibatdoi_id() != -1){
+            jsonApiSanBong = APIUtils.getJsonApiSanBong();
+            Call<DoiBong> call = jsonApiSanBong.getChitietdoibong(dangTin.getDoibatdoi_id());
+            call.enqueue(new Callback<DoiBong>() {
+                @Override
+                public void onResponse(Call<DoiBong> call, Response<DoiBong> response) {
+                    viewHolder.txtDoiBatDoi.setText(response.body().getTen());
+                }
+
+                @Override
+                public void onFailure(Call<DoiBong> call, Throwable t) {
+
+                }
+            });
+
         }
         else{
-            viewHolder.txtDoiBatDoi.setVisibility(View.VISIBLE);
+            viewHolder.txtDoiBatDoi.setVisibility(View.INVISIBLE);
         }
 
         return view;

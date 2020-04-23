@@ -8,6 +8,6 @@ import retrofit2.http.GET;
 import retrofit2.http.HeaderMap;
 
 public interface JsonApiDangTin {
-    @GET("dangtin")
+    @GET("danhsachdangtin")
     Call<List<DangTin>> getDangTins(@HeaderMap Map<String, String> headers);
 }

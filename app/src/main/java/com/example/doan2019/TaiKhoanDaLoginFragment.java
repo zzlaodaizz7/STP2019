@@ -16,6 +16,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.doan2019.Retrofit.APIUtils;
 import com.example.doan2019.Retrofit.DoiBong;
 import com.example.doan2019.Retrofit.JsonApiSanBong;
 import com.facebook.AccessToken;
@@ -28,6 +29,7 @@ import com.google.android.gms.common.util.JsonUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.sql.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,23 +54,24 @@ public class TaiKhoanDaLoginFragment extends Fragment {
     ArrayList<String> arrTenCacFCThamGia;
     ArrayList<ThanhVienDoiBongClass> listThanhVienDoiBong;
     SharedPreferences sharedPreferences, sharedPreferencesOneSignal;
-    Retrofit retrofit;
+
     JsonApiSanBong jsonApiSanBong;
     ArrayAdapter arrayAdapter;
+
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         sharedPreferences = getActivity().getSharedPreferences("dataLogin", Context.MODE_PRIVATE);
         view = inflater.inflate(R.layout.fragment_tai_khoan_da_login, container, false);
         langNgheSuKienChuyenFragment = (LangNgheSuKienChuyenFragment) getActivity();
-        retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.1.4/DoAn/public/api/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-        jsonApiSanBong = retrofit.create(JsonApiSanBong.class);
+
+        jsonApiSanBong = APIUtils.getJsonApiSanBong();
+
         Mapping();
 
         GanNoiDung();
+
         GanNoiDungListCacFCDangThamGia();
 
         ClickTaoDoiBong();
@@ -92,7 +95,7 @@ public class TaiKhoanDaLoginFragment extends Fragment {
 //
                 Bundle bundle = new Bundle();
                 DoiBong doiBong = arrFCThamGia.get(i);
-                bundle.putSerializable("doibong", doiBong);
+                bundle.putSerializable("doibong1", doiBong);
                 chiTietDoiBongDaThamGiaFragment.setArguments(bundle);
                 langNgheSuKienChuyenFragment.ChuyenHuongFragment(chiTietDoiBongDaThamGiaFragment);
             }
@@ -124,8 +127,7 @@ public class TaiKhoanDaLoginFragment extends Fragment {
             public void onResponse(Call<List<DoiBong>> call, Response<List<DoiBong>> response) {
                 List<DoiBong> doiBongs = response.body();
                 for (DoiBong doiBong : doiBongs){
-                    System.out.println("id doi da tham gia: "+doiBong.getId() + doiBong.getTen());
-                    arrFCThamGia.add(new DoiBong(doiBong.getTen(),doiBong.getTrinhdo(),doiBong.getDiachi(),doiBong.getSdt(),anhBia,anhDaiDien,doiBong.getSodiem(),0,doiBong.getCreated_at()));
+                    arrFCThamGia.add(new DoiBong(doiBong.getId(), doiBong.getTen(),doiBong.getTrinhdo(),doiBong.getDiachi(),doiBong.getSdt(),anhBia,anhDaiDien,doiBong.getSodiem(),0,doiBong.getCreated_at(), doiBong.getUpdated_at()));
                     arrTenCacFCThamGia.add(doiBong.getTen());
                 }
                 listThanhVienDoiBong.add(new ThanhVienDoiBongClass("Nguyễn Văn A", "Đội trưởng", 1));

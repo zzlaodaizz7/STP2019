@@ -89,7 +89,11 @@ public class MainActivity extends AppCompatActivity implements LangNgheSuKienChu
                             menuDaChon = 3;
                             AccessToken accessToken = AccessToken.getCurrentAccessToken();
                             boolean isLoggedIn = accessToken != null && !accessToken.isExpired();
-                            isLoggedIn = true;
+                            if (sharedPreferencesDataLogin.getString("token","")==""){
+                                isLoggedIn = false;
+                            }else {
+                                isLoggedIn = true;
+                            }
                             if (isLoggedIn == false) {
                                 selectedFragment = new TaiKhoanFragment();
                             } else {

@@ -41,6 +41,7 @@ public class ChiTietDoiBongDaThamGiaFragment extends Fragment {
     LangNgheSuKienChuyenFragment langNgheSuKienChuyenFragment;
     Retrofit retrofit;
     JsonApiSanBong jsonApiSanBong;
+    int idItMe;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -149,7 +150,7 @@ public class ChiTietDoiBongDaThamGiaFragment extends Fragment {
     private void GanNoiDungThongTinDoiBong() {
         bundle = getArguments();
 
-        doiBong = (DoiBong) bundle.getSerializable("doibong");
+        doiBong = (DoiBong) bundle.getSerializable("doibong1");
         imgAnhBia.setImageBitmap(doiBong.getAnhbia());
         imgAnhDaiDien.setImageBitmap(doiBong.getAnhdaidien());
         txtTenDoiBong.setText(doiBong.getTen());

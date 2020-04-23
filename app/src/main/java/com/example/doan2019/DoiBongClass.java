@@ -3,21 +3,38 @@ package com.example.doan2019;
 import android.graphics.Bitmap;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 
 public class DoiBongClass implements Serializable {
-    private int ID;
+    private int id,batdoi_id;
     private String ten;
-    private double diem;
+    private int diem;
     private String diaChi;
     private String trinhDo;
     private String ngayThanhLap;
     private String soDienThoai;
     private Bitmap ImageBia, ImageDaiDien;
+    private Timestamp created_at,updated_at;
     private ArrayList<ThanhVienDoiBongClass> listThanhVien;
 
-    public DoiBongClass(int ID, String ten, double diem, String diaChi, String trinhDo, String ngayThanhLap, String soDienThoai, Bitmap imageBia, Bitmap imageDaiDien, ArrayList<ThanhVienDoiBongClass> listThanhVien) {
-        this.ID = ID;
+    public DoiBongClass(int id, String ten, int diem, String diaChi, String trinhDo, String ngayThanhLap, String soDienThoai, Bitmap imageBia, Bitmap imageDaiDien, Timestamp created_at, Timestamp updated_at, ArrayList<ThanhVienDoiBongClass> listThanhVien) {
+        this.id = id;
+        this.ten = ten;
+        this.diem = diem;
+        this.diaChi = diaChi;
+        this.trinhDo = trinhDo;
+        this.ngayThanhLap = ngayThanhLap;
+        this.soDienThoai = soDienThoai;
+        ImageBia = imageBia;
+        ImageDaiDien = imageDaiDien;
+        this.created_at = created_at;
+        this.updated_at = updated_at;
+        this.listThanhVien = listThanhVien;
+    }
+
+    public DoiBongClass(int id, String ten, int diem, String diaChi, String trinhDo, String ngayThanhLap, String soDienThoai, Bitmap imageBia, Bitmap imageDaiDien, ArrayList<ThanhVienDoiBongClass> listThanhVien) {
+        this.id = id;
         this.ten = ten;
         this.diem = diem;
         this.diaChi = diaChi;
@@ -29,7 +46,7 @@ public class DoiBongClass implements Serializable {
         this.listThanhVien = listThanhVien;
     }
 
-    public DoiBongClass(String ten, double diem, String diaChi, String trinhDo, String ngayThanhLap, String soDienThoai, Bitmap imageBia, Bitmap imageDaiDien, ArrayList<ThanhVienDoiBongClass> listThanhVien) {
+    public DoiBongClass(String ten, int diem, String diaChi, String trinhDo, String ngayThanhLap, String soDienThoai, Bitmap imageBia, Bitmap imageDaiDien, ArrayList<ThanhVienDoiBongClass> listThanhVien) {
         this.ten = ten;
         this.diem = diem;
         this.diaChi = diaChi;
@@ -44,6 +61,49 @@ public class DoiBongClass implements Serializable {
     public DoiBongClass() {
     }
 
+    public DoiBongClass(int id, int batdoi_id, String ten, int diem, String diaChi, String trinhDo, String soDienThoai, Timestamp created_at, Bitmap anhBia, Bitmap anhDaiDien, ArrayList<ThanhVienDoiBongClass> listThanhVienDoiBong) {
+        this.id = id;
+        this.batdoi_id = batdoi_id;
+        this.ten = ten;
+        this.diem = diem;
+        this.diaChi = diaChi;
+        this.trinhDo = trinhDo;
+        this.soDienThoai = soDienThoai;
+        this.created_at = created_at;
+        ImageBia  = anhBia;
+        ImageDaiDien = anhDaiDien;
+        this.listThanhVien = listThanhVienDoiBong;
+    }
+
+
+    public int getBatdoi_id() {
+        return batdoi_id;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public Timestamp getCreated_at() {
+        return created_at;
+    }
+
+    public void setCreated_at(Timestamp created_at) {
+        this.created_at = created_at;
+    }
+
+    public Timestamp getUpdated_at() {
+        return updated_at;
+    }
+
+    public void setUpdated_at(Timestamp updated_at) {
+        this.updated_at = updated_at;
+    }
+
     public String getTen() {
         return ten;
     }
@@ -52,12 +112,8 @@ public class DoiBongClass implements Serializable {
         this.ten = ten;
     }
 
-    public double getDiem() {
+    public int getDiem() {
         return diem;
-    }
-
-    public void setDiem(float diem) {
-        this.diem = diem;
     }
 
     public String getDiaChi() {
@@ -96,7 +152,7 @@ public class DoiBongClass implements Serializable {
         return listThanhVien;
     }
 
-    public void setDiem(double diem) {
+    public void setDiem(int diem) {
         this.diem = diem;
     }
 

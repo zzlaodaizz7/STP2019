@@ -15,10 +15,20 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+
+import com.example.doan2019.Retrofit.JsonApiSanBong;
+import com.example.doan2019.Retrofit.SanBong;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class TimSanFragment extends Fragment {
     private View view;
@@ -29,13 +39,18 @@ public class TimSanFragment extends Fragment {
     Dialog dialogSoNguoi;
     ArrayList<Integer> arrSoNguoi;
     LangNgheSuKienChuyenFragment langNgheSuKienChuyenFragment;
-
+    Retrofit retrofit;
+    JsonApiSanBong jsonApiSanBong;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_tim_san, container, false);
         langNgheSuKienChuyenFragment = (LangNgheSuKienChuyenFragment) getActivity();
-
+        retrofit = new Retrofit.Builder()
+                .baseUrl("http://192.168.1.4/DoAn/public/api/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        jsonApiSanBong = retrofit.create(JsonApiSanBong.class);
         Mapping();
 
         KhoiTaoListViewSanBong();
@@ -113,19 +128,36 @@ public class TimSanFragment extends Fragment {
     private void KhoiTaoListViewSanBong() {
         arrSanBong = new ArrayList<>();
         Bitmap largeIcon = BitmapFactory.decodeResource(getResources(), R.drawable.icon_app);
+        Call<List<SanBong>> call = jsonApiSanBong.getSanbongs();
+        call.enqueue(new Callback<List<SanBong>>() {
+            @Override
+            public void onResponse(Call<List<SanBong>> call, Response<List<SanBong>> response) {
+                List<SanBong> sanBong = response.body();
+                for (SanBong sanBongs : sanBong){
+                    arrSanBong.add(new SanBongClass(sanBongs.getId(), sanBongs.getTen(), sanBongs.getSonguoi(), sanBongs.getDiachi(), sanBongs.getMota(), sanBongs.getSdt(), largeIcon));
+                }
+                adapter = new TimSanAdapter(getActivity(), R.layout.dong_san_bong, arrSanBong);
+                lvSanBong.setAdapter(adapter);
+                SetListViewHeightBasedOnChildren(adapter, lvSanBong);
+            }
 
+            @Override
+            public void onFailure(Call<List<SanBong>> call, Throwable t) {
 
-        arrSanBong.add(new SanBongClass(1, "Sân Cầu Giấy", 11, "Số 123, Đường 321, Cầu Giấy, Hà Nội, Việt Nam", "", "0123456789", largeIcon));
-        arrSanBong.add(new SanBongClass(1, "Sân Mễ Trì", 11, "Số 123, Đường 321, Mễ Trì, Hà Nội, Việt Nam", "", "0123456789", largeIcon));
-        arrSanBong.add(new SanBongClass(1, "Sân Thành Phát", 11, "Số 123, Đường 321, Cầu Giấy, Hà Nội, Việt Nam", "", "0123456789", largeIcon));
-        arrSanBong.add(new SanBongClass(1, "Sân Hoà Phát", 11, "Số 123, Đường 321, Cầu Giấy, Hà Nội, Việt Nam", "", "0123456789", largeIcon));
-        arrSanBong.add(new SanBongClass(1, "Sân Kim Long", 11, "Số 123, Đường 321, Cầu Giấy, Hà Nội, Việt Nam", "", "0123456789", largeIcon));
-        arrSanBong.add(new SanBongClass(1, "Sân VINA", 11, "Số 123, Đường 321, Cầu Giấy, Hà Nội, Việt Nam", "", "0123456789", largeIcon));
-        arrSanBong.add(new SanBongClass(1, "Sân Láng Hạ", 11, "Số 123, Đường 321, Cầu Giấy, Hà Nội, Việt Nam", "", "0123456789", largeIcon));
+            }
+        });
 
-        adapter = new TimSanAdapter(getActivity(), R.layout.dong_san_bong, arrSanBong);
-        lvSanBong.setAdapter(adapter);
-        SetListViewHeightBasedOnChildren(adapter, lvSanBong);
+//        arrSanBong.add(new SanBongClass(1, "Sân Cầu Giấy", 11, "Số 123, Đường 321, Cầu Giấy, Hà Nội, Việt Nam", "", "0123456789", largeIcon));
+//        arrSanBong.add(new SanBongClass(1, "Sân Mễ Trì", 11, "Số 123, Đường 321, Mễ Trì, Hà Nội, Việt Nam", "", "0123456789", largeIcon));
+//        arrSanBong.add(new SanBongClass(1, "Sân Thành Phát", 11, "Số 123, Đường 321, Cầu Giấy, Hà Nội, Việt Nam", "", "0123456789", largeIcon));
+//        arrSanBong.add(new SanBongClass(1, "Sân Hoà Phát", 11, "Số 123, Đường 321, Cầu Giấy, Hà Nội, Việt Nam", "", "0123456789", largeIcon));
+//        arrSanBong.add(new SanBongClass(1, "Sân Kim Long", 11, "Số 123, Đường 321, Cầu Giấy, Hà Nội, Việt Nam", "", "0123456789", largeIcon));
+//        arrSanBong.add(new SanBongClass(1, "Sân VINA", 11, "Số 123, Đường 321, Cầu Giấy, Hà Nội, Việt Nam", "", "0123456789", largeIcon));
+//        arrSanBong.add(new SanBongClass(1, "Sân Láng Hạ", 11, "Số 123, Đường 321, Cầu Giấy, Hà Nội, Việt Nam", "", "0123456789", largeIcon));
+//
+//        adapter = new TimSanAdapter(getActivity(), R.layout.dong_san_bong, arrSanBong);
+//        lvSanBong.setAdapter(adapter);
+//        SetListViewHeightBasedOnChildren(adapter, lvSanBong);
     }
 
     private void SetListViewHeightBasedOnChildren(TimSanAdapter matchAdapter, ListView listView) {

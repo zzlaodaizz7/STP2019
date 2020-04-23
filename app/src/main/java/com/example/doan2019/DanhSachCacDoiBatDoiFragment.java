@@ -1,5 +1,7 @@
 package com.example.doan2019;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -12,10 +14,22 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+
+import com.example.doan2019.DoiBongClass;
+import com.example.doan2019.Retrofit.JsonApiSanBong;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class DanhSachCacDoiBatDoiFragment extends Fragment {
     private View view;
@@ -27,13 +41,22 @@ public class DanhSachCacDoiBatDoiFragment extends Fragment {
     DanhSachCacDoiBatDoiAdapter adapter;
     Bundle bundle;
     private int IDTinDang;
-
+    Retrofit retrofit;
+    JsonApiSanBong jsonApiSanBong;
+    SharedPreferences sharedPreferences;
+    String Auth = "";
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        sharedPreferences = getActivity().getSharedPreferences("dataLogin", Context.MODE_PRIVATE);
         view = inflater.inflate(R.layout.fragment_cac_doi_bat_doi, container, false);
         langNgheSuKienChuyenFragment = (LangNgheSuKienChuyenFragment) getActivity();
-
+        retrofit = new Retrofit.Builder()
+                .baseUrl("http://192.168.1.4/DoAn/public/api/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        jsonApiSanBong = retrofit.create(JsonApiSanBong.class);
+        Auth = sharedPreferences.getString("token","");
         Mapping();
 
         ClickQuayLai();
@@ -58,9 +81,8 @@ public class DanhSachCacDoiBatDoiFragment extends Fragment {
 
     private void GetDuLieuIDDangTin() {
         bundle = getArguments();
-
         DangTinDuongClass dangTin = (DangTinDuongClass) bundle.getSerializable("tindang");
-        Toast.makeText(getActivity(), "ID tin đăng: " + dangTin.getID(), Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity(), "ID tin đăng: " + dangTin.getId(), Toast.LENGTH_SHORT).show();
     }
 
     private void ClickListview() {
@@ -83,24 +105,50 @@ public class DanhSachCacDoiBatDoiFragment extends Fragment {
     private void KhoiTaoListView() {
         listDoiBong = new ArrayList<>();
         listThanhVienDoiBong = new ArrayList<>();
+        bundle = getArguments();
+        DangTinDuongClass dangTin = (DangTinDuongClass) bundle.getSerializable("tindang");
         Bitmap anhDaiDien = BitmapFactory.decodeResource(getResources(), R.drawable.icon_app);
         Bitmap anhBia = BitmapFactory.decodeResource(getResources(), R.drawable.anh_test_doi_bong);
+        Map<String,String> header = new HashMap<>();
+        header.put("value","application/json");
+        header.put("Accept","application/json");
+        header.put("Authorization","Bearer "+Auth);
+        System.out.println("GAN LIST VIEW: "+dangTin.getId());
+        Call<List<DoiBongClass>> call = jsonApiSanBong.getCacdoibatdoi(header,dangTin.getId());
+        call.enqueue(new Callback<List<DoiBongClass>>() {
+            @Override
+            public void onResponse(Call<List<DoiBongClass>> call, Response<List<DoiBongClass>> response) {
+                System.out.println("Code: "+response.body().size());
+                List<DoiBongClass> doiBongClasses = response.body();
+                for (DoiBongClass doiBongClass : doiBongClasses){
 
-        listThanhVienDoiBong.add(new ThanhVienDoiBongClass("Nguyễn Văn A", "Đội trưởng", 1));
-        listThanhVienDoiBong.add(new ThanhVienDoiBongClass("Nguyễn Văn B", "Cầu thủ", 2));
-        listThanhVienDoiBong.add(new ThanhVienDoiBongClass("Nguyễn Văn C", "Cầu thủ", 3));
-        listThanhVienDoiBong.add(new ThanhVienDoiBongClass("Nguyễn Văn D", "Cầu thủ", 4));
-        listThanhVienDoiBong.add(new ThanhVienDoiBongClass("Nguyễn Văn E", "Đội phó", 5));
+                    listDoiBong.add(new DoiBongClass(doiBongClass.getId(),doiBongClass.getBatdoi_id(),doiBongClass.getTen(), doiBongClass.getDiem(), doiBongClass.getDiaChi(), doiBongClass.getTrinhDo(), doiBongClass.getSoDienThoai(), doiBongClass.getCreated_at(), anhBia, anhDaiDien, listThanhVienDoiBong));
 
-        listDoiBong.add(new DoiBongClass("FC fb", 3.02, "Hà Nội, Việt Nam", "Khá", "11/10/2010", "0123456789", anhBia, anhDaiDien, listThanhVienDoiBong));
-        listDoiBong.add(new DoiBongClass("FC Linh Đàm", 3.02, "Hà Nội, Việt Nam", "Khá", "11/10/2010", "0123456789", anhBia, anhDaiDien, listThanhVienDoiBong));
-        listDoiBong.add(new DoiBongClass("FC Cầu Giấy", 3.02, "Hà Nội, Việt Nam", "Khá", "11/10/2010", "0123456789", anhBia, anhDaiDien, listThanhVienDoiBong));
-        listDoiBong.add(new DoiBongClass("FC Mễ Trì", 3.02, "Hà Nội, Việt Nam", "Khá", "11/10/2010", "0123456789", anhBia, anhDaiDien, listThanhVienDoiBong));
-        listDoiBong.add(new DoiBongClass("FC Lê Đức Thọ", 3.02, "Hà Nội, Việt Nam", "Khá", "11/10/2010", "0123456789", anhBia, anhDaiDien, listThanhVienDoiBong));
+                }
+                listThanhVienDoiBong.add(new ThanhVienDoiBongClass("Nguyễn Văn A", "Đội trưởng", 1));
+                listThanhVienDoiBong.add(new ThanhVienDoiBongClass("Nguyễn Văn B", "Cầu thủ", 2));
+                listThanhVienDoiBong.add(new ThanhVienDoiBongClass("Nguyễn Văn C", "Cầu thủ", 3));
+                listThanhVienDoiBong.add(new ThanhVienDoiBongClass("Nguyễn Văn D", "Cầu thủ", 4));
+                listThanhVienDoiBong.add(new ThanhVienDoiBongClass("Nguyễn Văn E", "Đội phó", 5));
+                adapter = new DanhSachCacDoiBatDoiAdapter(getActivity(), R.layout.dong_doi_bat_doi, listDoiBong);
+                lvDoiBongBatDoi.setAdapter(adapter);
+                SetListViewHeightBasedOnChildren(adapter, lvDoiBongBatDoi);
+            }
 
-        adapter = new DanhSachCacDoiBatDoiAdapter(getActivity(), R.layout.dong_doi_bat_doi, listDoiBong);
-        lvDoiBongBatDoi.setAdapter(adapter);
-        SetListViewHeightBasedOnChildren(adapter, lvDoiBongBatDoi);
+            @Override
+            public void onFailure(Call<List<DoiBongClass>> call, Throwable t) {
+                System.out.println("Loi: "+t.getMessage());
+            }
+        });
+
+
+
+//        listDoiBong.add(new DoiBongClass("FC Linh Đàm", 3.02, "Hà Nội, Việt Nam", "Khá", "11/10/2010", "0123456789", anhBia, anhDaiDien, listThanhVienDoiBong));
+//        listDoiBong.add(new DoiBongClass("FC Cầu Giấy", 3.02, "Hà Nội, Việt Nam", "Khá", "11/10/2010", "0123456789", anhBia, anhDaiDien, listThanhVienDoiBong));
+//        listDoiBong.add(new DoiBongClass("FC Mễ Trì", 3.02, "Hà Nội, Việt Nam", "Khá", "11/10/2010", "0123456789", anhBia, anhDaiDien, listThanhVienDoiBong));
+//        listDoiBong.add(new DoiBongClass("FC Lê Đức Thọ", 3.02, "Hà Nội, Việt Nam", "Khá", "11/10/2010", "0123456789", anhBia, anhDaiDien, listThanhVienDoiBong));
+
+
     }
 
     private void SetListViewHeightBasedOnChildren(DanhSachCacDoiBatDoiAdapter matchAdapter, ListView listView) {

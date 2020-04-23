@@ -28,6 +28,20 @@ public class DoiBong implements Serializable {
         this.user_id = user_id;
     }
 
+    public DoiBong(int id, String ten, String trinhdo, String diachi, String sdt, Bitmap anhbia, Bitmap anhdaidien, int sodiem, int hanhkiem, Timestamp created_at, Timestamp updated_at) {
+        this.id = id;
+        this.ten = ten;
+        this.trinhdo = trinhdo;
+        this.diachi = diachi;
+        this.sdt = sdt;
+        this.anhbia = anhbia;
+        this.anhdaidien = anhdaidien;
+        this.sodiem = sodiem;
+        this.hanhkiem = hanhkiem;
+        this.created_at = created_at;
+        this.updated_at = updated_at;
+    }
+
     public DoiBong(String ten, String trinhdo, String diachi, String sdt, Bitmap anhbia, Bitmap anhdaidien, int sodiem, int hanhkiem, Timestamp created_at) {
         this.ten = ten;
         this.trinhdo = trinhdo;

@@ -1,8 +1,9 @@
 package com.example.doan2019.Retrofit;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 
-public class DangTin {
+public class DangTin implements Serializable {
 //    private int doidangtin_id,san_id,khunggio_id;
 //    private String ngay,keo;
 //    private String type;
@@ -35,6 +36,21 @@ public class DangTin {
         this.keo = keo;
         this.san_id = san_id;
         this.khunggio_id = khunggio_id;
+    }
+
+    public DangTin(int id, int doidangtin_id, int doibatdoi_id, String ngay, String keo, int san_id, int khunggio_id, Timestamp created_at, Timestamp updated_at) {
+        this.id = id;
+        this.doidangtin_id = doidangtin_id;
+        this.doibatdoi_id = doibatdoi_id;
+        this.ngay = ngay;
+        this.keo = keo;
+        this.san_id = san_id;
+        this.khunggio_id = khunggio_id;
+        this.created_at = created_at;
+        this.updated_at = updated_at;
+    }
+
+    public DangTin(int id, String ngay, int san_id, int khunggio_id, String keo, Timestamp created_at, Timestamp updated_at, int doibatdoi_id) {
     }
 
     public int getId() {
