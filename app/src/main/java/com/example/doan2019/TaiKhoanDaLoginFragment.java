@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,6 +26,7 @@ import com.facebook.GraphResponse;
 import com.facebook.login.LoginManager;
 import com.facebook.login.widget.ProfilePictureView;
 import com.google.android.gms.common.util.JsonUtils;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -57,8 +59,7 @@ public class TaiKhoanDaLoginFragment extends Fragment {
 
     JsonApiSanBong jsonApiSanBong;
     ArrayAdapter arrayAdapter;
-
-
+    ImageView imageProfilePicture2;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -120,6 +121,11 @@ public class TaiKhoanDaLoginFragment extends Fragment {
         //gan ten email
         txtName.setText(sharedPreferences.getString("ten",""));
         txtEmail.setText(sharedPreferences.getString("email",""));
+        Log.d("anhbia", "anh bia" + sharedPreferences.getString("anhbia",""));
+        if(!sharedPreferences.getString("anhbia","").equals("")){
+            Picasso.get().load(sharedPreferences.getString("anhbia","")).into(imageProfilePicture2);
+        }
+
 
         Call<List<DoiBong>> call = jsonApiSanBong.getCacdoidathamgias(sharedPreferences.getInt("id",1));
         call.enqueue(new Callback<List<DoiBong>>() {
@@ -249,5 +255,6 @@ public class TaiKhoanDaLoginFragment extends Fragment {
         txtDiaChi = view.findViewById(R.id.TextViewDiaChi);
         txtDangXuat = view.findViewById(R.id.TextViewDangXuat);
         txtChinhSua = view.findViewById(R.id.TextViewChinhSua);
+        imageProfilePicture2 = view.findViewById(R.id.ImageProfilePicture2);
     }
 }

@@ -23,6 +23,30 @@ public class DangTinAdapter extends BaseAdapter {
         this.dangTinDTOS = dangTinDTOS;
     }
 
+    public Context getContext() {
+        return context;
+    }
+
+    public void setContext(Context context) {
+        this.context = context;
+    }
+
+    public int getLayout() {
+        return layout;
+    }
+
+    public void setLayout(int layout) {
+        this.layout = layout;
+    }
+
+    public List<DangTinDTO> getDangTinDTOS() {
+        return dangTinDTOS;
+    }
+
+    public void setDangTinDTOS(List<DangTinDTO> dangTinDTOS) {
+        this.dangTinDTOS = dangTinDTOS;
+    }
+
     @Override
     public int getCount() {
         return dangTinDTOS.size();
@@ -30,7 +54,7 @@ public class DangTinAdapter extends BaseAdapter {
 
     @Override
     public Object getItem(int position) {
-        return null;
+        return dangTinDTOS.get(position);
     }
 
     @Override

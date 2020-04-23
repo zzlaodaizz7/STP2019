@@ -10,20 +10,21 @@ public class User implements Serializable {
     private String password;
     private String device;
     private String sdt;
-    private String anh_bia;
+    private String anhbia;
     private String remember_token;
     private String created_at;
     private String update_at;
+    private String type, tittle, content;
 
     public User(){}
-    public User(int id, String ten, String email, String email_verified_at, String password, String sdt, String anh_bia, String remember_token, String created_at, String update_at) {
+    public User(int id, String ten, String email, String email_verified_at, String password, String sdt, String anhbia, String remember_token, String created_at, String update_at) {
         this.id = id;
         this.ten = ten;
         this.email = email;
         this.email_verified_at = email_verified_at;
         this.password = password;
         this.sdt = sdt;
-        this.anh_bia = anh_bia;
+        this.anhbia = anhbia;
         this.remember_token = remember_token;
         this.created_at = created_at;
         this.update_at = update_at;
@@ -83,12 +84,12 @@ public class User implements Serializable {
         this.sdt = sdt;
     }
 
-    public String getAnh_bia() {
-        return anh_bia;
+    public String getAnhbia() {
+        return anhbia;
     }
 
-    public void setAnh_bia(String anh_bia) {
-        this.anh_bia = anh_bia;
+    public void setAnhbia(String anhbia) {
+        this.anhbia = anhbia;
     }
 
     public String getRemember_token() {

@@ -50,11 +50,11 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class TimDoiFragment extends Fragment implements OSSubscriptionObserver {
+public class TimDoiFragment extends Fragment{
 
     ScrollView scrollView;
     EditText editTextTimTheoTenDoiHoacTenSan;
-    ListView listViewTinTimDoi, listViewTrangThai, listViewTrinhDo, listViewChonTimKiemTheoTenHaySan;
+    ListView listViewTinTimDoi, listViewTrangThai, listViewTrinhDo, listViewChonTimKiemTheoTenHaySan, mainLV;
     ArrayList<DangTinDTO> dangTinDTOArrayList, dangTinDTOTimKiemArrayList;
     ArrayList<SanBong> sanBongArrayList;
     ArrayList<DangTin> dangTinArrayList;
@@ -67,17 +67,16 @@ public class TimDoiFragment extends Fragment implements OSSubscriptionObserver {
     ArrayList<DoiBong_NguoiDung> doiBong_nguoiDungArrayList;
     TextView txtChonNgay;
     ImageButton btnThongBao;
-    String doibongTK, sanbongTK, trangthaiTK, trinhdoTK, thoigianTK, danhmucTK;
+    String doibongTK, sanbongTK, trangthaiTK, trinhdoTK, thoigianTK, danhmucTK, Auth = "";
     int doitruongdoidangtin_id, doitruongdoibatdoi_id;
     View view;
-    String Auth = "";
     Map<String,String> header;
     JsonApiKhungGio jsonApiKhungGio;
     JsonApiSanBong jsonApiSanBong;
     JsonApiDoiBong jsonApiDoiBong;
     JsonApiDangTin jsonApiDangTin;
     JsonApiDoiBongNGuoiDung jsonApiDoiBongNGuoiDung;
-    SharedPreferences sharedPreferences;
+    SharedPreferences sharedPreferences, sharedPreferencesLoadTimDoi;
     LangNgheSuKienChuyenFragment langNgheSuKienChuyenFragment;
 
     @Nullable
@@ -111,6 +110,60 @@ public class TimDoiFragment extends Fragment implements OSSubscriptionObserver {
     }
 
     private void loadListViewTinTimDoi(){
+        if(sharedPreferencesLoadTimDoi.getString("isLoaded", "").equals("true")){
+
+            DangTinService.loadDangTin(mainLV, dangTinDTOArrayList);
+            dangTinAdapter = new DangTinAdapter(getActivity(), R.layout._match, dangTinDTOArrayList);
+            listViewTinTimDoi.setAdapter(dangTinAdapter);
+            setListViewHeightBasedOnChildren(dangTinAdapter, listViewTinTimDoi);
+            //listViewTinTimDoi.getAdapter().ge
+        }
+        else{
+            loadListDoiBong();
+            loadListKhungGio();
+            loadListViewTinTimDoi1();
+        }
+    }
+
+    private void loadListKhungGio(){
+        Call<List<KhungGio>> call1 = jsonApiKhungGio.getKhungGios(header);
+        call1.enqueue(new Callback<List<KhungGio>>() {
+            @Override
+            public void onResponse(Call<List<KhungGio>> call, Response<List<KhungGio>> response) {
+                List<KhungGio> khungGios = response.body();
+                for (KhungGio khungGio : khungGios) {
+                    khungGioArrayList.add(khungGio);
+                    Log.d("test", khungGioArrayList + "");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<KhungGio>> call, Throwable t) {
+            }
+        });
+    }
+
+    private void loadListDoiBong(){
+        Call<List<DoiBong>> call2 = jsonApiDoiBong.getDoiBongs(header);
+        call2.enqueue(new Callback<List<DoiBong>>() {
+            @Override
+            public void onResponse(Call<List<DoiBong>> call, Response<List<DoiBong>> response) {
+                List<DoiBong> doiBongs = response.body();
+                for (DoiBong doiBong : doiBongs) {
+                    doiBongArrayList.add(doiBong);
+                    Log.d("test", doiBong.getTen() + "");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<DoiBong>> call, Throwable t) {
+            }
+        });
+    }
+
+
+
+    private void loadListViewTinTimDoi1(){
         // lay du lieu san bong
         sanBongArrayList = new ArrayList<>();
         Call<List<SanBong>> call = jsonApiSanBong.getSanbongs();
@@ -122,24 +175,24 @@ public class TimDoiFragment extends Fragment implements OSSubscriptionObserver {
                     sanBongArrayList.add(sanBong);
                     Log.d("test", sanBongArrayList + "");
                 }
-                Call<List<KhungGio>> call1 = jsonApiKhungGio.getKhungGios(header);
-                call1.enqueue(new Callback<List<KhungGio>>() {
-                    @Override
-                    public void onResponse(Call<List<KhungGio>> call, Response<List<KhungGio>> response) {
-                        List<KhungGio> khungGios = response.body();
-                        for (KhungGio khungGio : khungGios) {
-                            khungGioArrayList.add(khungGio);
-                            Log.d("test", khungGioArrayList + "");
-                        }
-                        Call<List<DoiBong>> call2 = jsonApiDoiBong.getDoiBongs(header);
-                        call2.enqueue(new Callback<List<DoiBong>>() {
-                            @Override
-                            public void onResponse(Call<List<DoiBong>> call, Response<List<DoiBong>> response) {
-                                List<DoiBong> doiBongs = response.body();
-                                for (DoiBong doiBong : doiBongs) {
-                                    doiBongArrayList.add(doiBong);
-                                    Log.d("test", doiBong.getTen() + "");
-                                }
+//                Call<List<KhungGio>> call1 = jsonApiKhungGio.getKhungGios(header);
+//                call1.enqueue(new Callback<List<KhungGio>>() {
+//                    @Override
+//                    public void onResponse(Call<List<KhungGio>> call, Response<List<KhungGio>> response) {
+//                        List<KhungGio> khungGios = response.body();
+//                        for (KhungGio khungGio : khungGios) {
+//                            khungGioArrayList.add(khungGio);
+//                            Log.d("test", khungGioArrayList + "");
+//                        }
+//                        Call<List<DoiBong>> call2 = jsonApiDoiBong.getDoiBongs(header);
+//                        call2.enqueue(new Callback<List<DoiBong>>() {
+//                            @Override
+//                            public void onResponse(Call<List<DoiBong>> call, Response<List<DoiBong>> response) {
+//                                List<DoiBong> doiBongs = response.body();
+//                                for (DoiBong doiBong : doiBongs) {
+//                                    doiBongArrayList.add(doiBong);
+//                                    Log.d("test", doiBong.getTen() + "");
+//                                }
                                 Call<List<DoiBong_NguoiDung>> call3 = jsonApiDoiBongNGuoiDung.getThanhViens(header);
                                 call3.enqueue(new Callback<List<DoiBong_NguoiDung>>() {
                                     @Override
@@ -212,9 +265,13 @@ public class TimDoiFragment extends Fragment implements OSSubscriptionObserver {
 
                                                     DangTinDTO dangTinDTO = ModelMapper.toDangTinDTO(dangTin, doidangtin_ten, doitruongdoidangtin_id, doibatdoi_ten, doitruongdoibatdoi_id, trangthai, trinhdo, san_ten, khunggio_giatri);
                                                     dangTinDTOArrayList.add(dangTinDTO);
-                                                    Log.d("uu", dangTinDTO.getDoitruongdoibatdoi_id()+" "+dangTinDTO.getDoitruongdoidangtin_id());
+                                                    //Log.d("uu", dangTinDTO.getDoitruongdoibatdoi_id()+" "+dangTinDTO.getDoitruongdoidangtin_id());
                                                 }
+                                                SharedPreferences.Editor editor = sharedPreferencesLoadTimDoi.edit();
+                                                editor.putString("isLoaded", "true");
+                                                editor.commit();
                                                 dangTinAdapter = new DangTinAdapter(getActivity(), R.layout._match, dangTinDTOArrayList);
+                                                mainLV.setAdapter(dangTinAdapter);
                                                 listViewTinTimDoi.setAdapter(dangTinAdapter);
                                                 setListViewHeightBasedOnChildren(dangTinAdapter, listViewTinTimDoi);
                                             }
@@ -229,18 +286,18 @@ public class TimDoiFragment extends Fragment implements OSSubscriptionObserver {
                                     public void onFailure(Call<List<DoiBong_NguoiDung>> call, Throwable t) {
                                     }
                                 });
-                            }
-
-                            @Override
-                            public void onFailure(Call<List<DoiBong>> call, Throwable t) {
-                            }
-                        });
-                    }
-
-                    @Override
-                    public void onFailure(Call<List<KhungGio>> call, Throwable t) {
-                    }
-                });
+//                            }
+//
+//                            @Override
+//                            public void onFailure(Call<List<DoiBong>> call, Throwable t) {
+//                            }
+//                        });
+//                    }
+//
+//                    @Override
+//                    public void onFailure(Call<List<KhungGio>> call, Throwable t) {
+//                    }
+//                });
             }
             @Override
             public void onFailure(Call<List<SanBong>> call, Throwable t) {
@@ -250,6 +307,8 @@ public class TimDoiFragment extends Fragment implements OSSubscriptionObserver {
     }
 
     private void mapping(){
+        sharedPreferencesLoadTimDoi = getActivity().getSharedPreferences("LoadDataDangTin", Context.MODE_PRIVATE);
+
         sharedPreferences = getActivity().getSharedPreferences("dataLogin", Context.MODE_PRIVATE);
         Auth = sharedPreferences.getString("token","");
         header = new HashMap<>();
@@ -264,6 +323,7 @@ public class TimDoiFragment extends Fragment implements OSSubscriptionObserver {
         jsonApiDoiBongNGuoiDung = APIUtils.getJsonApiDoiBongNguoiDung();
 
         doibongTK = ""; sanbongTK = ""; trangthaiTK = ""; trinhdoTK = ""; thoigianTK = ""; danhmucTK = "";
+
         dangTinArrayList = new ArrayList<>();
         khungGioArrayList = new ArrayList<>();
         doiBongArrayList = new ArrayList<>();
@@ -280,6 +340,8 @@ public class TimDoiFragment extends Fragment implements OSSubscriptionObserver {
         btnThongBao = (ImageButton) view.findViewById(R.id.btnThongBao);
         btnTimTranDau = (Button) view.findViewById(R.id.btnTimTranDau);
         btnChonTimKiemTheoTenHaySan = (Button) view.findViewById(R.id.btnChonTimKiemTheoTenHaySan);
+        //list view cua mainActivity
+        mainLV = (ListView) getActivity().findViewById(R.id.mainLV);
     }
 
     private void clickChonNgay() {
@@ -318,6 +380,7 @@ public class TimDoiFragment extends Fragment implements OSSubscriptionObserver {
                 view.setLayoutParams(new ViewGroup.LayoutParams(desiredWidth, ViewGroup.LayoutParams.WRAP_CONTENT));
 
             view.measure(desiredWidth, View.MeasureSpec.UNSPECIFIED);
+            //Log.d("timsan", totalHeight+"");
             totalHeight += view.getMeasuredHeight();
         }
         ViewGroup.LayoutParams params = listView.getLayoutParams();
@@ -459,11 +522,12 @@ public class TimDoiFragment extends Fragment implements OSSubscriptionObserver {
                 BatDoiFragment batDoiFragment = new BatDoiFragment();
 
                 Bundle bundle = new Bundle();
-
-                DangTinDTO dangTinDTO = dangTinDTOArrayList.get(position);
+                DangTinDTO dangTinDTO;
+                dangTinDTO = dangTinDTOArrayList.get(position);
                 bundle.putSerializable("batdoi", dangTinDTO);
                 batDoiFragment.setArguments(bundle);
 
+                //getFragmentManager().beginTransaction().replace(R.id.fragment_container, batDoiFragment).commit();
                 langNgheSuKienChuyenFragment.ChuyenHuongFragment(batDoiFragment);
             }
         });
@@ -538,10 +602,4 @@ public class TimDoiFragment extends Fragment implements OSSubscriptionObserver {
     }
 
 
-    @Override
-    public void onOSSubscriptionChanged(OSSubscriptionStateChanges stateChanges) {
-
-
-
-    }
 }

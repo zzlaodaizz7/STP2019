@@ -7,7 +7,7 @@ import java.sql.Timestamp;
 public class UserLogin {
     private int id;
     private String ten,email,sdt,password,token,error;
-    private Bitmap anhbia;
+    private String anhbia;
     private Timestamp created_at,updated_at;
 
 
@@ -59,11 +59,11 @@ public class UserLogin {
         this.sdt = sdt;
     }
 
-    public Bitmap getAnhbia() {
+    public String getAnhbia() {
         return anhbia;
     }
 
-    public void setAnhbia(Bitmap anhbia) {
+    public void setAnhbia(String anhbia) {
         this.anhbia = anhbia;
     }
 

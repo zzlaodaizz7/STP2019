@@ -115,7 +115,10 @@ public class DangNhapFragment extends Fragment {
                             editor.putInt("id",response.body().getId());
                             editor.putString("email",response.body().getEmail());
                             editor.putString("ten",response.body().getTen());
+                            editor.putString("anhbia", response.body().getAnhbia());
+
                             editor.commit();
+                            Log.d("anhbia", "anh bia: "+sharedPreferences.getString("anhbia",""));
                             if(sharedPreferencesOneSignal.getString("changed", "").equals("true")){
                                 user = new User();
                                 Call<User> calluser = jsonApiUser.getNguoiDung(sharedPreferences.getInt("id", -1));
