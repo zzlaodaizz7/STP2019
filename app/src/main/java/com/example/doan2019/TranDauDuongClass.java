@@ -1,38 +1,37 @@
 package com.example.doan2019;
 
 import java.io.Serializable;
-import java.sql.Date;
 
 public class TranDauDuongClass implements Serializable {
     int idTranDau;
     DoiBongClass doiBongDoiThu;
     DoiBongClass doiMinh;
-    Date ngay;
+    String ngay;
     int khungGio;
     int idSan;
-    int soBanThangBenMinh;
-    int soBanThangDoiThu;
+    int banthangdoidangtin;
+    int banthangdoibatdoi;
     String keo;
-    Boolean voted;
+    int voted;
 
-    public TranDauDuongClass(int idTranDau, DoiBongClass doiBongDoiThu, DoiBongClass doiMinh, Date ngay, int khungGio, int idSan, int soBanThangBenMinh, int soBanThangDoiThu, String keo, Boolean voted) {
+    public TranDauDuongClass(int idTranDau, DoiBongClass doiBongDoiThu, DoiBongClass doiMinh, String ngay, int khungGio, int idSan, int banthangdoidangtin, int banthangdoibatdoi, String keo, int voted) {
         this.idTranDau = idTranDau;
         this.doiBongDoiThu = doiBongDoiThu;
         this.doiMinh = doiMinh;
         this.ngay = ngay;
         this.khungGio = khungGio;
         this.idSan = idSan;
-        this.soBanThangBenMinh = soBanThangBenMinh;
-        this.soBanThangDoiThu = soBanThangDoiThu;
+        this.banthangdoidangtin = banthangdoidangtin;
+        this.banthangdoibatdoi = banthangdoibatdoi;
         this.keo = keo;
         this.voted = voted;
     }
 
-    public Boolean getVoted() {
+    public int getVoted() {
         return voted;
     }
 
-    public void setVoted(Boolean voted) {
+    public void setVoted(int voted) {
         this.voted = voted;
     }
 
@@ -76,11 +75,11 @@ public class TranDauDuongClass implements Serializable {
         this.doiBongDoiThu = doiBongDoiThu;
     }
 
-    public Date getNgay() {
+    public String getNgay() {
         return ngay;
     }
 
-    public void setNgay(Date ngay) {
+    public void setNgay(String ngay) {
         this.ngay = ngay;
     }
 
@@ -92,19 +91,19 @@ public class TranDauDuongClass implements Serializable {
         this.khungGio = khungGio;
     }
 
-    public int getSoBanThangBenMinh() {
-        return soBanThangBenMinh;
+    public int getBanthangdoidangtin() {
+        return banthangdoidangtin;
     }
 
-    public void setSoBanThangBenMinh(int soBanThangBenMinh) {
-        this.soBanThangBenMinh = soBanThangBenMinh;
+    public void setBanthangdoidangtin(int banthangdoidangtin) {
+        this.banthangdoidangtin = banthangdoidangtin;
     }
 
-    public int getSoBanThangDoiThu() {
-        return soBanThangDoiThu;
+    public int getBanthangdoibatdoi() {
+        return banthangdoibatdoi;
     }
 
-    public void setSoBanThangDoiThu(int soBanThangDoiThu) {
-        this.soBanThangDoiThu = soBanThangDoiThu;
+    public void setBanthangdoibatdoi(int banthangdoibatdoi) {
+        this.banthangdoibatdoi = banthangdoibatdoi;
     }
 }

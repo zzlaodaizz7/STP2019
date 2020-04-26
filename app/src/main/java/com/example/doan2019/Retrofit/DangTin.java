@@ -1,5 +1,7 @@
 package com.example.doan2019.Retrofit;
 
+import com.example.doan2019.DoiBongClass;
+
 import java.io.Serializable;
 import java.sql.Timestamp;
 
@@ -12,10 +14,14 @@ public class DangTin implements Serializable {
     private int id;
     private int doidangtin_id;
     private int doibatdoi_id;
+    private DoiBongClass doibong1,doibong2;
+
     private String ngay;
     private String keo;
     private int san_id;
     private int khunggio_id;
+    private int voted;
+    private int banthangdoidangtin,banthangdoibatdoi;
     private Timestamp created_at;
     private Timestamp updated_at;
     private String type;
@@ -51,6 +57,46 @@ public class DangTin implements Serializable {
     }
 
     public DangTin(int id, String ngay, int san_id, int khunggio_id, String keo, Timestamp created_at, Timestamp updated_at, int doibatdoi_id) {
+    }
+
+    public DoiBongClass getDoibong1() {
+        return doibong1;
+    }
+
+    public void setDoibong1(DoiBongClass doibong1) {
+        this.doibong1 = doibong1;
+    }
+
+    public DoiBongClass getDoibong2() {
+        return doibong2;
+    }
+
+    public void setDoibong2(DoiBongClass doibong2) {
+        this.doibong2 = doibong2;
+    }
+
+    public int getBanthangdoidangtin() {
+        return banthangdoidangtin;
+    }
+
+    public void setBanthangdoidangtin(int banthangdoidangtin) {
+        this.banthangdoidangtin = banthangdoidangtin;
+    }
+
+    public int getBanthangdoibatdoi() {
+        return banthangdoibatdoi;
+    }
+
+    public void setBanthangdoibatdoi(int banthangdoibatdoi) {
+        this.banthangdoibatdoi = banthangdoibatdoi;
+    }
+
+    public int getVoted() {
+        return voted;
+    }
+
+    public void setVoted(int voted) {
+        this.voted = voted;
     }
 
     public int getId() {

@@ -67,7 +67,6 @@ public class TranDauSapToiAdapter extends BaseAdapter {
         TranDauDuongClass tranDau = arrTranDau.get(i);
         DoiBongClass doiThuNhat = tranDau.getDoiMinh();
         DoiBongClass doiThuHai = tranDau.getDoiBongDoiThu();
-
         Bitmap img = doiThuNhat.getImageDaiDien();
         Drawable d = new BitmapDrawable(img);
         d.setBounds(0, 0, 180, 180);
@@ -82,10 +81,10 @@ public class TranDauSapToiAdapter extends BaseAdapter {
         viewHolder.txtDoiThuHai.setText(doiThuHai.getTen());
         viewHolder.txtDoiThuHai.setCompoundDrawables(null, d, null, null);
 
-        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-        String time = dateFormat.format(tranDau.getNgay());
+//        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+//        String time = dateFormat.format();
 
-        viewHolder.txtNgayTranDauDienRa.setText(time);
+        viewHolder.txtNgayTranDauDienRa.setText(tranDau.getNgay());
         if(tranDau.getKhungGio() == 1){
             viewHolder.txtGioTranDauDienRa.setText("17:30 - 19:00");
         }

@@ -15,12 +15,21 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.example.doan2019.Retrofit.APIUtils;
+import com.example.doan2019.Retrofit.JsonApiSanBong;
+import com.example.doan2019.Retrofit.SanBong;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class ChiTietTranDauSapToiFragment extends Fragment {
     private View view;
     ImageView imgTeamMinh, imgTeamBan;
     TextView txtNameTeamMinh, txtNameTeamBan,
             txtThoiGian, txtSan, txtKeo, txtBack;
     Button btnXong;
+    JsonApiSanBong jsonApiSanBong;
     Bundle bundle;
     LangNgheSuKienChuyenFragment langNgheSuKienChuyenFragment;
     @Nullable
@@ -28,7 +37,7 @@ public class ChiTietTranDauSapToiFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_chi_tiet_tran_dau_sap_toi, container, false);
         langNgheSuKienChuyenFragment = (LangNgheSuKienChuyenFragment) getActivity();
-
+        jsonApiSanBong = APIUtils.getJsonApiSanBong();
         Mapping();
 
         GetDuLieu();
@@ -64,8 +73,9 @@ public class ChiTietTranDauSapToiFragment extends Fragment {
         TranDauDuongClass tranDau = (TranDauDuongClass) bundle.getSerializable("trandauduong");
         DoiBongClass doiMinh = tranDau.getDoiMinh();
         DoiBongClass doiBan = tranDau.getDoiBongDoiThu();
-        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-        String time = dateFormat.format(tranDau.getNgay());
+//        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+//        String time = dateFormat.format(tranDau.getNgay());
+        String time = tranDau.getNgay();
         if(tranDau.getKhungGio() == 1)
             time += "  17:30 - 19:00";
         else if(tranDau.getKhungGio() == 2)
@@ -78,7 +88,19 @@ public class ChiTietTranDauSapToiFragment extends Fragment {
         txtNameTeamMinh.setText(doiMinh.getTen());
         txtNameTeamBan.setText(doiBan.getTen());
         txtThoiGian.setText(time);
-        txtSan.setText("ID Sân: " + tranDau.getIdSan());
+        Call<SanBong> call = jsonApiSanBong.getChitietsanbong(tranDau.getIdSan());
+        call.enqueue(new Callback<SanBong>() {
+            @Override
+            public void onResponse(Call<SanBong> call, Response<SanBong> response) {
+                SanBong sanBong = response.body();
+                txtSan.setText(sanBong.getTen());
+            }
+
+            @Override
+            public void onFailure(Call<SanBong> call, Throwable t) {
+
+            }
+        });
         txtKeo.setText(tranDau.getKeo());
     }
 

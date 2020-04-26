@@ -1,7 +1,6 @@
 package com.example.doan2019;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -9,11 +8,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.List;
 
 public class LichSuTranDauAdapter extends BaseAdapter {
@@ -85,10 +81,8 @@ public class LichSuTranDauAdapter extends BaseAdapter {
         viewHolder.txtDoiThuHai.setText(doiThuHai.getTen());
         viewHolder.txtDoiThuHai.setCompoundDrawables(null, d, null, null);
 
-        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-        String time = dateFormat.format(tranDau.getNgay());
 
-        viewHolder.txtNgayTranDauDienRa.setText(time);
+        viewHolder.txtNgayTranDauDienRa.setText(tranDau.getNgay());
         if(tranDau.getKhungGio() == 1){
             viewHolder.txtGioTranDauDienRa.setText("17:30 - 19:00");
         }
@@ -98,10 +92,13 @@ public class LichSuTranDauAdapter extends BaseAdapter {
         else if(tranDau.getKhungGio() == 3){
             viewHolder.txtGioTranDauDienRa.setText("20:30 - 22:00");
         }
-
-        viewHolder.txtBanThangDoiThuNhat.setText(tranDau.getSoBanThangBenMinh() + "");
-        viewHolder.txtBanThangDoiThuHai.setText(tranDau.getSoBanThangDoiThu() + "");
-
+        if (tranDau.getVoted() == 0){
+            viewHolder.txtBanThangDoiThuNhat.setText("X");
+            viewHolder.txtBanThangDoiThuHai.setText("X");
+        }else {
+            viewHolder.txtBanThangDoiThuNhat.setText(tranDau.getBanthangdoidangtin() + "");
+            viewHolder.txtBanThangDoiThuHai.setText(tranDau.getBanthangdoibatdoi() + "");
+        }
         return view;
     }
 }

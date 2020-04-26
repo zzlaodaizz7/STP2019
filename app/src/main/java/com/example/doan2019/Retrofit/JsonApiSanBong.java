@@ -17,7 +17,8 @@ import retrofit2.http.Path;
 public interface JsonApiSanBong {
     @GET("sanbong")
     Call<List<SanBong>> getSanbongs();
-
+    @GET("sanbong/{id}")
+    Call<SanBong> getChitietsanbong(@Path("id") int id);
     @GET("doitruongcacdoi/{id}")
     Call<List<DoiBong>> getDoitruongcacdois(@Path("id") int groupId);
 
@@ -48,4 +49,13 @@ public interface JsonApiSanBong {
                    @Path("id") int id);
     @GET("chitietdoibong/{id}")
     Call<DoiBong> getChitietdoibong(@Path("id") int id);
+    @GET("cactransapdienra/{id}")
+    Call<List<DangTin>>  getCactransapdienra(@Path("id") int id);
+    @GET("cactransapdienracuadoi/{id}")
+    Call<List<DangTin>> getCactransapdienracuadoi(@Path("id") int id);
+    @GET("cactrandaketthuc/{id}")
+    Call<List<DangTin>> getCactrandaketthuc(@Path("id") int id);
+    @POST("voteketqua")
+    Call<KetQua> postVoted(@HeaderMap Map<String, String> headers,
+                            @Body KetQua ketqua);
 }
