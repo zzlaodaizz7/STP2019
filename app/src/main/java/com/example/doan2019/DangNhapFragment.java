@@ -3,6 +3,7 @@ package com.example.doan2019;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
 import android.os.Bundle;
 import android.text.InputType;
 import android.util.Log;

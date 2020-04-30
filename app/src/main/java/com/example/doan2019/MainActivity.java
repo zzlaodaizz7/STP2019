@@ -13,9 +13,12 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.content.pm.Signature;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
 import android.view.MenuItem;
 import android.widget.ListView;
@@ -42,6 +45,8 @@ import com.onesignal.OSSubscriptionObserver;
 import com.onesignal.OSSubscriptionStateChanges;
 import com.onesignal.OneSignal;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -83,6 +88,24 @@ public class MainActivity extends AppCompatActivity implements LangNgheSuKienChu
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+//        try {
+//            PackageInfo info = null;
+//            try {
+//                info = getPackageManager().getPackageInfo(
+//                        "com.example.doan2019",                  //Insert your own package name.
+//                        PackageManager.GET_SIGNATURES);
+//            } catch (PackageManager.NameNotFoundException e) {
+//                e.printStackTrace();
+//            }
+//            for (Signature signature : info.signatures) {
+//                MessageDigest md = MessageDigest.getInstance("SHA");
+//                md.update(signature.toByteArray());
+//                Log.d("KeyHash:", Base64.encodeToString(md.digest(), Base64.DEFAULT));
+//            }
+//        } catch (NoSuchAlgorithmException e) {
+//
+//        }
 
         if (!checkPermission()) {
             openActivity();
@@ -230,15 +253,17 @@ public class MainActivity extends AppCompatActivity implements LangNgheSuKienChu
                         case R.id.nav_taiKhoan:
                             menuDaChon = 3;
                             AccessToken accessToken = AccessToken.getCurrentAccessToken();
-                            boolean isLoggedIn = accessToken != null && !accessToken.isExpired();
+                            boolean isLoggedIn, isloggedInFB;
+                            isloggedInFB = accessToken != null && !accessToken.isExpired();
                             if (sharedPreferencesDataLogin.getString("token","")==""){
                                 isLoggedIn = false;
                             }else {
                                 isLoggedIn = true;
                             }
-                            if (isLoggedIn == false) {
+
+                            if (isLoggedIn == false && isloggedInFB == false) {
                                 selectedFragment = new TaiKhoanFragment();
-                            } else {
+                            } else if(isloggedInFB == true || isLoggedIn == true){
                                 selectedFragment = new TaiKhoanDaLoginFragment();
                             }
                             break;

@@ -1,7 +1,7 @@
 package com.example.doan2019.Retrofit;
 
 public class APIUtils {
-    public static final String BASE_URL ="http://192.168.1.4/DoAn/public/api/";
+    public static final String BASE_URL ="http://192.168.0.102:8008/ApiDoAn/public/api/";
     public static JsonApiKhungGio getJsonApiKhungGio(){
         return  RetrofitClientInstance.getRetrofitInstance(BASE_URL).create(JsonApiKhungGio.class);
     }
