@@ -3,7 +3,9 @@ package com.example.doan2019.Retrofit;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class DoiBong_NguoiDung {
+import java.io.Serializable;
+
+public class DoiBong_NguoiDung implements Serializable {
     @SerializedName("id")
     @Expose
     private Integer id;
@@ -25,6 +27,30 @@ public class DoiBong_NguoiDung {
     @SerializedName("updated_at")
     @Expose
     private String updatedAt;
+
+    private User user;
+    private DoiBong doibong;
+
+    public DoiBong_NguoiDung(Integer doibongId, Integer userId) {
+        this.doibongId = doibongId;
+        this.userId = userId;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public DoiBong getDoibong() {
+        return doibong;
+    }
+
+    public void setDoibong(DoiBong doibong) {
+        this.doibong = doibong;
+    }
 
     public Integer getId() {
         return id;

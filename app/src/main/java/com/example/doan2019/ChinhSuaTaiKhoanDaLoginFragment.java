@@ -1,6 +1,7 @@
 package com.example.doan2019;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -60,11 +61,12 @@ public class ChinhSuaTaiKhoanDaLoginFragment extends Fragment {
     private EditText edtTen, edtEmail, edtDiaChi, edtGioiThieuBanThan;
     private ImageView imageProfilePicture2;
     private String ten, email, anhbia;
-    private byte[] anhDaiDien;
+    String base_Url = "http://192.168.1.15/ApiDoAn/public/images/";
     String realPath = "";
     JsonApiUser jsonApiUser;
     User user;
     SharedPreferences sharedPreferences;
+    Dialog dialogTinNhan;
 
     @Nullable
     @Override
@@ -99,64 +101,93 @@ public class ChinhSuaTaiKhoanDaLoginFragment extends Fragment {
             public void onClick(View view) {
                 Toast.makeText(getActivity(),
                         edtTen.getText() + "\n" +
-                        edtEmail.getText() + "\n" +
-                        edtDiaChi.getText() + "\n" +
-                        edtGioiThieuBanThan.getText(), Toast.LENGTH_SHORT).show();
+                                edtEmail.getText() + "\n" +
+                                edtDiaChi.getText() + "\n" +
+                                edtGioiThieuBanThan.getText(), Toast.LENGTH_SHORT).show();
 
                 ten = edtTen.getText().toString();
                 email = edtEmail.getText().toString();
 
-                if(!realPath.equals("")){
-
-                }
-
-                File file = new File(realPath);
-                String file_path = file.getAbsolutePath();
-                String[] tenFileArray = file_path.split("\\.");
-                file_path = tenFileArray[0] + System.currentTimeMillis() + "." + tenFileArray[1];
-                Log.d("path", file_path);
-                RequestBody requestBody =RequestBody.create(MediaType.parse("multipart/form-data"), file);
-                MultipartBody.Part body = MultipartBody.Part.createFormData("uploaded_file", file_path, requestBody);
+                user.setTen(ten);
+                user.setEmail(email);
 
                 if(ten.equals("") || email.equals("")){
-                    Toast.makeText(getActivity(), "Tên và email không được để trống", Toast.LENGTH_LONG).show();
+                    showDialogTinNhan("Tên và Email không được để trống.");
+                    hideDialogTinNhan();
                 }
                 else{
-                    Call<String> call = jsonApiUser.upload(body);
-                    call.enqueue(new Callback<String>() {
-                        @Override
-                        public void onResponse(Call<String> call, Response<String> response) {
-                            anhbia = response.body();
-                            user.setTen(ten);
-                            user.setEmail(anhbia);
-                            user.setAnhbia("http://192.168.0.103/ApiDoAn/public/images/"+anhbia);
-                                Log.d("update", user.getAnhbia());
-                            Call<String> call1 = jsonApiUser.update(user, sharedPreferences.getInt("id", -1));
-                            call1.enqueue(new Callback<String>() {
-                                @Override
-                                public void onResponse(Call<String> call, Response<String> response) {
-                                    Log.d("update", "thanh cong" + response.body());
-                                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    if(realPath.equals("")){
+
+                        Call<String> call1 = jsonApiUser.update(user, sharedPreferences.getInt("id", -1));
+                        call1.enqueue(new Callback<String>() {
+                            @Override
+                            public void onResponse(Call<String> call, Response<String> response) {
+                                SharedPreferences.Editor editor = sharedPreferences.edit();
+                                if(!email.equals("")){
                                     editor.putString("email",email);
+                                }
+                                if(!ten.equals("")){
                                     editor.putString("ten",ten);
-                                    editor.putString("anhbia", "http://192.168.0.103/ApiDoAn/public/images/"+anhbia);
-                                    editor.commit();
-                                    Toast.makeText(getActivity(), "Update tai khoan", Toast.LENGTH_LONG).show();
                                 }
+                                //editor.putString("anhbia", "http://192.168.0.103/ApiDoAn/public/images/"+anhbia);
+                                editor.commit();
+                            }
 
-                                @Override
-                                public void onFailure(Call<String> call, Throwable t) {
+                            @Override
+                            public void onFailure(Call<String> call, Throwable t) {
 
-                                }
-                            });
-                            //Log.d("upload", "thanh cong"+response.body());
-                        }
+                            }
+                        });
+                    }
+                    else {
+                        File file = new File(realPath);
+                        String file_path = file.getAbsolutePath();
+                        String[] tenFileArray = file_path.split("\\.");
+                        file_path = tenFileArray[0] + System.currentTimeMillis() + "." + tenFileArray[1];
+                        Log.d("path", file_path);
+                        RequestBody requestBody =RequestBody.create(MediaType.parse("multipart/form-data"), file);
+                        MultipartBody.Part body = MultipartBody.Part.createFormData("uploaded_file", file_path, requestBody);
 
-                        @Override
-                        public void onFailure(Call<String> call, Throwable t) {
-                            Log.d("upload", "khong thanh cong"+t);
-                        }
-                    });
+                        Log.d("anhbia", body+"");
+
+                        Call<String> call = jsonApiUser.upload(body);
+                        call.enqueue(new Callback<String>() {
+                            @Override
+                            public void onResponse(Call<String> call, Response<String> response) {
+                                anhbia = response.body();
+                                user.setAnhbia(base_Url+anhbia);
+                                //Log.d("update", user.getAnhbia());
+                                Call<String> call1 = jsonApiUser.update(user, sharedPreferences.getInt("id", -1));
+                                call1.enqueue(new Callback<String>() {
+                                    @Override
+                                    public void onResponse(Call<String> call, Response<String> response) {
+                                        Log.d("update", "thanh cong" + response.body());
+                                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                                        if(!email.equals("")){
+                                            editor.putString("email",email);
+                                        }
+                                        if(!ten.equals("")){
+                                            editor.putString("ten",ten);
+                                        }
+                                        editor.putString("anhbia", base_Url+anhbia);
+                                        editor.commit();
+                                        Toast.makeText(getActivity(), "Update tai khoan", Toast.LENGTH_LONG).show();
+                                    }
+
+                                    @Override
+                                    public void onFailure(Call<String> call, Throwable t) {
+
+                                    }
+                                });
+                                //Log.d("upload", "thanh cong"+response.body());
+                            }
+
+                            @Override
+                            public void onFailure(Call<String> call, Throwable t) {
+                                Log.d("upload", "khong thanh cong"+t);
+                            }
+                        });
+                    }
                 }
             }
         });
@@ -244,6 +275,23 @@ public class ChinhSuaTaiKhoanDaLoginFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 getActivity().onBackPressed();
+            }
+        });
+    }
+
+    private void showDialogTinNhan(String text){
+        dialogTinNhan = new Dialog(getActivity());
+        dialogTinNhan.setContentView(R.layout.dialog_message);
+        dialogTinNhan.show();
+        TextView tvTinNhan = (TextView) dialogTinNhan.findViewById(R.id.tvTinNhan);
+        tvTinNhan.setText(text);
+    }
+    private void hideDialogTinNhan(){
+        TextView tvHuy = dialogTinNhan.findViewById(R.id.tvHuy);
+        tvHuy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialogTinNhan.cancel();
             }
         });
     }

@@ -11,8 +11,8 @@ public class DoiBong implements Serializable {
     private String trinhdo;
     private String diachi;
     private String sdt;
-    private Bitmap anhbia;
-    private Bitmap anhdaidien;
+    private String anhbia;
+    private String anhdaidien;
     private int sodiem;
     private int hanhkiem;
     private Timestamp created_at,updated_at;
@@ -28,7 +28,7 @@ public class DoiBong implements Serializable {
         this.user_id = user_id;
     }
 
-    public DoiBong(int id, String ten, String trinhdo, String diachi, String sdt, Bitmap anhbia, Bitmap anhdaidien, int sodiem, int hanhkiem, Timestamp created_at, Timestamp updated_at) {
+    public DoiBong(int id, String ten, String trinhdo, String diachi, String sdt, String anhbia, String anhdaidien, int sodiem, int hanhkiem, Timestamp created_at, Timestamp updated_at) {
         this.id = id;
         this.ten = ten;
         this.trinhdo = trinhdo;
@@ -42,7 +42,7 @@ public class DoiBong implements Serializable {
         this.updated_at = updated_at;
     }
 
-    public DoiBong(String ten, String trinhdo, String diachi, String sdt, Bitmap anhbia, Bitmap anhdaidien, int sodiem, int hanhkiem, Timestamp created_at) {
+    public DoiBong(String ten, String trinhdo, String diachi, String sdt, String anhbia, String anhdaidien, int sodiem, int hanhkiem, Timestamp created_at) {
         this.ten = ten;
         this.trinhdo = trinhdo;
         this.diachi = diachi;
@@ -74,19 +74,19 @@ public class DoiBong implements Serializable {
         return user_id;
     }
 
-    public Bitmap getAnhbia() {
+    public String getAnhbia() {
         return anhbia;
     }
 
-    public void setAnhbia(Bitmap anhbia) {
+    public void setAnhbia(String anhbia) {
         this.anhbia = anhbia;
     }
 
-    public Bitmap getAnhdaidien() {
+    public String getAnhdaidien() {
         return anhdaidien;
     }
 
-    public void setAnhdaidien(Bitmap anhdaidien) {
+    public void setAnhdaidien(String anhdaidien) {
         this.anhdaidien = anhdaidien;
     }
 

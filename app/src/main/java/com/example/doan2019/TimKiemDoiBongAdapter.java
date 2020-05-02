@@ -13,12 +13,15 @@ import java.util.List;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.doan2019.Retrofit.DoiBong;
+import com.squareup.picasso.Picasso;
+
 public class TimKiemDoiBongAdapter extends BaseAdapter {
     private Context context;
     private int layout;
-    private List<DoiBongClass> doiBongList;
+    private List<DoiBong> doiBongList;
 
-    public TimKiemDoiBongAdapter(Context context, int layout, List<DoiBongClass> doiBongList) {
+    public TimKiemDoiBongAdapter(Context context, int layout, List<DoiBong> doiBongList) {
         this.context = context;
         this.layout = layout;
         this.doiBongList = doiBongList;
@@ -67,10 +70,13 @@ public class TimKiemDoiBongAdapter extends BaseAdapter {
         else
             viewHolder = (ViewHolder) view.getTag();
 
-        DoiBongClass doiBong = doiBongList.get(i);
-        viewHolder.imgAnhDaiDien.setImageBitmap(doiBong.getImageDaiDien());
+        DoiBong doiBong = doiBongList.get(i);
+        if(doiBong.getAnhdaidien() != null){
+            Picasso.get().load(doiBong.getAnhdaidien()).into(viewHolder.imgAnhDaiDien);
+        }
+
         viewHolder.txtTenDoiBong.setText(doiBong.getTen());
-        viewHolder.txtDiaChiDoiBong.setText(doiBong.getDiaChi());
+        viewHolder.txtDiaChiDoiBong.setText(doiBong.getDiachi());
 
         return view;
     }

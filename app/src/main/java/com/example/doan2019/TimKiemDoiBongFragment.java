@@ -1,8 +1,11 @@
 package com.example.doan2019;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,25 +15,43 @@ import android.widget.ListView;
 
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+
+import com.example.doan2019.Retrofit.APIUtils;
+import com.example.doan2019.Retrofit.DoiBong;
+import com.example.doan2019.Retrofit.JsonApiDoiBong;
+import com.example.doan2019.Retrofit.JsonApiDoiBongNGuoiDung;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class TimKiemDoiBongFragment extends Fragment {
     private View view;
     ImageView imgBack;
     ListView lvDoiBong;
     ArrayList<DoiBongClass> listDoiBong;
+    ArrayList<DoiBong> doiBongArrayList;
     ArrayList<ThanhVienDoiBongClass> listThanhVienDoiBong;
     TimKiemDoiBongAdapter adapter;
     LangNgheSuKienChuyenFragment langNgheSuKienChuyenFragment;
+    JsonApiDoiBong jsonApiDoiBong;
+    JsonApiDoiBongNGuoiDung jsonApiDoiBongNGuoiDung;
+    SharedPreferences sharedPreferences;
+    Map<String,String> header;
+    String Auth="";
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_tim_kiem_doi_bong, container, false);
         langNgheSuKienChuyenFragment = (LangNgheSuKienChuyenFragment) getActivity();
-
+        jsonApiDoiBong = APIUtils.getJsonApiDoiBong();
         Mapping();
 
         ClickQuayLai();
@@ -58,7 +79,7 @@ public class TimKiemDoiBongFragment extends Fragment {
                 ChiTietDoiBongXepHangFragment chiTietDoiBongXepHangFragment = new ChiTietDoiBongXepHangFragment();
 
                 Bundle bundle = new Bundle();
-                DoiBongClass doiBongClass = listDoiBong.get(i);
+                DoiBong doiBongClass = doiBongArrayList.get(i);
                 bundle.putSerializable("doibong", doiBongClass);
                 chiTietDoiBongXepHangFragment.setArguments(bundle);
 
@@ -68,32 +89,23 @@ public class TimKiemDoiBongFragment extends Fragment {
     }
 
     private void KhoiTaoListView() {
-        listDoiBong = new ArrayList<>();
-        listThanhVienDoiBong = new ArrayList<>();
-        Bitmap anhDaiDien = BitmapFactory.decodeResource(getResources(), R.drawable.icon_app);
-        Bitmap anhBia = BitmapFactory.decodeResource(getResources(), R.drawable.anh_test_doi_bong);
-        long ngayTemp = 1234596789;
-        Date dateConvert = new Date(ngayTemp);
-
-        listThanhVienDoiBong.add(new ThanhVienDoiBongClass("Nguyễn Văn A", "Thành viên", 1, anhDaiDien, "Hà Nội, Việt Nam", "dateConvert", "0123456789"));
-        listThanhVienDoiBong.add(new ThanhVienDoiBongClass("Nguyễn Văn B", "Thành viên", 1, anhDaiDien, "Hà Nội, Việt Nam", "dateConvert", "0123456789"));
-        listThanhVienDoiBong.add(new ThanhVienDoiBongClass("Nguyễn Văn C", "Thành viên", 1, anhDaiDien, "Hà Nội, Việt Nam", "dateConvert", "0123456789"));
-//        listThanhVienDoiBong.add(new ThanhVienDoiBongClass("Nguyễn Văn D", "Thành viên", 1, anhDaiDien, "Hà Nội, Việt Nam", dateConvert, "0123456789"));
-//        listThanhVienDoiBong.add(new ThanhVienDoiBongClass("Nguyễn Văn E", "Thành viên", 1, anhDaiDien, "Hà Nội, Việt Nam", dateConvert, "0123456789"));
-//        listThanhVienDoiBong.add(new ThanhVienDoiBongClass("Nguyễn Văn F", "Thành viên", 1, anhDaiDien, "Hà Nội, Việt Nam", dateConvert, "0123456789"));
-//        listThanhVienDoiBong.add(new ThanhVienDoiBongClass("Nguyễn Văn G", "Thành viên", 1, anhDaiDien, "Hà Nội, Việt Nam", dateConvert, "0123456789"));
-//        listThanhVienDoiBong.add(new ThanhVienDoiBongClass("Nguyễn Văn H", "Thành viên", 1, anhDaiDien, "Hà Nội, Việt Nam", dateConvert, "0123456789"));
-//        listThanhVienDoiBong.add(new ThanhVienDoiBongClass("Nguyễn Văn I", "Thành viên", 1, anhDaiDien, "Hà Nội, Việt Nam", dateConvert, "0123456789"));
-
-        listDoiBong.add(new DoiBongClass("FC fb", 3, "Hà Nội, Việt Nam", "Khá", "11/10/2010", "0123456789",anhBia, anhDaiDien, listThanhVienDoiBong));
-        listDoiBong.add(new DoiBongClass("FC Linh Đàm", 3, "Hà Nội, Việt Nam", "Khá", "11/10/2010", "0123456789",anhBia, anhDaiDien, listThanhVienDoiBong));
-        listDoiBong.add(new DoiBongClass("FC Cầu Giấy", 3, "Hà Nội, Việt Nam", "Khá", "11/10/2010", "0123456789",anhBia, anhDaiDien, listThanhVienDoiBong));
-        listDoiBong.add(new DoiBongClass("FC Mễ Trì", 3, "Hà Nội, Việt Nam", "Khá", "11/10/2010", "0123456789",anhBia, anhDaiDien, listThanhVienDoiBong));
-        listDoiBong.add(new DoiBongClass("FC Lê Đức Thọ", 3, "Hà Nội, Việt Nam", "Khá", "11/10/2010", "0123456789",anhBia, anhDaiDien, listThanhVienDoiBong));
-
-        adapter = new TimKiemDoiBongAdapter(getActivity(), R.layout.dong_tim_kiem_doi_bong_trong_fragment_tai_khoan_da_login, listDoiBong);
-        lvDoiBong.setAdapter(adapter);
-        setListViewHeightBasedOnChildren(adapter, lvDoiBong);
+        Call<List<DoiBong>> call2 = jsonApiDoiBong.getDoiBongs(header);
+        call2.enqueue(new Callback<List<DoiBong>>() {
+            @Override
+            public void onResponse(Call<List<DoiBong>> call, Response<List<DoiBong>> response) {
+                List<DoiBong> doiBongs = response.body();
+                for (DoiBong doiBong : doiBongs) {
+                    doiBongArrayList.add(doiBong);
+                    Log.d("timkiemdoibong", doiBong.getId()+"");
+                }
+                adapter = new TimKiemDoiBongAdapter(getActivity(), R.layout.dong_tim_kiem_doi_bong_trong_fragment_tai_khoan_da_login, doiBongArrayList);
+                lvDoiBong.setAdapter(adapter);
+                setListViewHeightBasedOnChildren(adapter, lvDoiBong);
+            }
+            @Override
+            public void onFailure(Call<List<DoiBong>> call, Throwable t) {
+            }
+        });
     }
 
     private void setListViewHeightBasedOnChildren(TimKiemDoiBongAdapter matchAdapter, ListView listView) {
@@ -118,7 +130,14 @@ public class TimKiemDoiBongFragment extends Fragment {
     }
 
     private void Mapping() {
+        sharedPreferences = getActivity().getSharedPreferences("dataLogin", Context.MODE_PRIVATE);
+        Auth = sharedPreferences.getString("token","");
+        header = new HashMap<>();
+        header.put("value","application/json");
+        header.put("Accept","application/json");
+        header.put("Authorization","Bearer "+Auth);
         imgBack = view.findViewById(R.id.ImageViewQuayLai);
         lvDoiBong = view.findViewById(R.id.ListViewDoiBong);
+        doiBongArrayList = new ArrayList<>();
     }
 }

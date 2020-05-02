@@ -1,8 +1,12 @@
 package com.example.doan2019;
 
+import android.app.Dialog;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,10 +19,24 @@ import android.widget.Toast;
 
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+
+import com.example.doan2019.Retrofit.APIUtils;
+import com.example.doan2019.Retrofit.DangTin;
+import com.example.doan2019.Retrofit.DoiBong;
+import com.example.doan2019.Retrofit.DoiBong_NguoiDung;
+import com.example.doan2019.Retrofit.JsonApiDoiBongNGuoiDung;
+import com.example.doan2019.Retrofit.JsonApiSanBong;
+import com.example.doan2019.Retrofit.User;
+import com.squareup.picasso.Picasso;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ChiTietDoiBongXepHangFragment extends Fragment {
     private View view;
@@ -27,16 +45,23 @@ public class ChiTietDoiBongXepHangFragment extends Fragment {
     Button btnThamGiaFC;
     ImageView imgAnhBia, imgDaiDien;
     ListView lvDanhSachThanhVien, lvLichSuTranDau;
-    ArrayList<ThanhVienDoiBongClass> arrThanhVien;
+    ArrayList<DoiBong_NguoiDung> arrThanhVien;
     DanhSachThanhVienAdapter adapter;
     ArrayList<TranDauDuongClass> arrLichSuTranDau;
     LangNgheSuKienChuyenFragment langNgheSuKienChuyenFragment;
     LichSuTranDauAdapter adapterLichSuTranDau;
+    JsonApiDoiBongNGuoiDung jsonApiDoiBongNGuoiDung; JsonApiSanBong jsonApiSanBong;
+    SharedPreferences sharedPreferences;
+    Dialog dialogTinNhan;
+    DoiBong doiBong;
+    int mode, dbnd_id;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_chi_tiet_doi_bong_xep_hang, container, false);
         langNgheSuKienChuyenFragment = (LangNgheSuKienChuyenFragment) getActivity();
+        jsonApiDoiBongNGuoiDung = APIUtils.getJsonApiDoiBongNguoiDung();
+        jsonApiSanBong = APIUtils.getJsonApiSanBong();
 
         Mapping();
 
@@ -78,7 +103,7 @@ public class ChiTietDoiBongXepHangFragment extends Fragment {
                 ChiTietThanhVienFragment chiTietThanhVienFragment = new ChiTietThanhVienFragment();
 
                 Bundle bundleThanhVien = new Bundle();
-                ThanhVienDoiBongClass thanhVien = arrThanhVien.get(i);
+                User thanhVien = arrThanhVien.get(i).getUser();
                 bundleThanhVien.putSerializable("thanhvien", thanhVien);
                 chiTietThanhVienFragment.setArguments(bundleThanhVien);
 
@@ -89,40 +114,43 @@ public class ChiTietDoiBongXepHangFragment extends Fragment {
 
     private void GanNoiDungListViewLichSuTranDau() {
         arrLichSuTranDau = new ArrayList<>();
-
-        DoiBongClass doiBong1, doiBong2, doiBong3, doiBong4, doiBong5;
         Bitmap anhDaiDien = BitmapFactory.decodeResource(getResources(), R.drawable.icon_app);
         Bitmap anhBia = BitmapFactory.decodeResource(getResources(), R.drawable.anh_test_doi_bong);
+        Call<List<DangTin>> call = jsonApiSanBong.getCactrandaketthuc(doiBong.getId());
+        call.enqueue(new Callback<List<DangTin>>() {
+            @Override
+            public void onResponse(Call<List<DangTin>> call, Response<List<DangTin>> response) {
+                List<DangTin> dangTin = response.body();
+                if(response.body()==null){
+                    return;
+                }
+                if(dangTin.size() == 0){
+                    return;
+                }
+                for (int i = 0; i < dangTin.size(); i++) {
+                    dangTin.get(i).getDoibong1().setImageBia(anhBia);
+                    dangTin.get(i).getDoibong1().setImageDaiDien(anhDaiDien);
+                    dangTin.get(i).getDoibong2().setImageBia(anhBia);
+                    dangTin.get(i).getDoibong2().setImageDaiDien(anhDaiDien);
+                    int a=0,b=0;
+                    System.out.println("Voted :"+dangTin.get(i).getVoted());
+                    if (dangTin.get(i).getVoted()==1){
+                        System.out.println("a: "+dangTin.get(i).getBanthangdoidangtin());
+                        a = dangTin.get(i).getBanthangdoidangtin();
+                        b = dangTin.get(i).getBanthangdoibatdoi();
+                    }
+                    arrLichSuTranDau.add(new TranDauDuongClass(dangTin.get(i).getId(), dangTin.get(i).getDoibong1(), dangTin.get(i).getDoibong2(), dangTin.get(i).getNgay(), dangTin.get(i).getKhunggio_id(), dangTin.get(i).getSan_id(), a, b, dangTin.get(i).getKeo(), dangTin.get(i).getVoted()));
+                }
+                adapterLichSuTranDau = new LichSuTranDauAdapter(getActivity(), R.layout.dong_lich_su_tran_dau, arrLichSuTranDau);
+                lvLichSuTranDau.setAdapter(adapterLichSuTranDau);
+                SetListViewHeightBasedOnChildrenLichSuTranDau(adapterLichSuTranDau, lvLichSuTranDau);
+            }
 
-        doiBong1 = new DoiBongClass("FC fb", 3, "Hà Nội, Việt Nam", "Khá", "11/10/2010",
-                "0123456789", anhBia, anhDaiDien, arrThanhVien);
-        doiBong2 = new DoiBongClass("FC Lê Đức Thọ", 3, "Hà Nội, Việt Nam", "Khá",
-                "11/10/2010", "0123456789",anhBia, anhDaiDien, arrThanhVien);
-        doiBong3 = new DoiBongClass("FC Linh Đàm", 3, "Hà Nội, Việt Nam", "Khá",
-                "11/10/2010", "0123456789",anhBia, anhDaiDien, arrThanhVien);
-        doiBong4 = new DoiBongClass("FC Cầu Giấy", 3, "Hà Nội, Việt Nam", "Khá",
-                "11/10/2010", "0123456789",anhBia, anhDaiDien, arrThanhVien);
-        doiBong5 = new DoiBongClass("FC Mễ Trì", 3, "Hà Nội, Việt Nam", "Khá",
-                "11/10/2010", "0123456789",anhBia, anhDaiDien, arrThanhVien);
-        long date = 123456789;
-        Date convertDate = new Date(date);
+            @Override
+            public void onFailure(Call<List<DangTin>> call, Throwable t) {
 
-        arrLichSuTranDau.add(new TranDauDuongClass(1, doiBong1, doiBong5, "convertDate", 1, 1, 0, 0, "Nước", 0));
-        arrLichSuTranDau.add(new TranDauDuongClass(1, doiBong2, doiBong4, "convertDate", 2, 2, 0,  0, "Nước", 0));
-        arrLichSuTranDau.add(new TranDauDuongClass(1, doiBong3, doiBong1, "convertDate", 3, 3, 4,  2, "Nước", 0));
-        arrLichSuTranDau.add(new TranDauDuongClass(1, doiBong5, doiBong2, "convertDate", 1, 4, 3,  2, "Nước", 0));
-//        arrLichSuTranDau.add(new TranDauDuongClass(1, doiBong4, doiBong3, convertDate, 2, 5, 2,  2, "Nước", 0));
-//        arrLichSuTranDau.add(new TranDauDuongClass(1, doiBong1, doiBong4, convertDate, 3, 6, 1,  2, "Nước", 0));
-//        arrLichSuTranDau.add(new TranDauDuongClass(1, doiBong1, doiBong5, convertDate, 1, 1, 6, 2, "Nước", 0));
-//        arrLichSuTranDau.add(new TranDauDuongClass(1, doiBong2, doiBong4, convertDate, 2, 2, 5,  2, "Nước", 0));
-//        arrLichSuTranDau.add(new TranDauDuongClass(1, doiBong3, doiBong1, convertDate, 3, 3, 4,  2, "Nước", 0));
-//        arrLichSuTranDau.add(new TranDauDuongClass(1, doiBong5, doiBong2, convertDate, 1, 4, 3,  2, "Nước", 0));
-//        arrLichSuTranDau.add(new TranDauDuongClass(1, doiBong4, doiBong3, convertDate, 2, 5, 2,  2, "Nước", 0));
-//        arrLichSuTranDau.add(new TranDauDuongClass(1, doiBong1, doiBong4, convertDate, 3, 6, 1,  2, "Nước", 0));
-
-        adapterLichSuTranDau = new LichSuTranDauAdapter(getActivity(), R.layout.dong_lich_su_tran_dau, arrLichSuTranDau);
-        lvLichSuTranDau.setAdapter(adapterLichSuTranDau);
-        SetListViewHeightBasedOnChildrenLichSuTranDau(adapterLichSuTranDau, lvLichSuTranDau);
+            }
+        });
     }
 
     private void SetListViewHeightBasedOnChildrenLichSuTranDau(LichSuTranDauAdapter matchAdapter, ListView listView) {
@@ -159,7 +187,46 @@ public class ChiTietDoiBongXepHangFragment extends Fragment {
         btnThamGiaFC.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getActivity(), "Xin tham gia FC", Toast.LENGTH_SHORT).show();
+                Log.d("xephang", mode+"");
+                if(mode==1){
+                    DoiBong_NguoiDung doiBong_nguoiDung = new DoiBong_NguoiDung(doiBong.getId(), sharedPreferences.getInt("id",-1));
+                    Call<DoiBong_NguoiDung> call = jsonApiDoiBongNGuoiDung.postThanhVien(doiBong_nguoiDung);
+                    call.enqueue(new Callback<DoiBong_NguoiDung>() {
+                        @Override
+                        public void onResponse(Call<DoiBong_NguoiDung> call, Response<DoiBong_NguoiDung> response) {
+                            mode = 2;
+                            dbnd_id = response.body().getId();
+                            showDialogTinNhan("Bạn đã xin tham gia vào đội bóng.");
+                            hideDialogTinNhan();
+                            btnThamGiaFC.setText("Hủy tham gia");
+                        }
+                        @Override
+                        public void onFailure(Call<DoiBong_NguoiDung> call, Throwable t) {
+                        }
+                    });
+                }
+                else{
+                    //delete
+                    Call<DoiBong_NguoiDung> call = jsonApiDoiBongNGuoiDung.deleteThanhVien(dbnd_id);
+                    call.enqueue(new Callback<DoiBong_NguoiDung>() {
+                        @Override
+                        public void onResponse(Call<DoiBong_NguoiDung> call, Response<DoiBong_NguoiDung> response) {
+                            if(mode == 2){
+                                showDialogTinNhan("Bạn đã hủy xin tham gia vào đội bóng.");
+                            }
+                            if(mode == 3){
+                                showDialogTinNhan("Bạn đã rời khỏi đội bóng.");
+                            }
+                            mode = 1;
+                            btnThamGiaFC.setText("Tham gia vào FC");
+                            hideDialogTinNhan();
+                        }
+                        @Override
+                        public void onFailure(Call<DoiBong_NguoiDung> call, Throwable t) {
+
+                        }
+                    });
+                }
             }
         });
     }
@@ -167,20 +234,54 @@ public class ChiTietDoiBongXepHangFragment extends Fragment {
     private void GanDuLieu() {
         bundle = getArguments();
 
-        DoiBongClass doiBongClass = (DoiBongClass) bundle.getSerializable("doibong");
-        imgAnhBia.setImageBitmap(doiBongClass.getImageBia());
-        imgDaiDien.setImageBitmap(doiBongClass.getImageDaiDien());
-        txtTenDoiBong.setText(doiBongClass.getTen());
-        txtDiem.setText(doiBongClass.getDiem() + "");
-        txtDiaChi.setText(doiBongClass.getDiaChi());
-        txtTrinhDo.setText(doiBongClass.getTrinhDo());
-        txtNgayThanhlap.setText(doiBongClass.getNgayThanhLap());
-        txtPhone.setText(doiBongClass.getSoDienThoai());
+        doiBong = (DoiBong) bundle.getSerializable("doibong");
+        if(doiBong.getAnhbia() != null){
+            Picasso.get().load(doiBong.getAnhbia()).into(imgAnhBia);
+        }
+        if(doiBong.getAnhdaidien() != null){
+            Picasso.get().load(doiBong.getAnhdaidien()).into(imgDaiDien);
+        }
 
-        arrThanhVien = doiBongClass.getListThanhVien();
-        adapter = new DanhSachThanhVienAdapter(getActivity(), R.layout.dong_thanh_vien, arrThanhVien);
-        lvDanhSachThanhVien.setAdapter(adapter);
-        SetListViewHeightBasedOnChildren(adapter, lvDanhSachThanhVien);
+        txtTenDoiBong.setText(doiBong.getTen());
+        txtDiem.setText(doiBong.getSodiem() + "");
+        txtDiaChi.setText(doiBong.getDiachi());
+        txtTrinhDo.setText(doiBong.getTrinhdo());
+        String time = doiBong.getCreated_at()+"";
+        time = time.substring(0, 10);
+        txtNgayThanhlap.setText(time);
+        txtPhone.setText(doiBong.getSdt());
+
+        Call<List<DoiBong_NguoiDung>> call = jsonApiDoiBongNGuoiDung.getDanhSachThanhVien(doiBong.getId());
+        call.enqueue(new Callback<List<DoiBong_NguoiDung>>() {
+            @Override
+            public void onResponse(Call<List<DoiBong_NguoiDung>> call, Response<List<DoiBong_NguoiDung>> response) {
+                List<DoiBong_NguoiDung> doiBong_nguoiDungs = response.body();
+                if(doiBong_nguoiDungs.size() == 0){
+                    return;
+                }
+                for(DoiBong_NguoiDung doiBong_nguoiDung : doiBong_nguoiDungs){
+                    if(mode == 1 && doiBong_nguoiDung.getUser().getId()==sharedPreferences.getInt("id",-1)
+                            && doiBong_nguoiDung.getTrangthai() == 0){
+                        btnThamGiaFC.setText("Hủy tham gia ");
+                        dbnd_id = doiBong_nguoiDung.getId();
+                        mode = 2;
+                    }
+                    else if(mode == 1 && doiBong_nguoiDung.getUser().getId()==sharedPreferences.getInt("id",-1)
+                            && doiBong_nguoiDung.getTrangthai() == 1){
+                        btnThamGiaFC.setText("Rời khỏi đội bóng");
+                        dbnd_id = doiBong_nguoiDung.getId();
+                        mode = 3;
+                    }
+                    arrThanhVien.add(doiBong_nguoiDung);
+                }
+                adapter = new DanhSachThanhVienAdapter(getActivity(), R.layout.dong_thanh_vien, arrThanhVien);
+                lvDanhSachThanhVien.setAdapter(adapter);
+                SetListViewHeightBasedOnChildren(adapter, lvDanhSachThanhVien);
+            }
+            @Override
+            public void onFailure(Call<List<DoiBong_NguoiDung>> call, Throwable t) {
+            }
+        });
     }
 
     private void SetListViewHeightBasedOnChildren(DanhSachThanhVienAdapter matchAdapter, ListView listView) {
@@ -203,7 +304,27 @@ public class ChiTietDoiBongXepHangFragment extends Fragment {
         listView.setLayoutParams(params);
     }
 
+    private void showDialogTinNhan(String text){
+        dialogTinNhan = new Dialog(getActivity());
+        dialogTinNhan.setContentView(R.layout.dialog_message);
+        dialogTinNhan.show();
+        TextView tvTinNhan = (TextView) dialogTinNhan.findViewById(R.id.tvTinNhan);
+        tvTinNhan.setText(text);
+    }
+    private void hideDialogTinNhan(){
+        TextView tvHuy = dialogTinNhan.findViewById(R.id.tvHuy);
+        tvHuy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialogTinNhan.cancel();
+            }
+        });
+    }
+
     private void Mapping() {
+        sharedPreferences = getActivity().getSharedPreferences("dataLogin", Context.MODE_PRIVATE);
+        mode = 1;
+        arrThanhVien = new ArrayList<>();
         lvLichSuTranDau = view.findViewById(R.id.ListViewLichSuTranDau);
         lvDanhSachThanhVien = view.findViewById(R.id.ListViewDanhSachThanhVien);
         txtQuayLai = view.findViewById(R.id.TextViewQuayLai);

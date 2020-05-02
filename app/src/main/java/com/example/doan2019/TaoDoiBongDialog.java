@@ -53,10 +53,7 @@ public class TaoDoiBongDialog extends DialogFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.dialog_tao_doi_bong, container, false);
         sharedPreferences = getActivity().getSharedPreferences("dataLogin", Context.MODE_PRIVATE);
-//        retrofit = new Retrofit.Builder()
-//                .baseUrl("http://192.168.1.4/DoAn/public/api/")
-//                .addConverterFactory(GsonConverterFactory.create())
-//                .build();
+
         jsonApiSanBong = APIUtils.getJsonApiSanBong();
         IDUser = sharedPreferences.getInt("id",0);
         Auth = sharedPreferences.getString("token","");
