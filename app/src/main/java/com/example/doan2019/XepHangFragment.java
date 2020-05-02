@@ -11,6 +11,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,7 +30,7 @@ import retrofit2.Response;
 public class XepHangFragment extends Fragment {
     private View view;
     ListView lvxepHangDoiBong;
-    ArrayList<DoiBongClass> listDoiBong;
+    ArrayList<DoiBong> listDoiBong;
     ArrayList<ThanhVienDoiBongClass> listThanhVienDoiBong;
     XepHangAdapter adapter;
     LangNgheSuKienChuyenFragment langNgheSuKienChuyenFragment;
@@ -56,7 +57,7 @@ public class XepHangFragment extends Fragment {
                 ChiTietDoiBongXepHangFragment chiTietDoiBongXepHangFragment = new ChiTietDoiBongXepHangFragment();
 
                 Bundle bundle = new Bundle();
-                DoiBongClass doiBongClass = listDoiBong.get(i);
+                DoiBong doiBongClass = listDoiBong.get(i);
                 bundle.putSerializable("doibong", doiBongClass);
                 chiTietDoiBongXepHangFragment.setArguments(bundle);
 
@@ -69,20 +70,24 @@ public class XepHangFragment extends Fragment {
         listDoiBong = new ArrayList<>();
         listThanhVienDoiBong = new ArrayList<>();
 
-        Bitmap anhDaiDien = BitmapFactory.decodeResource(getResources(), R.drawable.icon_app);
-        Bitmap anhBia = BitmapFactory.decodeResource(getResources(), R.drawable.anh_test_doi_bong);
-        listThanhVienDoiBong.add(new ThanhVienDoiBongClass("Nguyễn Văn A", "Thành viên", 1, anhDaiDien, "Hà Nội, Việt Nam", "dateConvert", "0123456789"));
-        listThanhVienDoiBong.add(new ThanhVienDoiBongClass("Nguyễn Văn B", "Thành viên", 1, anhDaiDien, "Hà Nội, Việt Nam", "dateConvert", "0123456789"));
-        listThanhVienDoiBong.add(new ThanhVienDoiBongClass("Nguyễn Văn C", "Thành viên", 1, anhDaiDien, "Hà Nội, Việt Nam", "dateConvert", "0123456789"));
-        long ngayTemp = 1234596789;
-        Date dateConvert = new Date(ngayTemp);
+////        Bitmap anhDaiDien = BitmapFactory.decodeResource(getResources(), R.drawable.icon_app);
+////        Bitmap anhBia = BitmapFactory.decodeResource(getResources(), R.drawable.anh_test_doi_bong);
+////        listThanhVienDoiBong.add(new ThanhVienDoiBongClass("Nguyễn Văn A", "Thành viên", 1, anhDaiDien, "Hà Nội, Việt Nam", "dateConvert", "0123456789"));
+////        listThanhVienDoiBong.add(new ThanhVienDoiBongClass("Nguyễn Văn B", "Thành viên", 1, anhDaiDien, "Hà Nội, Việt Nam", "dateConvert", "0123456789"));
+////        listThanhVienDoiBong.add(new ThanhVienDoiBongClass("Nguyễn Văn C", "Thành viên", 1, anhDaiDien, "Hà Nội, Việt Nam", "dateConvert", "0123456789"));
+//        long ngayTemp = 1234596789;
+//        Date dateConvert = new Date(ngayTemp);
         Call<List<DoiBong>> call = jsonApiSanBong.getBangxephang();
         call.enqueue(new Callback<List<DoiBong>>() {
             @Override
             public void onResponse(Call<List<DoiBong>> call, Response<List<DoiBong>> response) {
                 List<DoiBong> doiBongs = response.body();
                 for (DoiBong doiBong : doiBongs){
-                    listDoiBong.add(new DoiBongClass(doiBong.getTen(), doiBong.getSodiem(), doiBong.getDiachi(), doiBong.getTrinhdo(), doiBong.getCreated_at().toString(), doiBong.getSdt(), anhBia, anhDaiDien, listThanhVienDoiBong));
+//                    int id, String ten, String trinhdo, String diachi, String sdt
+//                    String anhbia, String anhdaidien, int sodiem, int hanhkiem
+//                    Timestamp created_at, java.sql.Timestamp updated_at
+                    listDoiBong.add(new DoiBong(doiBong.getId(),doiBong.getTen(),doiBong.getTrinhdo(),doiBong.getDiachi(),doiBong.getSdt(),doiBong.getAnhbia(),doiBong.getAnhdaidien()
+                    ,doiBong.getSodiem(),doiBong.getHanhkiem(),doiBong.getCreated_at(),doiBong.getUpdated_at()));
                 }
                 adapter = new XepHangAdapter(getActivity(), R.layout.dong_xep_hang, listDoiBong);
                 lvxepHangDoiBong.setAdapter(adapter);

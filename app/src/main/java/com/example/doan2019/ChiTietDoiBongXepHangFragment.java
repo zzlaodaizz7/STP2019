@@ -14,6 +14,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -55,6 +56,7 @@ public class ChiTietDoiBongXepHangFragment extends Fragment {
     Dialog dialogTinNhan;
     DoiBong doiBong;
     int mode, dbnd_id;
+    RatingBar rtb;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -77,7 +79,28 @@ public class ChiTietDoiBongXepHangFragment extends Fragment {
 
         ClickListViewThanhVien();
 
+        ClickSao();
+
         return view;
+    }
+
+    private void ClickSao() {
+        rtb.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+            @Override
+            public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+                if(rtb.getRating() == 0.5)
+                    rtb.setRating(1);
+                else if(rtb.getRating() == 1.5)
+                    rtb.setRating(2);
+                else if(rtb.getRating() == 2.5)
+                    rtb.setRating(3);
+                else if(rtb.getRating() == 3.5)
+                    rtb.setRating(4);
+                else if(rtb.getRating() == 4.5)
+                    rtb.setRating(5);
+                Toast.makeText(getActivity(), "Số sao vote: " + rtb.getRating(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void ClickListViewLichSuTranDau() {
@@ -241,7 +264,6 @@ public class ChiTietDoiBongXepHangFragment extends Fragment {
         if(doiBong.getAnhdaidien() != null){
             Picasso.get().load(doiBong.getAnhdaidien()).into(imgDaiDien);
         }
-
         txtTenDoiBong.setText(doiBong.getTen());
         txtDiem.setText(doiBong.getSodiem() + "");
         txtDiaChi.setText(doiBong.getDiachi());
@@ -322,6 +344,7 @@ public class ChiTietDoiBongXepHangFragment extends Fragment {
     }
 
     private void Mapping() {
+        rtb = view.findViewById(R.id.RatingBarDoiBongXepHang);
         sharedPreferences = getActivity().getSharedPreferences("dataLogin", Context.MODE_PRIVATE);
         mode = 1;
         arrThanhVien = new ArrayList<>();

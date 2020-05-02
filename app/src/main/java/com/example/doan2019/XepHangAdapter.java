@@ -7,14 +7,16 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.example.doan2019.Retrofit.DoiBong;
+
 import java.util.List;
 
 public class XepHangAdapter extends BaseAdapter {
     private Context context;
     private int layout;
-    private List<DoiBongClass> doiBongList;
+    private List<DoiBong> doiBongList;
 
-    public XepHangAdapter(Context context, int layout, List<DoiBongClass> doiBongList) {
+    public XepHangAdapter(Context context, int layout, List<DoiBong> doiBongList) {
         this.context = context;
         this.layout = layout;
         this.doiBongList = doiBongList;
@@ -61,10 +63,10 @@ public class XepHangAdapter extends BaseAdapter {
             viewHolder = (ViewHolder) view.getTag();
 
         //Gan gia tri
-        DoiBongClass doiBong = doiBongList.get(i);
+        DoiBong doiBong = doiBongList.get(i);
         viewHolder.txtSoThuTu.setText(i + 1 + "");
         viewHolder.txtTen.setText(doiBong.getTen());
-        viewHolder.txtDiem.setText(doiBong.getDiem() + " Điểm");
+        viewHolder.txtDiem.setText(doiBong.getSodiem() + " Điểm");
 
         return view;
     }
