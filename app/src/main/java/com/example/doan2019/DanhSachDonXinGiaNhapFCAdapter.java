@@ -1,5 +1,6 @@
 package com.example.doan2019;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -11,15 +12,28 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.doan2019.Retrofit.APIUtils;
+import com.example.doan2019.Retrofit.DoiBong_NguoiDung;
+import com.example.doan2019.Retrofit.JsonApiDoiBongNGuoiDung;
+import com.example.doan2019.Retrofit.User;
+import com.squareup.picasso.Picasso;
+
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class DanhSachDonXinGiaNhapFCAdapter extends BaseAdapter {
     private Context context;
     private int layout;
-    private List<ThanhVienDoiBongClass> listThanhVien;
+    private List<DoiBong_NguoiDung> listThanhVien;
     LangNgheSuKienChuyenFragment langNgheSuKienChuyenFragment;
+    JsonApiDoiBongNGuoiDung jsonApiDoiBongNGuoiDung;
+    Dialog dialogTinNhan;
 
-    public DanhSachDonXinGiaNhapFCAdapter(Context context, int layout, List<ThanhVienDoiBongClass> listThanhVien) {
+    public DanhSachDonXinGiaNhapFCAdapter(Context context, int layout, List<DoiBong_NguoiDung> listThanhVien) {
+        jsonApiDoiBongNGuoiDung = APIUtils.getJsonApiDoiBongNguoiDung();
         this.context = context;
         this.layout = layout;
         this.listThanhVien = listThanhVien;
@@ -71,15 +85,31 @@ public class DanhSachDonXinGiaNhapFCAdapter extends BaseAdapter {
             viewHolder = (ViewHolder) view.getTag();
 
         //Gan gia tri
-        ThanhVienDoiBongClass thanhVien = listThanhVien.get(i);
-        viewHolder.imgThanhVien.setImageBitmap(thanhVien.getImageDaiDien());
+        User thanhVien = listThanhVien.get(i).getUser();
+        if(thanhVien.getAnhbia() != null){
+            Picasso.get().load(thanhVien.getAnhbia()).into(viewHolder.imgThanhVien);
+        }
+
         viewHolder.txtTenThanhVien.setText(thanhVien.getTen());
-        viewHolder.txtSoDienThoai.setText(thanhVien.getSoDienThoai());
+        viewHolder.txtSoDienThoai.setText(thanhVien.getSdt());
 
         viewHolder.btnDongY.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(context, "Click Đồng ý: " + i + "\nBắt sự kiện trong Adapter nhé", Toast.LENGTH_SHORT).show();
+                Call<DoiBong_NguoiDung> call = jsonApiDoiBongNGuoiDung.updateThanhVien(listThanhVien.get(i).getId());
+                call.enqueue(new Callback<DoiBong_NguoiDung>() {
+                    @Override
+                    public void onResponse(Call<DoiBong_NguoiDung> call, Response<DoiBong_NguoiDung> response) {
+                        viewHolder.btnDongY.setVisibility(View.INVISIBLE);
+                        showDialogTinNhan(thanhVien.getTen()+" giờ là thành viên của đội bóng.");
+                        hideDialogTinNhan();
+                    }
+
+                    @Override
+                    public void onFailure(Call<DoiBong_NguoiDung> call, Throwable t) {
+
+                    }
+                });
             }
         });
 
@@ -89,7 +119,7 @@ public class DanhSachDonXinGiaNhapFCAdapter extends BaseAdapter {
                 ChiTietThanhVienFragment chiTietThanhVienFragment = new ChiTietThanhVienFragment();
 
                 Bundle bundle = new Bundle();
-                ThanhVienDoiBongClass thanhVienSend = listThanhVien.get(i);
+                User thanhVienSend = listThanhVien.get(i).getUser();
                 bundle.putSerializable("thanhvien", thanhVienSend);
                 chiTietThanhVienFragment.setArguments(bundle);
 
@@ -99,5 +129,21 @@ public class DanhSachDonXinGiaNhapFCAdapter extends BaseAdapter {
         });
 
         return view;
+    }
+    private void showDialogTinNhan(String text){
+        dialogTinNhan = new Dialog(context);
+        dialogTinNhan.setContentView(R.layout.dialog_message);
+        dialogTinNhan.show();
+        TextView tvTinNhan = (TextView) dialogTinNhan.findViewById(R.id.tvTinNhan);
+        tvTinNhan.setText(text);
+    }
+    private void hideDialogTinNhan(){
+        TextView tvHuy = dialogTinNhan.findViewById(R.id.tvHuy);
+        tvHuy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialogTinNhan.cancel();
+            }
+        });
     }
 }

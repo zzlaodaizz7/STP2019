@@ -1,5 +1,6 @@
 package com.example.doan2019;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -20,6 +21,8 @@ import android.widget.Toast;
 import com.example.doan2019.Retrofit.APIUtils;
 import com.example.doan2019.Retrofit.DangTin;
 import com.example.doan2019.Retrofit.DoiBong;
+import com.example.doan2019.Retrofit.DoiBong_NguoiDung;
+import com.example.doan2019.Retrofit.JsonApiDoiBongNGuoiDung;
 import com.example.doan2019.Retrofit.JsonApiSanBong;
 import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
@@ -62,9 +65,11 @@ public class TaiKhoanDaLoginFragment extends Fragment {
     ArrayList<TranDauDuongClass> arrTranDauSapToi;
     SharedPreferences sharedPreferences, sharedPreferencesOneSignal;
     DoiBongClass d1,d2;
-    JsonApiSanBong jsonApiSanBong;
+    JsonApiSanBong jsonApiSanBong; JsonApiDoiBongNGuoiDung jsonApiDoiBongNGuoiDung;
     ArrayAdapter arrayAdapter;
+    ArrayList<DoiBong_NguoiDung> arrDoiBongDangThamGia;
     ImageView imageProfilePicture2;
+    CacFCDangThamGiaAdapter cacFCDangThamGiaAdapter;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -122,7 +127,8 @@ public class TaiKhoanDaLoginFragment extends Fragment {
             @Override
             public void onResponse(Call<List<DangTin>> call, Response<List<DangTin>> response) {
                 List<DangTin> dangTin = response.body();
-                System.out.println("size: "+dangTin.size());
+                //System.out.println("size: "+dangTin.size());
+                if(response.body() == null) return;
                 for (int i = 0; i < dangTin.size(); i++) {
 
                     dangTin.get(i).getDoibong1().setImageBia(anhBia);
@@ -170,7 +176,7 @@ public class TaiKhoanDaLoginFragment extends Fragment {
                 ChiTietDoiBongDaThamGiaFragment chiTietDoiBongDaThamGiaFragment = new ChiTietDoiBongDaThamGiaFragment();
 //
                 Bundle bundle = new Bundle();
-                DoiBong doiBong = arrFCThamGia.get(i);
+                DoiBong_NguoiDung doiBong = arrDoiBongDangThamGia.get(i);
                 bundle.putSerializable("doibong1", doiBong);
                 chiTietDoiBongDaThamGiaFragment.setArguments(bundle);
                 langNgheSuKienChuyenFragment.ChuyenHuongFragment(chiTietDoiBongDaThamGiaFragment);
@@ -200,52 +206,30 @@ public class TaiKhoanDaLoginFragment extends Fragment {
         if(!sharedPreferences.getString("anhbia","").equals("")){
             Picasso.get().load(sharedPreferences.getString("anhbia","")).into(imageProfilePicture2);
         }
-        long ngayTemp = 1234596789;
-        Date dateConvert = new Date(ngayTemp);
-        listThanhVienDoiBong.add(new ThanhVienDoiBongClass("Nguyễn Văn A", "Thành viên", 1, anhDaiDien, "Hà Nội, Việt Nam", dateConvert, "0123456789"));
-        listThanhVienDoiBong.add(new ThanhVienDoiBongClass("Nguyễn Văn B", "Thành viên", 1, anhDaiDien, "Hà Nội, Việt Nam", dateConvert, "0123456789"));
-        listThanhVienDoiBong.add(new ThanhVienDoiBongClass("Nguyễn Văn C", "Thành viên", 1, anhDaiDien, "Hà Nội, Việt Nam", dateConvert, "0123456789"));
-        listThanhVienDoiBong.add(new ThanhVienDoiBongClass("Nguyễn Văn D", "Thành viên", 1, anhDaiDien, "Hà Nội, Việt Nam", dateConvert, "0123456789"));
-        listThanhVienDoiBong.add(new ThanhVienDoiBongClass("Nguyễn Văn E", "Thành viên", 1, anhDaiDien, "Hà Nội, Việt Nam", dateConvert, "0123456789"));
-        listThanhVienDoiBong.add(new ThanhVienDoiBongClass("Nguyễn Văn F", "Thành viên", 1, anhDaiDien, "Hà Nội, Việt Nam", dateConvert, "0123456789"));
-        listThanhVienDoiBong.add(new ThanhVienDoiBongClass("Nguyễn Văn G", "Thành viên", 1, anhDaiDien, "Hà Nội, Việt Nam", dateConvert, "0123456789"));
-        listThanhVienDoiBong.add(new ThanhVienDoiBongClass("Nguyễn Văn H", "Thành viên", 1, anhDaiDien, "Hà Nội, Việt Nam", dateConvert, "0123456789"));
-        listThanhVienDoiBong.add(new ThanhVienDoiBongClass("Nguyễn Văn I", "Thành viên", 1, anhDaiDien, "Hà Nội, Việt Nam", dateConvert, "0123456789"));
-
-        Call<List<DoiBong>> call = jsonApiSanBong.getCacdoidathamgias(sharedPreferences.getInt("id",1));
-        call.enqueue(new Callback<List<DoiBong>>() {
+        Call<List<DoiBong_NguoiDung>> call = jsonApiDoiBongNGuoiDung.getCacDoiDangThamGia(sharedPreferences.getInt("id",-1));
+        Log.d("dangthamgia", sharedPreferences.getInt("id",-1)+"");
+        call.enqueue(new Callback<List<DoiBong_NguoiDung>>() {
             @Override
-            public void onResponse(Call<List<DoiBong>> call, Response<List<DoiBong>> response) {
-                List<DoiBong> doiBongs = response.body();
-                for (DoiBong doiBong : doiBongs){
-                    arrFCThamGia.add(new DoiBong(doiBong.getId(), doiBong.getTen(),doiBong.getTrinhdo(),doiBong.getDiachi(),doiBong.getSdt(),anhBia,anhDaiDien,doiBong.getSodiem(),0,doiBong.getCreated_at(), doiBong.getUpdated_at()));
-                    arrTenCacFCThamGia.add(doiBong.getTen());
+            public void onResponse(Call<List<DoiBong_NguoiDung>> call, Response<List<DoiBong_NguoiDung>> response) {
+                List<DoiBong_NguoiDung> doiBongDangTGS = response.body();
+                if(response.body() == null) return;
+                for(DoiBong_NguoiDung doiBongDangTG : doiBongDangTGS){
+                    arrDoiBongDangThamGia.add(doiBongDangTG);
+                    cacFCDangThamGiaAdapter = new CacFCDangThamGiaAdapter(getActivity(), R.layout.dong_doi_bong_dang_tham_gia, arrDoiBongDangThamGia);
+                    lvCacFCDangThamGia.setAdapter(cacFCDangThamGiaAdapter);
+                    setListViewHeightBasedOnChildren(cacFCDangThamGiaAdapter, lvCacFCDangThamGia);
+                    Log.d("dangthamgia", doiBongDangTG.getTrangthai()+" "+doiBongDangTG.getDoibong().getId());
                 }
-                listThanhVienDoiBong.add(new ThanhVienDoiBongClass("Nguyễn Văn A", "Thành viên", 1, anhDaiDien, "Hà Nội, Việt Nam", dateConvert, "0123456789"));
-                listThanhVienDoiBong.add(new ThanhVienDoiBongClass("Nguyễn Văn B", "Thành viên", 1, anhDaiDien, "Hà Nội, Việt Nam", dateConvert, "0123456789"));
-                listThanhVienDoiBong.add(new ThanhVienDoiBongClass("Nguyễn Văn C", "Thành viên", 1, anhDaiDien, "Hà Nội, Việt Nam", dateConvert, "0123456789"));
-                listThanhVienDoiBong.add(new ThanhVienDoiBongClass("Nguyễn Văn D", "Thành viên", 1, anhDaiDien, "Hà Nội, Việt Nam", dateConvert, "0123456789"));
-                System.out.println(arrTenCacFCThamGia.size());
-                if (getActivity()!=null){
-                    arrayAdapter = new ArrayAdapter(getActivity(), android.R.layout.simple_list_item_1, arrTenCacFCThamGia);
-                    lvCacFCDangThamGia.setAdapter(arrayAdapter);
-                    setListViewHeightBasedOnChildren(arrayAdapter, lvCacFCDangThamGia);
-                }
-
             }
+
             @Override
-            public void onFailure(Call<List<DoiBong>> call, Throwable t) {
-                System.out.println("loi: "+ t.getMessage());
+            public void onFailure(Call<List<DoiBong_NguoiDung>> call, Throwable t) {
+
             }
         });
-
-
-
-
-//        System.out.println(arrFCThamGia.get(1).getTen())
     }
 
-    private void setListViewHeightBasedOnChildren(ArrayAdapter matchAdapter, ListView listView) {
+    private void setListViewHeightBasedOnChildren(CacFCDangThamGiaAdapter matchAdapter, ListView listView) {
 
         if (matchAdapter == null) {
             return;
@@ -329,6 +313,8 @@ public class TaiKhoanDaLoginFragment extends Fragment {
     }
 
     public void Mapping() {
+        arrDoiBongDangThamGia = new ArrayList<>();
+        jsonApiDoiBongNGuoiDung = APIUtils.getJsonApiDoiBongNguoiDung();
         lvTranDauSapToi = view.findViewById(R.id.ListViewTranDauSapToi);
         txtNoiDungCacFCDangThamGia = view.findViewById(R.id.TextViewNoiDungCacFCDangThamGia);
         sharedPreferencesOneSignal = getActivity().getSharedPreferences("OneSignalId", Context.MODE_PRIVATE);

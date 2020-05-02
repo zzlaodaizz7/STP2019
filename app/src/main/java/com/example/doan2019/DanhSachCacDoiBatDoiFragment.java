@@ -24,6 +24,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.doan2019.DoiBongClass;
+import com.example.doan2019.Retrofit.APIUtils;
 import com.example.doan2019.Retrofit.JsonApiSanBong;
 
 import retrofit2.Call;
@@ -52,11 +53,8 @@ public class DanhSachCacDoiBatDoiFragment extends Fragment {
         sharedPreferences = getActivity().getSharedPreferences("dataLogin", Context.MODE_PRIVATE);
         view = inflater.inflate(R.layout.fragment_cac_doi_bat_doi, container, false);
         langNgheSuKienChuyenFragment = (LangNgheSuKienChuyenFragment) getActivity();
-        retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.1.4/DoAn/public/api/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-        jsonApiSanBong = retrofit.create(JsonApiSanBong.class);
+
+        jsonApiSanBong = APIUtils.getJsonApiSanBong();
         Auth = sharedPreferences.getString("token","");
         Mapping();
 

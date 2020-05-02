@@ -14,6 +14,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.example.doan2019.Retrofit.User;
+import com.squareup.picasso.Picasso;
+
 public class ChiTietThanhVienFragment extends Fragment {
     Bundle bundle;
     private View view;
@@ -45,15 +48,21 @@ public class ChiTietThanhVienFragment extends Fragment {
     private void GetDuLieuThanhVien() {
         bundle = getArguments();
 
-        ThanhVienDoiBongClass thanhVienDoiBongClass = (ThanhVienDoiBongClass) bundle.getSerializable("thanhvien");
-        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-        String time = dateFormat.format(thanhVienDoiBongClass.getNgayRaNhap());
+        User thanhVienDoiBongClass = (User) bundle.getSerializable("thanhvien");
+//        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+//        String time = dateFormat.format(thanhVienDoiBongClass.getCreated_at());
 
-        imgDaiDien.setImageBitmap(thanhVienDoiBongClass.getImageDaiDien());
+        if(thanhVienDoiBongClass.getAnhbia() != null){
+            Picasso.get().load(thanhVienDoiBongClass.getAnhbia()).into(imgDaiDien);
+        }
+
+        String time = thanhVienDoiBongClass.getCreated_at();
+        time = time.substring(0, 10);
+
         txtTen.setText(thanhVienDoiBongClass.getTen());
-        txtngayGiaNhap.setText(time);
-        txtDiaChi.setText(thanhVienDoiBongClass.getDiaChi());
-        txtSoDienThoai.setText(thanhVienDoiBongClass.getSoDienThoai());
+        txtngayGiaNhap.setText(time+"");
+        txtDiaChi.setText("Địa chỉ");
+        txtSoDienThoai.setText(thanhVienDoiBongClass.getSdt());
     }
 
     private void Mapping() {

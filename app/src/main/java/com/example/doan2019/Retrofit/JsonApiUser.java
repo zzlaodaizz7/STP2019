@@ -19,7 +19,7 @@ public interface JsonApiUser {
     @POST("register")
     Call<String> register(@Body User user);
 
-    @PUT("capnhatnguoidung/{id}")
+    @PUT("nguoidung/{id}")
     Call<String> update(@Body User user, @Path("id") int id);
 
     @GET("nguoidung/{id}")
