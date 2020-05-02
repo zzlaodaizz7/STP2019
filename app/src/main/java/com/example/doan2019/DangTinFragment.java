@@ -33,6 +33,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.example.doan2019.Retrofit.APIUtils;
 import com.example.doan2019.Retrofit.DangTin;
 import com.example.doan2019.Retrofit.DoiBong;
 import com.example.doan2019.Retrofit.JsonApiSanBong;
@@ -78,11 +79,11 @@ public class DangTinFragment extends Fragment {
 //        Toast.makeText(getContext(),sharedPreferences.getString("token",""), Toast.LENGTH_SHORT).show();
         IDUser = sharedPreferences.getInt("id",0);
         Auth = sharedPreferences.getString("token","");
-        retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.1.4/DoAn/public/api/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-        jsonApiSanBong = retrofit.create(JsonApiSanBong.class);
+//        retrofit = new Retrofit.Builder()
+//                .baseUrl("http://192.168.1.4/DoAn/public/api/")
+//                .addConverterFactory(GsonConverterFactory.create())
+//                .build();
+        jsonApiSanBong = APIUtils.getJsonApiSanBong();
 
         LoadListSanBong();
 

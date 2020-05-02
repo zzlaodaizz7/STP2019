@@ -5,17 +5,32 @@ import android.graphics.Bitmap;
 import java.sql.Timestamp;
 
 public class UserLogin {
-    private int id;
-    private String ten,email,sdt,password,token,error;
+    private int id,phanquyen_id;
+    private String ten,email,sdt,password,token,error,diachi;
     private String anhbia;
     private Timestamp created_at,updated_at;
-
-
 
     public UserLogin(String email, String password) {
         this.email = email;
         this.password = password;
     }
+
+    public String getDiachi() {
+        return diachi;
+    }
+
+    public void setDiachi(String diachi) {
+        this.diachi = diachi;
+    }
+
+    public int getPhanquyen_id() {
+        return phanquyen_id;
+    }
+
+    public void setPhanquyen_id(int phanquyen_id) {
+        this.phanquyen_id = phanquyen_id;
+    }
+
     public String getError() {
         return error;
     }

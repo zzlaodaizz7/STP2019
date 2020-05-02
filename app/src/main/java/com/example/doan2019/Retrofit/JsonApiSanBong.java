@@ -17,12 +17,13 @@ import retrofit2.http.Path;
 public interface JsonApiSanBong {
     @GET("sanbong")
     Call<List<SanBong>> getSanbongs();
+
     @GET("sanbong/{id}")
     Call<SanBong> getChitietsanbong(@Path("id") int id);
+
     @GET("doitruongcacdoi/{id}")
     Call<List<DoiBong>> getDoitruongcacdois(@Path("id") int groupId);
 
-//    @Headers({"value: application/json","Accept: application/json","Authorization: Bearer {Auth}"})
     @POST("dangtin")
     Call<DangTin> postDangTin(@HeaderMap Map<String, String> headers,
                               @Body DangTin dangTin
@@ -33,29 +34,40 @@ public interface JsonApiSanBong {
                      );
     @GET("cacdoidathamgia/{id}")
     Call<List<DoiBong>> getCacdoidathamgias(@Path("id") int id);
+
     @GET("danhsachthanhvien/{id}")
     Call<List<UserLogin>> getDanhsachthanhviens(@Path("id") int id);
+
     @POST("doibong")
     Call<DoiBong> postTaodoibongs(@HeaderMap Map<String, String> headers,
                                   @Body DoiBong doiBong
                                     );
+
     @GET("cactindadang/{id}")
     Call<List<DangTinDuongClass>> getDanhsachdangtins(@Path("id") int id);
+
     @GET("batdoi/{id}")
     Call<List<DoiBongClass>> getCacdoibatdoi(@HeaderMap Map<String,String> headers,
             @Path("id") int id);
+
     @PUT("batdoi/{id}")
     Call<DangTin> chotkeo(@HeaderMap Map<String,String> headers,
                    @Path("id") int id);
+
     @GET("chitietdoibong/{id}")
     Call<DoiBong> getChitietdoibong(@Path("id") int id);
+
     @GET("cactransapdienra/{id}")
     Call<List<DangTin>>  getCactransapdienra(@Path("id") int id);
+
     @GET("cactransapdienracuadoi/{id}")
     Call<List<DangTin>> getCactransapdienracuadoi(@Path("id") int id);
+
     @GET("cactrandaketthuc/{id}")
     Call<List<DangTin>> getCactrandaketthuc(@Path("id") int id);
     @POST("voteketqua")
     Call<KetQua> postVoted(@HeaderMap Map<String, String> headers,
                             @Body KetQua ketqua);
+    @GET("xephang")
+    Call<List<DoiBong>> getBangxephang();
 }

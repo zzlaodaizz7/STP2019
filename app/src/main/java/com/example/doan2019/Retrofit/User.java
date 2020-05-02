@@ -10,6 +10,7 @@ public class User implements Serializable {
     private String password;
     private String device;
     private String sdt;
+    private String diachi;
     private String anhbia;
     private String remember_token;
     private String created_at;
@@ -34,6 +35,14 @@ public class User implements Serializable {
         this.ten = ten;
         this.email = email;
         this.password = password;
+    }
+
+    public String getDiachi() {
+        return diachi;
+    }
+
+    public void setDiachi(String diachi) {
+        this.diachi = diachi;
     }
 
     public int getId() {

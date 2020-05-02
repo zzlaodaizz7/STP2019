@@ -24,6 +24,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.doan2019.DoiBongClass;
+import com.example.doan2019.Retrofit.APIUtils;
 import com.example.doan2019.Retrofit.JsonApiSanBong;
 
 import retrofit2.Call;
@@ -52,11 +53,11 @@ public class DanhSachCacDoiBatDoiFragment extends Fragment {
         sharedPreferences = getActivity().getSharedPreferences("dataLogin", Context.MODE_PRIVATE);
         view = inflater.inflate(R.layout.fragment_cac_doi_bat_doi, container, false);
         langNgheSuKienChuyenFragment = (LangNgheSuKienChuyenFragment) getActivity();
-        retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.1.4/DoAn/public/api/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-        jsonApiSanBong = retrofit.create(JsonApiSanBong.class);
+//        retrofit = new Retrofit.Builder()
+//                .baseUrl("http://192.168.1.4/DoAn/public/api/")
+//                .addConverterFactory(GsonConverterFactory.create())
+//                .build();
+        jsonApiSanBong = APIUtils.getJsonApiSanBong();
         Auth = sharedPreferences.getString("token","");
         Mapping();
 
@@ -129,9 +130,9 @@ public class DanhSachCacDoiBatDoiFragment extends Fragment {
                 long ngayTemp = 1234596789;
                 Date dateConvert = new Date(ngayTemp);
 
-                listThanhVienDoiBong.add(new ThanhVienDoiBongClass("Nguyễn Văn A", "Thành viên", 1, anhDaiDien, "Hà Nội, Việt Nam", dateConvert, "0123456789"));
-                listThanhVienDoiBong.add(new ThanhVienDoiBongClass("Nguyễn Văn B", "Thành viên", 1, anhDaiDien, "Hà Nội, Việt Nam", dateConvert, "0123456789"));
-                listThanhVienDoiBong.add(new ThanhVienDoiBongClass("Nguyễn Văn C", "Thành viên", 1, anhDaiDien, "Hà Nội, Việt Nam", dateConvert, "0123456789"));
+                listThanhVienDoiBong.add(new ThanhVienDoiBongClass("Nguyễn Văn A", "Thành viên", 1, anhDaiDien, "Hà Nội, Việt Nam", "dateConvert", "0123456789"));
+                listThanhVienDoiBong.add(new ThanhVienDoiBongClass("Nguyễn Văn B", "Thành viên", 1, anhDaiDien, "Hà Nội, Việt Nam", "dateConvert", "0123456789"));
+                listThanhVienDoiBong.add(new ThanhVienDoiBongClass("Nguyễn Văn C", "Thành viên", 1, anhDaiDien, "Hà Nội, Việt Nam", "dateConvert", "0123456789"));
 
                 adapter = new DanhSachCacDoiBatDoiAdapter(getActivity(), R.layout.dong_doi_bat_doi, listDoiBong);
                 lvDoiBongBatDoi.setAdapter(adapter);

@@ -173,7 +173,7 @@ public class TimDoiFragment extends Fragment{
                 List<SanBong> sanBongs = response.body();
                 for (SanBong sanBong : sanBongs) {
                     sanBongArrayList.add(sanBong);
-                    Log.d("test", sanBongArrayList + "");
+
                 }
 //                Call<List<KhungGio>> call1 = jsonApiKhungGio.getKhungGios(header);
 //                call1.enqueue(new Callback<List<KhungGio>>() {

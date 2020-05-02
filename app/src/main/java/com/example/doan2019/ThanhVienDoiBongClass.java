@@ -11,10 +11,10 @@ public class ThanhVienDoiBongClass implements Serializable {
     private int ID;
     private Bitmap imageDaiDien;
     private String diaChi;
-    private Date ngayRaNhap;
+    private String ngayRaNhap;
     private String soDienThoai;
 
-    public ThanhVienDoiBongClass(String ten, String chucVu, int ID, Bitmap imageDaiDien, String diaChi, Date ngayRaNhap, String soDienThoai) {
+    public ThanhVienDoiBongClass(String ten, String chucVu, int ID, Bitmap imageDaiDien, String diaChi, String ngayRaNhap, String soDienThoai) {
         this.ten = ten;
         this.chucVu = chucVu;
         this.ID = ID;
@@ -51,11 +51,11 @@ public class ThanhVienDoiBongClass implements Serializable {
         this.diaChi = diaChi;
     }
 
-    public Date getNgayRaNhap() {
+    public String getNgayRaNhap() {
         return ngayRaNhap;
     }
 
-    public void setNgayRaNhap(Date ngayRaNhap) {
+    public void setNgayRaNhap(String ngayRaNhap) {
         this.ngayRaNhap = ngayRaNhap;
     }
 

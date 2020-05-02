@@ -12,10 +12,19 @@ import android.widget.TextView;
 
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+
+import com.example.doan2019.Retrofit.APIUtils;
+import com.example.doan2019.Retrofit.DoiBong;
+import com.example.doan2019.Retrofit.JsonApiSanBong;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class XepHangFragment extends Fragment {
     private View view;
@@ -24,13 +33,13 @@ public class XepHangFragment extends Fragment {
     ArrayList<ThanhVienDoiBongClass> listThanhVienDoiBong;
     XepHangAdapter adapter;
     LangNgheSuKienChuyenFragment langNgheSuKienChuyenFragment;
-
+    JsonApiSanBong jsonApiSanBong;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_xep_hang_doi_bong, container, false);
         langNgheSuKienChuyenFragment = (LangNgheSuKienChuyenFragment) getActivity();
-
+        jsonApiSanBong = APIUtils.getJsonApiSanBong();
         Mapping();
 
         KhoiTaoListView();
@@ -59,30 +68,41 @@ public class XepHangFragment extends Fragment {
     private void KhoiTaoListView() {
         listDoiBong = new ArrayList<>();
         listThanhVienDoiBong = new ArrayList<>();
+
         Bitmap anhDaiDien = BitmapFactory.decodeResource(getResources(), R.drawable.icon_app);
         Bitmap anhBia = BitmapFactory.decodeResource(getResources(), R.drawable.anh_test_doi_bong);
+        listThanhVienDoiBong.add(new ThanhVienDoiBongClass("Nguyễn Văn A", "Thành viên", 1, anhDaiDien, "Hà Nội, Việt Nam", "dateConvert", "0123456789"));
+        listThanhVienDoiBong.add(new ThanhVienDoiBongClass("Nguyễn Văn B", "Thành viên", 1, anhDaiDien, "Hà Nội, Việt Nam", "dateConvert", "0123456789"));
+        listThanhVienDoiBong.add(new ThanhVienDoiBongClass("Nguyễn Văn C", "Thành viên", 1, anhDaiDien, "Hà Nội, Việt Nam", "dateConvert", "0123456789"));
         long ngayTemp = 1234596789;
         Date dateConvert = new Date(ngayTemp);
+        Call<List<DoiBong>> call = jsonApiSanBong.getBangxephang();
+        call.enqueue(new Callback<List<DoiBong>>() {
+            @Override
+            public void onResponse(Call<List<DoiBong>> call, Response<List<DoiBong>> response) {
+                List<DoiBong> doiBongs = response.body();
+                for (DoiBong doiBong : doiBongs){
+                    listDoiBong.add(new DoiBongClass(doiBong.getTen(), doiBong.getSodiem(), doiBong.getDiachi(), doiBong.getTrinhdo(), doiBong.getCreated_at().toString(), doiBong.getSdt(), anhBia, anhDaiDien, listThanhVienDoiBong));
+                }
+                adapter = new XepHangAdapter(getActivity(), R.layout.dong_xep_hang, listDoiBong);
+                lvxepHangDoiBong.setAdapter(adapter);
+                setListViewHeightBasedOnChildren(adapter, lvxepHangDoiBong);
+            }
 
-        listThanhVienDoiBong.add(new ThanhVienDoiBongClass("Nguyễn Văn A", "Thành viên", 1, anhDaiDien, "Hà Nội, Việt Nam", dateConvert, "0123456789"));
-        listThanhVienDoiBong.add(new ThanhVienDoiBongClass("Nguyễn Văn B", "Thành viên", 1, anhDaiDien, "Hà Nội, Việt Nam", dateConvert, "0123456789"));
-        listThanhVienDoiBong.add(new ThanhVienDoiBongClass("Nguyễn Văn C", "Thành viên", 1, anhDaiDien, "Hà Nội, Việt Nam", dateConvert, "0123456789"));
-        listThanhVienDoiBong.add(new ThanhVienDoiBongClass("Nguyễn Văn D", "Thành viên", 1, anhDaiDien, "Hà Nội, Việt Nam", dateConvert, "0123456789"));
-        listThanhVienDoiBong.add(new ThanhVienDoiBongClass("Nguyễn Văn E", "Thành viên", 1, anhDaiDien, "Hà Nội, Việt Nam", dateConvert, "0123456789"));
-        listThanhVienDoiBong.add(new ThanhVienDoiBongClass("Nguyễn Văn F", "Thành viên", 1, anhDaiDien, "Hà Nội, Việt Nam", dateConvert, "0123456789"));
-        listThanhVienDoiBong.add(new ThanhVienDoiBongClass("Nguyễn Văn G", "Thành viên", 1, anhDaiDien, "Hà Nội, Việt Nam", dateConvert, "0123456789"));
-        listThanhVienDoiBong.add(new ThanhVienDoiBongClass("Nguyễn Văn H", "Thành viên", 1, anhDaiDien, "Hà Nội, Việt Nam", dateConvert, "0123456789"));
-        listThanhVienDoiBong.add(new ThanhVienDoiBongClass("Nguyễn Văn I", "Thành viên", 1, anhDaiDien, "Hà Nội, Việt Nam", dateConvert, "0123456789"));
+            @Override
+            public void onFailure(Call<List<DoiBong>> call, Throwable t) {
 
-        listDoiBong.add(new DoiBongClass("FC fb", 3, "Hà Nội, Việt Nam", "Khá", "11/10/2010", "0123456789", anhBia, anhDaiDien, listThanhVienDoiBong));
-        listDoiBong.add(new DoiBongClass("FC Linh Đàm", 3, "Hà Nội, Việt Nam", "Khá", "11/10/2010", "0123456789", anhBia, anhDaiDien, listThanhVienDoiBong));
-        listDoiBong.add(new DoiBongClass("FC Cầu Giấy", 3, "Hà Nội, Việt Nam", "Khá", "11/10/2010", "0123456789", anhBia, anhDaiDien, listThanhVienDoiBong));
-        listDoiBong.add(new DoiBongClass("FC Mễ Trì", 3, "Hà Nội, Việt Nam", "Khá", "11/10/2010", "0123456789", anhBia, anhDaiDien, listThanhVienDoiBong));
-        listDoiBong.add(new DoiBongClass("FC Lê Đức Thọ", 3, "Hà Nội, Việt Nam", "Khá", "11/10/2010", "0123456789", anhBia, anhDaiDien, listThanhVienDoiBong));
+            }
+        });
+//
+//        listThanhVienDoiBong.add(new ThanhVienDoiBongClass("Nguyễn Văn D", "Thành viên", 1, anhDaiDien, "Hà Nội, Việt Nam", dateConvert, "0123456789"));
+//        listThanhVienDoiBong.add(new ThanhVienDoiBongClass("Nguyễn Văn E", "Thành viên", 1, anhDaiDien, "Hà Nội, Việt Nam", dateConvert, "0123456789"));
+//        listThanhVienDoiBong.add(new ThanhVienDoiBongClass("Nguyễn Văn F", "Thành viên", 1, anhDaiDien, "Hà Nội, Việt Nam", dateConvert, "0123456789"));
+//        listThanhVienDoiBong.add(new ThanhVienDoiBongClass("Nguyễn Văn G", "Thành viên", 1, anhDaiDien, "Hà Nội, Việt Nam", dateConvert, "0123456789"));
+//        listThanhVienDoiBong.add(new ThanhVienDoiBongClass("Nguyễn Văn H", "Thành viên", 1, anhDaiDien, "Hà Nội, Việt Nam", dateConvert, "0123456789"));
+//        listThanhVienDoiBong.add(new ThanhVienDoiBongClass("Nguyễn Văn I", "Thành viên", 1, anhDaiDien, "Hà Nội, Việt Nam", dateConvert, "0123456789"));
 
-        adapter = new XepHangAdapter(getActivity(), R.layout.dong_xep_hang, listDoiBong);
-        lvxepHangDoiBong.setAdapter(adapter);
-        setListViewHeightBasedOnChildren(adapter, lvxepHangDoiBong);
+
     }
 
     private void setListViewHeightBasedOnChildren(XepHangAdapter matchAdapter, ListView listView) {
