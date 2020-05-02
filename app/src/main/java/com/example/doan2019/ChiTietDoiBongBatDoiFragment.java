@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,6 +19,7 @@ public class ChiTietDoiBongBatDoiFragment extends Fragment {
     TextView txtTenDoiBong, txtDiem, txtDiaChi, txtTrinhDo, txtNgayThanhlap, txtPhone, txtDongYBatDoi, txtQuayLai;
     Bundle bundle;
     ImageView imgAnhBia, imgDaiDien;
+    RatingBar rtb;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -31,7 +33,40 @@ public class ChiTietDoiBongBatDoiFragment extends Fragment {
 
         ClickDongYBatDoi();
 
+        ClickDanhGia();
+
+        ClickSao();
+
         return view;
+    }
+
+    private void ClickSao() {
+        rtb.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+            @Override
+            public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+                if(rtb.getRating() == 0.5)
+                    rtb.setRating(1);
+                else if(rtb.getRating() == 1.5)
+                    rtb.setRating(2);
+                else if(rtb.getRating() == 2.5)
+                    rtb.setRating(3);
+                else if(rtb.getRating() == 3.5)
+                    rtb.setRating(4);
+                else if(rtb.getRating() == 4.5)
+                    rtb.setRating(5);
+                Toast.makeText(getActivity(), "Số sao vote: " + rtb.getRating(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void ClickDanhGia() {
+        rtb.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getActivity(), "Số sao vote: " + rtb.getNumStars()
+                        + "Số người vote: " + rtb.getRating(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void ClickQuayLai() {
@@ -67,6 +102,7 @@ public class ChiTietDoiBongBatDoiFragment extends Fragment {
     }
 
     private void Mapping() {
+        rtb = view.findViewById(R.id.RatingBarDoiBongBatDoi);
         txtQuayLai = view.findViewById(R.id.TextViewQuayLai);
         imgAnhBia = view.findViewById(R.id.ImageViewBiaDoiBong);
         imgDaiDien = view.findViewById(R.id.ImageViewDaiDienDoiBong);

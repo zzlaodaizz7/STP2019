@@ -99,6 +99,16 @@
                         app:layout_constraintRight_toRightOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/ImageViewDaiDienDoiBong" />
 
+                    <RatingBar
+                        android:id="@+id/RatingBarDoiBongXepHang"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:progressTint="@android:color/holo_green_light"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/TextViewName" />
+
                     <TextView
                         android:id="@+id/TextViewDiem"
                         android:layout_width="wrap_content"
@@ -109,7 +119,7 @@
                         android:textSize="16sp"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/TextViewName" />
+                        app:layout_constraintTop_toBottomOf="@id/RatingBarDoiBongXepHang" />
 
                     <TextView
                         android:id="@+id/TextViewICLocation"
