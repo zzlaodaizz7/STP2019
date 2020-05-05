@@ -48,7 +48,7 @@ import retrofit2.Response;
 public class BatDoiFragment extends Fragment {
 
     View view;
-    TextView txtTime, txtPitch, txtRatio, txtState, txtLevel, txtTeamHost, txtTeamGuest, txtVS;
+    TextView txtTime, txtPitch, txtRatio, txtState, txtLevel, txtTeamHost, txtTeamGuest, txtVS, txtBack;
     Button btnBatDoi;
     Bundle bundle;
     JsonApiDangTin jsonApiDangTin; JsonApiBatDoi jsonApiBatDoi; JsonApiUser jsonApiUser; JsonApiThongBao jsonApiThongBao; JsonApiDoiBongNGuoiDung jsonApiDoiBongNGuoiDung;
@@ -79,8 +79,18 @@ public class BatDoiFragment extends Fragment {
         loadDoiDangTin_device();
         LoadListDoiBong();
         clickBtnBatDoi();
+        ClickBack();
 
         return view;
+    }
+
+    private void ClickBack() {
+        txtBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().onBackPressed();
+            }
+        });
     }
 
     private void mapping(){
@@ -93,7 +103,7 @@ public class BatDoiFragment extends Fragment {
         header.put("Authorization","Bearer "+Auth);
 
         mainLV = (ListView) getActivity().findViewById(R.id.mainLV);
-
+        txtBack = view.findViewById(R.id.TextViewBack);
         txtLevel = view.findViewById(R.id.txtLevel);
         txtTime = view.findViewById(R.id.txtTime);
         txtPitch = view.findViewById(R.id.txtPitch);
@@ -271,7 +281,7 @@ public class BatDoiFragment extends Fragment {
                     call.enqueue(new Callback<DangTin>() {
                         @Override
                         public void onResponse(Call<DangTin> call, Response<DangTin> response) {
-                            Toast.makeText(getActivity(), "Chuyen Fragment", Toast.LENGTH_LONG).show();
+                            //Toast.makeText(getActivity(), "Chuyen Fragment", Toast.LENGTH_LONG).show();
                         }
 
                         @Override

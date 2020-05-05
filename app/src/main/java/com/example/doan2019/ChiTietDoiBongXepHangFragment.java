@@ -190,30 +190,35 @@ public class ChiTietDoiBongXepHangFragment extends Fragment {
         call.enqueue(new Callback<List<DangTin>>() {
             @Override
             public void onResponse(Call<List<DangTin>> call, Response<List<DangTin>> response) {
-                List<DangTin> dangTin = response.body();
-                if(response.body()==null){
-                    return;
-                }
-                if(dangTin.size() == 0){
-                    return;
-                }
-                for (int i = 0; i < dangTin.size(); i++) {
-                    dangTin.get(i).getDoibong1().setImageBia(anhBia);
-                    dangTin.get(i).getDoibong1().setImageDaiDien(anhDaiDien);
-                    dangTin.get(i).getDoibong2().setImageBia(anhBia);
-                    dangTin.get(i).getDoibong2().setImageDaiDien(anhDaiDien);
-                    int a=0,b=0;
-//                    System.out.println("Voted :"+dangTin.get(i).getVoted());
-                    if (dangTin.get(i).getVoted()==1){
-//                        System.out.println("a: "+dangTin.get(i).getBanthangdoidangtin());
-                        a = dangTin.get(i).getBanthangdoidangtin();
-                        b = dangTin.get(i).getBanthangdoibatdoi();
+                try {
+                    List<DangTin> dangTin = response.body();
+                    if (response.body() == null) {
+                        return;
                     }
-                    arrLichSuTranDau.add(new TranDauDuongClass(dangTin.get(i).getId(), dangTin.get(i).getDoibong1(), dangTin.get(i).getDoibong2(), dangTin.get(i).getNgay(), dangTin.get(i).getKhunggio_id(), dangTin.get(i).getSan_id(), a, b, dangTin.get(i).getKeo(), dangTin.get(i).getVoted()));
+                    if (dangTin.size() == 0) {
+                        return;
+                    }
+                    for (int i = 0; i < dangTin.size(); i++) {
+                        dangTin.get(i).getDoibong1().setImageBia(anhBia);
+                        dangTin.get(i).getDoibong1().setImageDaiDien(anhDaiDien);
+                        dangTin.get(i).getDoibong2().setImageBia(anhBia);
+                        dangTin.get(i).getDoibong2().setImageDaiDien(anhDaiDien);
+                        int a = 0, b = 0;
+//                    System.out.println("Voted :"+dangTin.get(i).getVoted());
+                        if (dangTin.get(i).getVoted() == 1) {
+//                        System.out.println("a: "+dangTin.get(i).getBanthangdoidangtin());
+                            a = dangTin.get(i).getBanthangdoidangtin();
+                            b = dangTin.get(i).getBanthangdoibatdoi();
+                        }
+                        arrLichSuTranDau.add(new TranDauDuongClass(dangTin.get(i).getId(), dangTin.get(i).getDoibong1(), dangTin.get(i).getDoibong2(), dangTin.get(i).getNgay(), dangTin.get(i).getKhunggio_id(), dangTin.get(i).getSan_id(), a, b, dangTin.get(i).getKeo(), dangTin.get(i).getVoted()));
+                    }
+                    adapterLichSuTranDau = new LichSuTranDauAdapter(getActivity(), R.layout.dong_lich_su_tran_dau, arrLichSuTranDau);
+                    lvLichSuTranDau.setAdapter(adapterLichSuTranDau);
+                    SetListViewHeightBasedOnChildrenLichSuTranDau(adapterLichSuTranDau, lvLichSuTranDau);
                 }
-                adapterLichSuTranDau = new LichSuTranDauAdapter(getActivity(), R.layout.dong_lich_su_tran_dau, arrLichSuTranDau);
-                lvLichSuTranDau.setAdapter(adapterLichSuTranDau);
-                SetListViewHeightBasedOnChildrenLichSuTranDau(adapterLichSuTranDau, lvLichSuTranDau);
+                catch (Exception ex){
+                    Log.e("BBB", ex.toString());
+                }
             }
 
             @Override

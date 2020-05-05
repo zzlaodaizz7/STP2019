@@ -123,7 +123,6 @@ public class DanhSachDonXinGiaNhapFCAdapter extends BaseAdapter {
                 bundle.putSerializable("thanhvien", thanhVienSend);
                 chiTietThanhVienFragment.setArguments(bundle);
 
-                Toast.makeText(context, "Bắt sự kiện trong Adapter nhé", Toast.LENGTH_SHORT).show();
                 langNgheSuKienChuyenFragment.ChuyenHuongFragment(chiTietThanhVienFragment);
             }
         });

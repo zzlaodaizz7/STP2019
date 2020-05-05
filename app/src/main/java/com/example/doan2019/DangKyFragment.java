@@ -81,7 +81,7 @@ public class DangKyFragment extends Fragment {
 
 
                 if(ten.equals("") || email.equals("") || matkhau.equals("") || nhaplaimatkhau.equals("")){
-                    Toast.makeText(getActivity(), "bạn hãy nhập đầy đủ thông tin", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(), "Bạn hãy nhập đầy đủ thông tin", Toast.LENGTH_LONG).show();
                 }
                 else if(!matkhau.equals(nhaplaimatkhau)){
                     Toast.makeText(getActivity(), "Mật khẩu nhập lại không trùng khớp", Toast.LENGTH_LONG).show();
@@ -93,15 +93,23 @@ public class DangKyFragment extends Fragment {
                         @Override
                         public void onResponse(Call<String> call, Response<String> response) {
                             Toast.makeText(getActivity(), "Bạn đã đăng ký thành công", Toast.LENGTH_LONG).show();
+                            ResetCacTruong();
                         }
                         @Override
                         public void onFailure(Call<String> call, Throwable t) {
-                            Toast.makeText(getActivity(), "Bạn đã đăng ký thành công", Toast.LENGTH_LONG).show();
+                            Toast.makeText(getActivity(), "Đăng ký thất bại", Toast.LENGTH_LONG).show();
                         }
                     });
                 }
             }
         });
+    }
+
+    private void ResetCacTruong() {
+        edtMatKhau.setText("");
+        edtNhapLaiMatKhau.setText("");
+        edtTaiKhoan.setText("");
+        edtTen.setText("");
     }
 
     private void Mapping() {

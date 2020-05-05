@@ -200,7 +200,6 @@ public class ChinhSuaTaiKhoanDaLoginFragment extends Fragment {
                 Intent intent = new Intent(Intent.ACTION_PICK);
                 intent.setType("image/*");
                 startActivityForResult(intent, 123);
-                Toast.makeText(getActivity(), "Thay ảnh", Toast.LENGTH_SHORT).show();
             }
         });
     }

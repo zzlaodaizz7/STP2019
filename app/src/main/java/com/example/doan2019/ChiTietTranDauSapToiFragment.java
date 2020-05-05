@@ -17,8 +17,10 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.doan2019.Retrofit.APIUtils;
+import com.example.doan2019.Retrofit.DoiBong;
 import com.example.doan2019.Retrofit.JsonApiSanBong;
 import com.example.doan2019.Retrofit.SanBong;
+import com.squareup.picasso.Picasso;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -40,7 +42,6 @@ public class ChiTietTranDauSapToiFragment extends Fragment {
         langNgheSuKienChuyenFragment = (LangNgheSuKienChuyenFragment) getActivity();
         jsonApiSanBong = APIUtils.getJsonApiSanBong();
         Mapping();
-
         GetDuLieu();
 
         ClickBack();
@@ -70,7 +71,6 @@ public class ChiTietTranDauSapToiFragment extends Fragment {
 
     private void GetDuLieu() {
         bundle = getArguments();
-
         TranDauDuongClass tranDau = (TranDauDuongClass) bundle.getSerializable("trandauduong");
         if(tranDau != null) {
             DoiBongClass doiMinh = tranDau.getDoiMinh();
@@ -107,8 +107,8 @@ public class ChiTietTranDauSapToiFragment extends Fragment {
         }
         else{
             DangTinDuongClass tinDang = (DangTinDuongClass) bundle.getSerializable("haidoibong");
-            Log.e("DxTN", tinDang.getDoidangtin_id()+"");
-            Log.e("DxTN", tinDang.getDoibatdoi_id()+"");
+//            Log.e("DxTN", tinDang.getDoidangtin_id()+"");
+//            Log.e("DxTN", tinDang.getDoibatdoi_id()+"");
             String time = tinDang.getNgay();
             if (tinDang.getKhunggio_id() == 1)
                 time += "  17:30 - 19:00";
@@ -116,11 +116,42 @@ public class ChiTietTranDauSapToiFragment extends Fragment {
                 time += "  19:00 - 20:30";
             else if (tinDang.getKhunggio_id() == 3)
                 time += "  20:30 - 22:00";
+            Call<DoiBong> call1 = jsonApiSanBong.getChitietdoibong(tinDang.getDoidangtin_id());
+            call1.enqueue(new Callback<DoiBong>() {
+                @Override
+                public void onResponse(Call<DoiBong> call, Response<DoiBong> response) {
+                    if(response.body().getAnhdaidien() != null) {
+                        Picasso.get().load(response.body().getAnhbia()).into(imgTeamMinh);
+                        txtNameTeamMinh.setText(response.body().getTen());
+                    }
+                }
 
-//            imgTeamMinh.setImageBitmap(doiMinh.getImageDaiDien());
-//            imgTeamBan.setImageBitmap(doiBan.getImageDaiDien());
-//            txtNameTeamMinh.setText(doiMinh.getTen());
-//            txtNameTeamBan.setText(doiBan.getTen());
+                @Override
+                public void onFailure(Call<DoiBong> call, Throwable t) {
+
+                }
+            });
+            Call<DoiBong> call2 = jsonApiSanBong.getChitietdoibong(tinDang.getDoibatdoi_id());
+            call2.enqueue(new Callback<DoiBong>() {
+                @Override
+                public void onResponse(Call<DoiBong> call, Response<DoiBong> response) {
+                    if(response.body().getAnhdaidien() != null) {
+                        Picasso.get().load(response.body().getAnhbia()).into(imgTeamBan);
+                        txtNameTeamBan.setText(response.body().getTen());
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<DoiBong> call, Throwable t) {
+
+                }
+            });
+//            if(doiBong.getAnhbia() != null){
+//                Picasso.get().load(doiBong.getAnhbia()).into(imgAnhBia);
+//            }
+//            if(doiBong.getAnhdaidien() != null){
+//                Picasso.get().load(doiBong.getAnhdaidien()).into(imgDaiDien);
+//            }
             txtThoiGian.setText(time);
             Call<SanBong> call = jsonApiSanBong.getChitietsanbong(tinDang.getSanbong_id());
             call.enqueue(new Callback<SanBong>() {
