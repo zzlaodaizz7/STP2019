@@ -82,11 +82,8 @@ public class TaiKhoanDaLoginFragment extends Fragment {
         Mapping();
 
         GanNoiDung();
-
-        GanNoiDungListCacFCDangThamGia();
-
         GanNoiDungListViewTranDauSapToi();
-
+        GanNoiDungListCacFCDangThamGia();
         ClickListViewTranDauSapToi();
 
         ClickTaoDoiBong();

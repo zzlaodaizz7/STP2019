@@ -219,8 +219,8 @@
 
             <pl.droidsonroids.gif.GifTextView
                 android:id="@+id/gifloading"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
+                android:layout_width="300dp"
+                android:layout_height="200dp"
                 android:background="@drawable/loading"
                 android:layout_below="@+id/cardViewSearch"
                 android:layout_centerInParent="true"

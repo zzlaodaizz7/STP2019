@@ -26,6 +26,7 @@ import com.example.doan2019.Retrofit.APIUtils;
 import com.example.doan2019.Retrofit.JsonApiSanBong;
 import com.example.doan2019.Retrofit.SanBong;
 
+import pl.droidsonroids.gif.GifTextView;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -43,6 +44,7 @@ public class TimSanFragment extends Fragment {
     LangNgheSuKienChuyenFragment langNgheSuKienChuyenFragment;
     Retrofit retrofit;
     JsonApiSanBong jsonApiSanBong;
+    GifTextView gifLoading;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -90,7 +92,13 @@ public class TimSanFragment extends Fragment {
             }
         });
     }
+    private void showLoadingGif() {
+        gifLoading.setVisibility(View.VISIBLE);
+    }
 
+    private void hideLoadinggif() {
+        gifLoading.setVisibility(View.INVISIBLE);
+    }
     private void ShowDialogChonSoNguoi() {
         dialogSoNguoi = new Dialog(getContext());
         dialogSoNguoi.setContentView(R.layout.dialog_so_nguoi_trong_san_bong);
@@ -124,6 +132,7 @@ public class TimSanFragment extends Fragment {
     }
 
     private void KhoiTaoListViewSanBong() {
+        showLoadingGif();
         arrSanBong = new ArrayList<>();
 //         = BitmapFactory.decodeResource(getResources(), R.drawable.icon_app);
         int[] images = {R.drawable.a1,R.drawable.a2,R.drawable.a3,R.drawable.a4};
@@ -142,6 +151,7 @@ public class TimSanFragment extends Fragment {
                     adapter = new TimSanAdapter(getActivity(), R.layout.dong_san_bong, arrSanBong);
                     lvSanBong.setAdapter(adapter);
                     SetListViewHeightBasedOnChildren(adapter, lvSanBong);
+                    hideLoadinggif();
                 }
                 catch (Exception ex){
                     Log.d("BBB", ex.toString());
@@ -189,6 +199,7 @@ public class TimSanFragment extends Fragment {
     }
 
     private void Mapping() {
+        gifLoading = (GifTextView) view.findViewById(R.id.gifloading);
         btnTimKiem = view.findViewById(R.id.ButtonTimKiemSanBong);
         btnSoNguoi = view.findViewById(R.id.ButtonSoNguoi);
         lvSanBong = view.findViewById(R.id.ListViewSanBong);

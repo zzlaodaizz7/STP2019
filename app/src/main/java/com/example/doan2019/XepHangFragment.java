@@ -24,6 +24,7 @@ import com.example.doan2019.Retrofit.APIUtils;
 import com.example.doan2019.Retrofit.DoiBong;
 import com.example.doan2019.Retrofit.JsonApiSanBong;
 
+import pl.droidsonroids.gif.GifTextView;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -36,6 +37,7 @@ public class XepHangFragment extends Fragment {
     XepHangAdapter adapter;
     LangNgheSuKienChuyenFragment langNgheSuKienChuyenFragment;
     JsonApiSanBong jsonApiSanBong;
+    GifTextView gifLoading;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -50,7 +52,13 @@ public class XepHangFragment extends Fragment {
 
         return view;
     }
+    private void showLoadingGif() {
+        gifLoading.setVisibility(View.VISIBLE);
+    }
 
+    private void hideLoadinggif() {
+        gifLoading.setVisibility(View.INVISIBLE);
+    }
     private void ClickListview() {
         lvxepHangDoiBong.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -68,16 +76,11 @@ public class XepHangFragment extends Fragment {
     }
 
     private void KhoiTaoListView() {
+        showLoadingGif();
         listDoiBong = new ArrayList<>();
         listThanhVienDoiBong = new ArrayList<>();
 
-////        Bitmap anhDaiDien = BitmapFactory.decodeResource(getResources(), R.drawable.icon_app);
-////        Bitmap anhBia = BitmapFactory.decodeResource(getResources(), R.drawable.anh_test_doi_bong);
-////        listThanhVienDoiBong.add(new ThanhVienDoiBongClass("Nguyễn Văn A", "Thành viên", 1, anhDaiDien, "Hà Nội, Việt Nam", "dateConvert", "0123456789"));
-////        listThanhVienDoiBong.add(new ThanhVienDoiBongClass("Nguyễn Văn B", "Thành viên", 1, anhDaiDien, "Hà Nội, Việt Nam", "dateConvert", "0123456789"));
-////        listThanhVienDoiBong.add(new ThanhVienDoiBongClass("Nguyễn Văn C", "Thành viên", 1, anhDaiDien, "Hà Nội, Việt Nam", "dateConvert", "0123456789"));
-//        long ngayTemp = 1234596789;
-//        Date dateConvert = new Date(ngayTemp);
+
         Call<List<DoiBong>> call = jsonApiSanBong.getBangxephang();
         call.enqueue(new Callback<List<DoiBong>>() {
             @Override
@@ -85,12 +88,10 @@ public class XepHangFragment extends Fragment {
                 List<DoiBong> doiBongs = response.body();
                 try {
                     for (DoiBong doiBong : doiBongs) {
-//                    int id, String ten, String trinhdo, String diachi, String sdt
-//                    String anhbia, String anhdaidien, int sodiem, int hanhkiem
-//                    Timestamp created_at, java.sql.Timestamp updated_at
                         listDoiBong.add(new DoiBong(doiBong.getId(), doiBong.getTen(), doiBong.getTrinhdo(), doiBong.getDiachi(), doiBong.getSdt(), doiBong.getAnhbia(), doiBong.getAnhdaidien()
                                 , doiBong.getSodiem(), doiBong.getHanhkiem(), doiBong.getCreated_at(), doiBong.getUpdated_at()));
                     }
+                    hideLoadinggif();
                 }
                 catch (Exception ex){
                     Log.e("BBB", ex.toString());
@@ -142,6 +143,7 @@ public class XepHangFragment extends Fragment {
     }
 
     private void Mapping() {
+        gifLoading = (GifTextView) view.findViewById(R.id.gifloading);
         lvxepHangDoiBong = view.findViewById(R.id.ListViewXepHangDoiBong);
     }
 

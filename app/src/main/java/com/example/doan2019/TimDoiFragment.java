@@ -548,7 +548,11 @@ public class TimDoiFragment extends Fragment {
         btnThongBao.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getFragmentManager().beginTransaction().replace(R.id.fragment_container, new ThongBaoFragment()).commit();
+                if (sharedPreferences.getString("token", "") == "") {
+                    showDialogTinNhan("Bạn chưa đăng nhập");
+                    hideDialogTinNhan();
+                }else getFragmentManager().beginTransaction().replace(R.id.fragment_container, new ThongBaoFragment()).commit();
+
             }
         });
     }
@@ -557,9 +561,10 @@ public class TimDoiFragment extends Fragment {
         btnDangTin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (sharedPreferences.getString("token", "") == "")
-                    System.out.println("Chua dang nhap");
-                else langNgheSuKienChuyenFragment.ChuyenHuongFragment(new DangTinFragment());
+                if (sharedPreferences.getString("token", "") == "") {
+                    showDialogTinNhan("Bạn chưa đăng nhập");
+                    hideDialogTinNhan();
+                }else langNgheSuKienChuyenFragment.ChuyenHuongFragment(new DangTinFragment());
             }
         });
     }
@@ -607,12 +612,10 @@ public class TimDoiFragment extends Fragment {
                     }
                 }
                 if (danhmucTK.equals("Sân bóng")) {
-                    Log.d("timkiem", "sân bóng");
                     if (!sanbongTK.equals("")) {
                         for (int i = 0; i < dangTinDTOTimKiemArrayList.size(); i++) {
                             if (!sanbongTK.equals(dangTinDTOTimKiemArrayList.get(i).getSan_ten())) {
                                 dangTinDTOTimKiemArrayList.remove(dangTinDTOTimKiemArrayList.get(i));
-                                Log.d("timkiem", dangTinDTOTimKiemArrayList + "");
                                 i--;
                             }
                         }
@@ -622,7 +625,6 @@ public class TimDoiFragment extends Fragment {
                         for (int i = 0; i < dangTinDTOTimKiemArrayList.size(); i++) {
                             if (!doibongTK.equals(dangTinDTOTimKiemArrayList.get(i).getDoidangtin_ten())) {
                                 dangTinDTOTimKiemArrayList.remove(dangTinDTOTimKiemArrayList.get(i));
-                                Log.d("timkiem", dangTinDTOTimKiemArrayList + "");
                                 i--;
                             }
                         }
@@ -632,7 +634,6 @@ public class TimDoiFragment extends Fragment {
                     for (int i = 0; i < dangTinDTOTimKiemArrayList.size(); i++) {
                         if (!trangthaiTK.equals(dangTinDTOTimKiemArrayList.get(i).getTrangthai())) {
                             dangTinDTOTimKiemArrayList.remove(dangTinDTOTimKiemArrayList.get(i));
-                            Log.d("timkiem", dangTinDTOTimKiemArrayList + "");
                             i--;
                         }
                     }
@@ -641,7 +642,6 @@ public class TimDoiFragment extends Fragment {
                     for (int i = 0; i < dangTinDTOTimKiemArrayList.size(); i++) {
                         if (!trinhdoTK.equals(dangTinDTOTimKiemArrayList.get(i).getTrinhdo())) {
                             dangTinDTOTimKiemArrayList.remove(dangTinDTOTimKiemArrayList.get(i));
-                            Log.d("timkiem", dangTinDTOTimKiemArrayList + "");
                             i--;
                         }
                     }

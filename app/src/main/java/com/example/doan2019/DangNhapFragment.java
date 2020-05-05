@@ -118,7 +118,7 @@ public class DangNhapFragment extends Fragment {
         edtTaiKhoan.setText(sharedPreferences.getString("taikhoan", ""));
         edtMatKhau.setText(sharedPreferences.getString("matkhau", ""));
         cbLuuThongTin.setChecked(sharedPreferences.getBoolean("checked", false));
-        Toast.makeText(getActivity(), "Token: " + sharedPreferences.getString("token", ""), Toast.LENGTH_SHORT).show();
+//        Toast.makeText(getActivity(), "Token: " + sharedPreferences.getString("token", ""), Toast.LENGTH_SHORT).show();
     }
 
     private void ClickDangNhap() {
