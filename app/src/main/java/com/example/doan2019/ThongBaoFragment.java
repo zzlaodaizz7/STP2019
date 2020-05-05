@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -29,6 +30,7 @@ public class ThongBaoFragment extends Fragment {
     ArrayList<Notification> notificationArrayList;
     SharedPreferences sharedPreferences;
     String Auth ="";
+    TextView txtBack;
     Integer IDUser;
     JsonApiSanBong jsonApiSanBong;
     @Nullable
@@ -41,10 +43,22 @@ public class ThongBaoFragment extends Fragment {
         jsonApiSanBong = APIUtils.getJsonApiSanBong();
         mapping();
 
+        ClickBack();
+
         return view;
     }
 
+    private void ClickBack() {
+        txtBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().onBackPressed();
+            }
+        });
+    }
+
     private void mapping(){
+        txtBack = view.findViewById(R.id.TextViewBack);
         listViewNotification = (ListView) view.findViewById(R.id.listViewNotification);
 
         notificationArrayList = new ArrayList<>();

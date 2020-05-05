@@ -132,6 +132,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="0123456789"
+                        android:clickable="true"
                         android:textColor="@android:color/holo_blue_dark"
                         app:layout_constraintBottom_toBottomOf="@id/TextViewICPhoneSanBong"
                         app:layout_constraintStart_toStartOf="@+id/TextViewDiaChiSanBong"

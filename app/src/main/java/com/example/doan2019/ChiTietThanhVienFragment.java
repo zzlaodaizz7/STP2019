@@ -1,5 +1,9 @@
 package com.example.doan2019;
 
+import android.Manifest;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +16,7 @@ import java.text.SimpleDateFormat;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
 import com.example.doan2019.Retrofit.User;
@@ -22,6 +27,7 @@ public class ChiTietThanhVienFragment extends Fragment {
     private View view;
     TextView txtTen, txtngayGiaNhap, txtDiaChi, txtQuayLai, txtSoDienThoai;
     ImageView imgDaiDien;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -33,7 +39,26 @@ public class ChiTietThanhVienFragment extends Fragment {
 
         ClickQuayLai();
 
+        ClickSDT();
+
         return view;
+    }
+
+    private void ClickSDT() {
+        txtSoDienThoai.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!txtSoDienThoai.getText().toString().equals("")) {
+                    Intent callIntent = new Intent(Intent.ACTION_CALL);
+                    callIntent.setData(Uri.parse("tel:" + txtSoDienThoai.getText().toString()));
+                    if (ActivityCompat.checkSelfPermission(getActivity(),
+                            Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                        return;
+                    }
+                    getActivity().startActivity(callIntent);
+                }
+            }
+        });
     }
 
     private void ClickQuayLai() {
@@ -52,7 +77,7 @@ public class ChiTietThanhVienFragment extends Fragment {
 //        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 //        String time = dateFormat.format(thanhVienDoiBongClass.getCreated_at());
 
-        if(thanhVienDoiBongClass.getAnhbia() != null){
+        if (thanhVienDoiBongClass.getAnhbia() != null) {
             Picasso.get().load(thanhVienDoiBongClass.getAnhbia()).into(imgDaiDien);
         }
 
@@ -60,7 +85,7 @@ public class ChiTietThanhVienFragment extends Fragment {
         time = time.substring(0, 10);
 
         txtTen.setText(thanhVienDoiBongClass.getTen());
-        txtngayGiaNhap.setText(time+"");
+        txtngayGiaNhap.setText(time + "");
         txtDiaChi.setText("Địa chỉ");
         txtSoDienThoai.setText(thanhVienDoiBongClass.getSdt());
     }

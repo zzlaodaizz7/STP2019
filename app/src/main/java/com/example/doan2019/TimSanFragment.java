@@ -68,7 +68,7 @@ public class TimSanFragment extends Fragment {
         btnTimKiem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getActivity(), "Click Button Tìm Kiếm", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getActivity(), "Click Button Tìm Kiếm", Toast.LENGTH_SHORT).show();
             }
         });
     }

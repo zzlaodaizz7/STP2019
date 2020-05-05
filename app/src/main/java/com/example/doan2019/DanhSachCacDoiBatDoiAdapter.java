@@ -132,7 +132,7 @@ public class DanhSachCacDoiBatDoiAdapter extends BaseAdapter{
                 bundle.putSerializable("doibong", doiBongClass);
                 chiTietDoiBongBatDoiFragment.setArguments(bundle);
 
-                Toast.makeText(context, "Bắt sự kiện trong Adapter nhé", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(context, "Bắt sự kiện trong Adapter nhé", Toast.LENGTH_SHORT).show();
                 langNgheSuKienChuyenFragment.ChuyenHuongFragment(chiTietDoiBongBatDoiFragment);
             }
         });

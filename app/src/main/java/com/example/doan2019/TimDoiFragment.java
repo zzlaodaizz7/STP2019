@@ -18,6 +18,7 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -90,6 +91,8 @@ public class TimDoiFragment extends Fragment {
 
         mapping();
 
+        ClickEditTextTimKiem();
+
         showLoadingGif();
 
         loadListViewTinTimDoi();
@@ -111,6 +114,15 @@ public class TimDoiFragment extends Fragment {
         clickChonListViewTinTimDoi();
 
         return view;
+    }
+
+    private void ClickEditTextTimKiem() {
+        editTextTimTheoTenDoiHoacTenSan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                editTextTimTheoTenDoiHoacTenSan.setFocusableInTouchMode(true);
+            }
+        });
     }
 
     private void loadListViewTinTimDoi() {
@@ -354,6 +366,7 @@ public class TimDoiFragment extends Fragment {
         listViewTinTimDoi = (ListView) view.findViewById(R.id.listViewTinTimDoi);
         txtChonNgay = (TextView) view.findViewById(R.id.txtChonNgay);
         editTextTimTheoTenDoiHoacTenSan = (EditText) view.findViewById(R.id.editTextTimTheoTenDoiHoacTenSan);
+        editTextTimTheoTenDoiHoacTenSan.setFocusableInTouchMode(false);
         btnThongBao = (ImageButton) view.findViewById(R.id.btnThongBao);
         btnTimTranDau = (Button) view.findViewById(R.id.btnTimTranDau);
         btnChonTimKiemTheoTenHaySan = (Button) view.findViewById(R.id.btnChonTimKiemTheoTenHaySan);

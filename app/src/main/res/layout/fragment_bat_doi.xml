@@ -26,13 +26,14 @@
             android:paddingLeft="5dp"
             android:paddingRight="5dp"
             android:text="Back"
-            android:textColor="#FFF"
+            android:textColor="@drawable/custom_text_color"
+            android:clickable="true"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="Chi tiết"
