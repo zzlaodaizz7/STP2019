@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -115,33 +116,38 @@ public class DanhSachCacDoiBatDoiFragment extends Fragment {
         header.put("value","application/json");
         header.put("Accept","application/json");
         header.put("Authorization","Bearer "+Auth);
-        System.out.println("GAN LIST VIEW: "+dangTin.getId());
+//        System.out.println("GAN LIST VIEW: "+dangTin.getId());
         Call<List<DoiBongClass>> call = jsonApiSanBong.getCacdoibatdoi(header,dangTin.getId());
         call.enqueue(new Callback<List<DoiBongClass>>() {
             @Override
             public void onResponse(Call<List<DoiBongClass>> call, Response<List<DoiBongClass>> response) {
-                System.out.println("Code: "+response.body().size());
-                List<DoiBongClass> doiBongClasses = response.body();
-                for (DoiBongClass doiBongClass : doiBongClasses){
+                try {
+//                    System.out.println("Code: " + response.body().size());
+                    List<DoiBongClass> doiBongClasses = response.body();
+                    for (DoiBongClass doiBongClass : doiBongClasses) {
 
-                    listDoiBong.add(new DoiBongClass(doiBongClass.getId(),doiBongClass.getBatdoi_id(),doiBongClass.getTen(), doiBongClass.getDiem(), doiBongClass.getDiaChi(), doiBongClass.getTrinhDo(), doiBongClass.getSoDienThoai(), doiBongClass.getCreated_at(), anhBia, anhDaiDien, listThanhVienDoiBong));
+                        listDoiBong.add(new DoiBongClass(doiBongClass.getId(), doiBongClass.getBatdoi_id(), doiBongClass.getTen(), doiBongClass.getDiem(), doiBongClass.getDiaChi(), doiBongClass.getTrinhDo(), doiBongClass.getSoDienThoai(), doiBongClass.getCreated_at(), anhBia, anhDaiDien, listThanhVienDoiBong));
 
+                    }
+                    long ngayTemp = 1234596789;
+                    Date dateConvert = new Date(ngayTemp);
+
+                    listThanhVienDoiBong.add(new ThanhVienDoiBongClass("Nguyễn Văn A", "Thành viên", 1, anhDaiDien, "Hà Nội, Việt Nam", "dateConvert", "0123456789"));
+                    listThanhVienDoiBong.add(new ThanhVienDoiBongClass("Nguyễn Văn B", "Thành viên", 1, anhDaiDien, "Hà Nội, Việt Nam", "dateConvert", "0123456789"));
+                    listThanhVienDoiBong.add(new ThanhVienDoiBongClass("Nguyễn Văn C", "Thành viên", 1, anhDaiDien, "Hà Nội, Việt Nam", "dateConvert", "0123456789"));
+
+                    adapter = new DanhSachCacDoiBatDoiAdapter(getActivity(), R.layout.dong_doi_bat_doi, listDoiBong);
+                    lvDoiBongBatDoi.setAdapter(adapter);
+                    SetListViewHeightBasedOnChildren(adapter, lvDoiBongBatDoi);
                 }
-                long ngayTemp = 1234596789;
-                Date dateConvert = new Date(ngayTemp);
-
-                listThanhVienDoiBong.add(new ThanhVienDoiBongClass("Nguyễn Văn A", "Thành viên", 1, anhDaiDien, "Hà Nội, Việt Nam", "dateConvert", "0123456789"));
-                listThanhVienDoiBong.add(new ThanhVienDoiBongClass("Nguyễn Văn B", "Thành viên", 1, anhDaiDien, "Hà Nội, Việt Nam", "dateConvert", "0123456789"));
-                listThanhVienDoiBong.add(new ThanhVienDoiBongClass("Nguyễn Văn C", "Thành viên", 1, anhDaiDien, "Hà Nội, Việt Nam", "dateConvert", "0123456789"));
-
-                adapter = new DanhSachCacDoiBatDoiAdapter(getActivity(), R.layout.dong_doi_bat_doi, listDoiBong);
-                lvDoiBongBatDoi.setAdapter(adapter);
-                SetListViewHeightBasedOnChildren(adapter, lvDoiBongBatDoi);
+                catch (Exception ex){
+                    Log.e("BBB", ex.toString());
+                }
             }
 
             @Override
             public void onFailure(Call<List<DoiBongClass>> call, Throwable t) {
-                System.out.println("Loi: "+t.getMessage());
+//                System.out.println("Loi: "+t.getMessage());
             }
         });
 
@@ -156,23 +162,28 @@ public class DanhSachCacDoiBatDoiFragment extends Fragment {
     }
 
     private void SetListViewHeightBasedOnChildren(DanhSachCacDoiBatDoiAdapter matchAdapter, ListView listView) {
-        if (matchAdapter == null) {
-            return;
-        }
-        int desiredWidth = View.MeasureSpec.makeMeasureSpec(listView.getWidth(), View.MeasureSpec.UNSPECIFIED);
-        int totalHeight = 0;
-        View view = null;
-        for (int i = 0; i < matchAdapter.getCount(); i++) {
-            view = matchAdapter.getView(i, view, listView);
-            if (i == 0)
-                view.setLayoutParams(new ViewGroup.LayoutParams(desiredWidth, ViewGroup.LayoutParams.WRAP_CONTENT));
+        try {
+            if (matchAdapter == null) {
+                return;
+            }
+            int desiredWidth = View.MeasureSpec.makeMeasureSpec(listView.getWidth(), View.MeasureSpec.UNSPECIFIED);
+            int totalHeight = 0;
+            View view = null;
+            for (int i = 0; i < matchAdapter.getCount(); i++) {
+                view = matchAdapter.getView(i, view, listView);
+                if (i == 0)
+                    view.setLayoutParams(new ViewGroup.LayoutParams(desiredWidth, ViewGroup.LayoutParams.WRAP_CONTENT));
 
-            view.measure(desiredWidth, View.MeasureSpec.UNSPECIFIED);
-            totalHeight += view.getMeasuredHeight();
+                view.measure(desiredWidth, View.MeasureSpec.UNSPECIFIED);
+                totalHeight += view.getMeasuredHeight();
+            }
+            ViewGroup.LayoutParams params = listView.getLayoutParams();
+            params.height = totalHeight + (listView.getDividerHeight() * (matchAdapter.getCount() - 1));
+            listView.setLayoutParams(params);
         }
-        ViewGroup.LayoutParams params = listView.getLayoutParams();
-        params.height = totalHeight + (listView.getDividerHeight() * (matchAdapter.getCount() - 1));
-        listView.setLayoutParams(params);
+        catch (Exception ex){
+            Log.e("BBB", ex.toString());
+        }
     }
 
     private void Mapping() {

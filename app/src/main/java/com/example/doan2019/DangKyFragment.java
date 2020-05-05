@@ -96,7 +96,7 @@ public class DangKyFragment extends Fragment {
                         }
                         @Override
                         public void onFailure(Call<String> call, Throwable t) {
-
+                            Toast.makeText(getActivity(), "Bạn đã đăng ký thành công", Toast.LENGTH_LONG).show();
                         }
                     });
                 }

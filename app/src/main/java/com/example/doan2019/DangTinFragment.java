@@ -12,6 +12,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import android.support.v4.media.MediaMetadataCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -111,16 +112,21 @@ public class DangTinFragment extends Fragment {
         call.enqueue(new Callback<List<DoiBong>>() {
             @Override
             public void onResponse(Call<List<DoiBong>> call, Response<List<DoiBong>> response) {
-                doiBongs = response.body();
-                System.out.println("COde"+response.code());
-                for (DoiBong doiBong : doiBongs){
-                    System.out.println(doiBong.getTen());
-                    arrayDoiBong.add(doiBong.getTen());
+                try {
+                    doiBongs = response.body();
+//                    System.out.println("COde" + response.code());
+                    for (DoiBong doiBong : doiBongs) {
+//                        System.out.println(doiBong.getTen());
+                        arrayDoiBong.add(doiBong.getTen());
+                    }
+                }
+                catch (Exception ex){
+                    Log.e("BBB", ex.toString());
                 }
             }
             @Override
             public void onFailure(Call<List<DoiBong>> call, Throwable t) {
-                System.out.println("loi: "+t.getMessage());
+//                System.out.println("loi: "+t.getMessage());
             }
         });
     }
@@ -139,7 +145,7 @@ public class DangTinFragment extends Fragment {
             }
             @Override
             public void onFailure(Call<List<SanBong>> call, Throwable t) {
-                System.out.println("loi: "+t.getMessage());
+//                System.out.println("loi: "+t.getMessage());
             }
         });
     }
@@ -149,11 +155,11 @@ public class DangTinFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 keo = edtKeoDau.getText().toString();
-                System.out.println(IDDoiBong);
-                System.out.println(d);
-                System.out.println(keo);
-                System.out.println(IDSanBong);
-                System.out.println(IDKhungGio);
+//                System.out.println(IDDoiBong);
+//                System.out.println(d);
+//                System.out.println(keo);
+//                System.out.println(IDSanBong);
+//                System.out.println(IDKhungGio);
                 String content = "";
                 if (IDDoiBong == -1){
                     content += "Bạn chưa chọn đội bóng \n";
@@ -284,7 +290,7 @@ public class DangTinFragment extends Fragment {
                         SimpleDateFormat simpleDateFormat1 = new SimpleDateFormat("yyyy/MM/dd");
                         tvChonNgay.setText(simpleDateFormat.format(calendar.getTime()));
                         d = simpleDateFormat1.format(calendar.getTime());
-                        System.out.println(d);
+//                        System.out.println(d);
                     }
                 }, nam, thang, ngay);
                 datePickerDialog.show();

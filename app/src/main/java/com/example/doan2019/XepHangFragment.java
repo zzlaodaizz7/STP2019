@@ -83,12 +83,17 @@ public class XepHangFragment extends Fragment {
             @Override
             public void onResponse(Call<List<DoiBong>> call, Response<List<DoiBong>> response) {
                 List<DoiBong> doiBongs = response.body();
-                for (DoiBong doiBong : doiBongs){
+                try {
+                    for (DoiBong doiBong : doiBongs) {
 //                    int id, String ten, String trinhdo, String diachi, String sdt
 //                    String anhbia, String anhdaidien, int sodiem, int hanhkiem
 //                    Timestamp created_at, java.sql.Timestamp updated_at
-                    listDoiBong.add(new DoiBong(doiBong.getId(),doiBong.getTen(),doiBong.getTrinhdo(),doiBong.getDiachi(),doiBong.getSdt(),doiBong.getAnhbia(),doiBong.getAnhdaidien()
-                    ,doiBong.getSodiem(),doiBong.getHanhkiem(),doiBong.getCreated_at(),doiBong.getUpdated_at()));
+                        listDoiBong.add(new DoiBong(doiBong.getId(), doiBong.getTen(), doiBong.getTrinhdo(), doiBong.getDiachi(), doiBong.getSdt(), doiBong.getAnhbia(), doiBong.getAnhdaidien()
+                                , doiBong.getSodiem(), doiBong.getHanhkiem(), doiBong.getCreated_at(), doiBong.getUpdated_at()));
+                    }
+                }
+                catch (Exception ex){
+                    Log.e("BBB", ex.toString());
                 }
                 adapter = new XepHangAdapter(getActivity(), R.layout.dong_xep_hang, listDoiBong);
                 lvxepHangDoiBong.setAdapter(adapter);

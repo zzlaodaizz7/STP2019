@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.doan2019.Retrofit.APIUtils;
 import com.example.doan2019.Retrofit.DoiBong;
@@ -26,6 +27,7 @@ public class DanhSachCacTinDaDangAdapter extends BaseAdapter {
     private List<DangTinDuongClass> arrDangTin;
     private int idDoiBatDoi;
     JsonApiSanBong jsonApiSanBong;
+
     public DanhSachCacTinDaDangAdapter(Context context, int layout, List<DangTinDuongClass> arrDangTin) {
         this.context = context;
         this.layout = layout;
@@ -34,8 +36,6 @@ public class DanhSachCacTinDaDangAdapter extends BaseAdapter {
 
     public DanhSachCacTinDaDangAdapter() {
     }
-
-
 
 
     @Override
@@ -61,17 +61,21 @@ public class DanhSachCacTinDaDangAdapter extends BaseAdapter {
 
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
-        ViewHolder viewHolder;
+        ViewHolder viewHolder = new ViewHolder();
+        ;
         if (view == null) {
-            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            view = inflater.inflate(layout, null);
-            viewHolder = new ViewHolder();
+            try {
+                LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                view = inflater.inflate(layout, null);
 
-            viewHolder.txtThuTuTinDang = view.findViewById(R.id.TextViewThuTuDongDangTin);
-            viewHolder.txtNgayDangTin = view.findViewById(R.id.TextViewNgayDangTin);
-            viewHolder.txtDoiBatDoi = view.findViewById(R.id.TextViewDoiBongBatDoi);
+                viewHolder.txtThuTuTinDang = view.findViewById(R.id.TextViewThuTuDongDangTin);
+                viewHolder.txtNgayDangTin = view.findViewById(R.id.TextViewNgayDangTin);
+                viewHolder.txtDoiBatDoi = view.findViewById(R.id.TextViewDoiBongBatDoi);
 
-            view.setTag(viewHolder);
+                view.setTag(viewHolder);
+            } catch (Exception ex) {
+                ex.toString();
+            }
         } else
             viewHolder = (ViewHolder) view.getTag();
 
@@ -82,24 +86,29 @@ public class DanhSachCacTinDaDangAdapter extends BaseAdapter {
 //        System.out.println("AAAA"+dangTin.getNgay());
         String time = dangTin.getNgay();
         Log.e("AAA", time);
-        if(timeId == 1)
+        if (timeId == 1)
             time += " 17:30 - 19:00";
-        else if(timeId == 2){
+        else if (timeId == 2) {
             time += " 19:00 - 20:30";
-        }
-        else if(timeId == 3){
+        } else if (timeId == 3) {
             time += " 20:30 - 22:00";
         }
 
         viewHolder.txtThuTuTinDang.setText(i + 1 + "");
         viewHolder.txtNgayDangTin.setText(time);
-        if(dangTin.getDoibatdoi_id() != -1){
+        if (dangTin.getDoibatdoi_id() != -1) {
             jsonApiSanBong = APIUtils.getJsonApiSanBong();
             Call<DoiBong> call = jsonApiSanBong.getChitietdoibong(dangTin.getDoibatdoi_id());
+            ViewHolder finalViewHolder = viewHolder;
             call.enqueue(new Callback<DoiBong>() {
                 @Override
                 public void onResponse(Call<DoiBong> call, Response<DoiBong> response) {
-                    viewHolder.txtDoiBatDoi.setText(response.body().getTen());
+                    try {
+                        finalViewHolder.txtDoiBatDoi.setText(response.body().getTen());
+                    }
+                    catch (Exception ex){
+                        Log.e("BBB", ex.toString());
+                    }
                 }
 
                 @Override
@@ -108,8 +117,7 @@ public class DanhSachCacTinDaDangAdapter extends BaseAdapter {
                 }
             });
 
-        }
-        else{
+        } else {
             viewHolder.txtDoiBatDoi.setVisibility(View.INVISIBLE);
         }
 

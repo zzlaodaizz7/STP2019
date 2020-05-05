@@ -3,6 +3,7 @@ package com.example.doan2019;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -70,18 +71,22 @@ public class DanhSachCacDoiBatDoiAdapter extends BaseAdapter{
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
         langNgheSuKienChuyenFragment = (LangNgheSuKienChuyenFragment) context;
-        ViewHolder viewHolder;
+        ViewHolder viewHolder = new ViewHolder();
         if (view == null) {
-            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            view = inflater.inflate(layout, null);
-            viewHolder = new ViewHolder();
+            try {
+                LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                view = inflater.inflate(layout, null);
 
-            viewHolder.imgDoiBong = view.findViewById(R.id.ImageViewDongDoiBatDoi);
-            viewHolder.txtTen = view.findViewById(R.id.TextViewTenDoiBongBatDoi);
-            viewHolder.txtDiem = view.findViewById(R.id.TextViewDiemDoiBongBatDoi);
-            viewHolder.btnDelete = view.findViewById(R.id.ButtonDongYBatDoi);
+                viewHolder.imgDoiBong = view.findViewById(R.id.ImageViewDongDoiBatDoi);
+                viewHolder.txtTen = view.findViewById(R.id.TextViewTenDoiBongBatDoi);
+                viewHolder.txtDiem = view.findViewById(R.id.TextViewDiemDoiBongBatDoi);
+                viewHolder.btnDelete = view.findViewById(R.id.ButtonDongYBatDoi);
 
-            view.setTag(viewHolder);
+                view.setTag(viewHolder);
+            }
+            catch (Exception ex){
+                Log.e("BBB", ex.toString());
+            }
         } else
             viewHolder = (ViewHolder) view.getTag();
 
@@ -99,9 +104,9 @@ public class DanhSachCacDoiBatDoiAdapter extends BaseAdapter{
                 header.put("value","application/json");
                 header.put("Accept","application/json");
                 sharedPreferences = view.getContext().getSharedPreferences("dataLogin", Context.MODE_PRIVATE);
-                System.out.println(sharedPreferences.getString("token",""));
+//                System.out.println(sharedPreferences.getString("token",""));
                 header.put("Authorization","Bearer "+sharedPreferences.getString("token",""));
-                System.out.println();
+//                System.out.println();
                 Call<DangTin> call = jsonApiSanBong.chotkeo(header,doiBongList.get(i).getBatdoi_id());
                 call.enqueue(new Callback<DangTin>() {
                     @Override

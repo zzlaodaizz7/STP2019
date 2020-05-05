@@ -102,13 +102,13 @@ public class TaoDoiBongDialog extends DialogFragment {
                     call.enqueue(new Callback<DoiBong>() {
                         @Override
                         public void onResponse(Call<DoiBong> call, Response<DoiBong> response) {
-                            System.out.println(response.body().getContent());
-                            System.out.println(response.body().getType());
+//                            System.out.println(response.body().getContent());
+//                            System.out.println(response.body().getType());
                             if (response.body().getType() == "success"){
                                 TaoDoiBongDialog.this.getDialog().cancel();
                                 Toast.makeText(getContext(), "Tạo đội thành công!", Toast.LENGTH_SHORT).show();
                             }else{
-                                System.out.println("aaa");
+//                                System.out.println("aaa");
 //                            Toast.makeText(getContext(), response.body().getContent(), Toast.LENGTH_SHORT).show();
                             }
                         }

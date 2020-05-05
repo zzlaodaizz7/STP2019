@@ -436,7 +436,7 @@ public class ChiTietDoiBongDaThamGiaFragment extends Fragment {
         txtDiaChi.setText(doiBong.getDiachi());
         txtTrinhDo.setText(doiBong.getTrinhdo());
         txtNgayThanhlap.setText(doiBong.getCreated_at().toString());
-        System.out.println("ngaytao " + doiBong.getCreated_at());
+//        System.out.println("ngaytao " + doiBong.getCreated_at());
         txtPhone.setText(doiBong.getSdt());
 //        arrThanhVien = doiBong.getListThanhVien();
 //        adapter = new DanhSachThanhVienAdapter(getActivity(), R.layout.dong_thanh_vien, arrThanhVien);

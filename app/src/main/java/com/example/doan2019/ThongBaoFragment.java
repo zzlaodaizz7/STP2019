@@ -53,7 +53,7 @@ public class ThongBaoFragment extends Fragment {
         call.enqueue(new Callback<List<ThongBao>>() {
             @Override
             public void onResponse(Call<List<ThongBao>> call, Response<List<ThongBao>> response) {
-                System.out.println(response.code());
+//                System.out.println(response.code());
                 List<ThongBao> thongBao = response.body();
                 for (ThongBao thongBao1 : thongBao){
                     notificationArrayList.add(new Notification(thongBao1.getNoidung()));

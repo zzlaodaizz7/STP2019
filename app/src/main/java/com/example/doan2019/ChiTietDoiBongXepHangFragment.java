@@ -124,12 +124,17 @@ public class ChiTietDoiBongXepHangFragment extends Fragment {
                         call.enqueue(new Callback<HanhKiem>() {
                             @Override
                             public void onResponse(Call<HanhKiem> call, Response<HanhKiem> response) {
-                                System.out.println(response.code());
+//                                System.out.println(response.code());
                                 Toast.makeText(getContext(), "Voted", Toast.LENGTH_SHORT).show();
                             }
                             @Override
                             public void onFailure(Call<HanhKiem> call, Throwable t) {
-                                Toast.makeText(getContext(), "Đánh giá thành công", Toast.LENGTH_SHORT).show();
+                                try {
+                                    Toast.makeText(getContext(), "Đánh giá thành công", Toast.LENGTH_SHORT).show();
+                                }
+                                catch (Exception ex){
+                                    Log.e("BBB", ex.toString());
+                                }
                             }
                         });
                     }
@@ -198,9 +203,9 @@ public class ChiTietDoiBongXepHangFragment extends Fragment {
                     dangTin.get(i).getDoibong2().setImageBia(anhBia);
                     dangTin.get(i).getDoibong2().setImageDaiDien(anhDaiDien);
                     int a=0,b=0;
-                    System.out.println("Voted :"+dangTin.get(i).getVoted());
+//                    System.out.println("Voted :"+dangTin.get(i).getVoted());
                     if (dangTin.get(i).getVoted()==1){
-                        System.out.println("a: "+dangTin.get(i).getBanthangdoidangtin());
+//                        System.out.println("a: "+dangTin.get(i).getBanthangdoidangtin());
                         a = dangTin.get(i).getBanthangdoidangtin();
                         b = dangTin.get(i).getBanthangdoibatdoi();
                     }
@@ -306,6 +311,18 @@ public class ChiTietDoiBongXepHangFragment extends Fragment {
         if(doiBong.getAnhdaidien() != null){
             Picasso.get().load(doiBong.getAnhdaidien()).into(imgDaiDien);
         }
+
+        if(doiBong.getHanhkiem() == 1)
+            rtb.setRating(1);
+        else if(doiBong.getHanhkiem() == 2)
+            rtb.setRating(2);
+        else if(doiBong.getHanhkiem() == 3)
+            rtb.setRating(3);
+        else if(doiBong.getHanhkiem() == 4)
+            rtb.setRating(4);
+        else if(doiBong.getHanhkiem() == 5)
+            rtb.setRating(5);
+        System.out.println(doiBong.getHanhkiem());
         txtTenDoiBong.setText(doiBong.getTen());
         txtDiem.setText(doiBong.getSodiem() + "");
         txtDiaChi.setText(doiBong.getDiachi());
@@ -349,23 +366,28 @@ public class ChiTietDoiBongXepHangFragment extends Fragment {
     }
 
     private void SetListViewHeightBasedOnChildren(DanhSachThanhVienAdapter matchAdapter, ListView listView) {
-        if (matchAdapter == null) {
-            return;
-        }
-        int desiredWidth = View.MeasureSpec.makeMeasureSpec(listView.getWidth(), View.MeasureSpec.UNSPECIFIED);
-        int totalHeight = 0;
-        View view = null;
-        for (int i = 0; i < matchAdapter.getCount(); i++) {
-            view = matchAdapter.getView(i, view, listView);
-            if (i == 0)
-                view.setLayoutParams(new ViewGroup.LayoutParams(desiredWidth, ViewGroup.LayoutParams.WRAP_CONTENT));
+        try {
+            if (matchAdapter == null) {
+                return;
+            }
+            int desiredWidth = View.MeasureSpec.makeMeasureSpec(listView.getWidth(), View.MeasureSpec.UNSPECIFIED);
+            int totalHeight = 0;
+            View view = null;
+            for (int i = 0; i < matchAdapter.getCount(); i++) {
+                view = matchAdapter.getView(i, view, listView);
+                if (i == 0)
+                    view.setLayoutParams(new ViewGroup.LayoutParams(desiredWidth, ViewGroup.LayoutParams.WRAP_CONTENT));
 
-            view.measure(desiredWidth, View.MeasureSpec.UNSPECIFIED);
-            totalHeight += view.getMeasuredHeight();
+                view.measure(desiredWidth, View.MeasureSpec.UNSPECIFIED);
+                totalHeight += view.getMeasuredHeight();
+            }
+            ViewGroup.LayoutParams params = listView.getLayoutParams();
+            params.height = totalHeight + (listView.getDividerHeight() * (matchAdapter.getCount() - 1));
+            listView.setLayoutParams(params);
         }
-        ViewGroup.LayoutParams params = listView.getLayoutParams();
-        params.height = totalHeight + (listView.getDividerHeight() * (matchAdapter.getCount() - 1));
-        listView.setLayoutParams(params);
+        catch (Exception ex){
+            Log.e("BBB", ex.toString());
+        }
     }
 
     private void showDialogTinNhan(String text){

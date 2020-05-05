@@ -215,7 +215,7 @@ public class TaiKhoanDaLoginFragment extends Fragment {
             @Override
             public void onResponse(Call<List<DoiBong_NguoiDung>> call, Response<List<DoiBong_NguoiDung>> response) {
                 List<DoiBong_NguoiDung> doiBongDangTGS = response.body();
-                System.out.println("size: " + response.body().size());
+//                System.out.println("size: " + response.body().size());
                 if (response.body() == null) return;
                 for (DoiBong_NguoiDung doiBongDangTG : doiBongDangTGS) {
                     arrDoiBongDangThamGia.add(doiBongDangTG);

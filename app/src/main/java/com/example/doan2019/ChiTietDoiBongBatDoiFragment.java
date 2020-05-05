@@ -93,7 +93,7 @@ public class ChiTietDoiBongBatDoiFragment extends Fragment {
                         call.enqueue(new Callback<HanhKiem>() {
                             @Override
                             public void onResponse(Call<HanhKiem> call, Response<HanhKiem> response) {
-                                System.out.println(response.code());
+//                                System.out.println(response.code());
                                 Toast.makeText(getContext(), "Voted", Toast.LENGTH_SHORT).show();
                             }
                             @Override

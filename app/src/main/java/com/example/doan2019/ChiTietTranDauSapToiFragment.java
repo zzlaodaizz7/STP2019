@@ -1,6 +1,7 @@
 package com.example.doan2019;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -71,37 +72,71 @@ public class ChiTietTranDauSapToiFragment extends Fragment {
         bundle = getArguments();
 
         TranDauDuongClass tranDau = (TranDauDuongClass) bundle.getSerializable("trandauduong");
-        DoiBongClass doiMinh = tranDau.getDoiMinh();
-        DoiBongClass doiBan = tranDau.getDoiBongDoiThu();
+        if(tranDau != null) {
+            DoiBongClass doiMinh = tranDau.getDoiMinh();
+            DoiBongClass doiBan = tranDau.getDoiBongDoiThu();
 //        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 //        String time = dateFormat.format(tranDau.getNgay());
-        String time = tranDau.getNgay();
-        if(tranDau.getKhungGio() == 1)
-            time += "  17:30 - 19:00";
-        else if(tranDau.getKhungGio() == 2)
-            time += "  19:00 - 20:30";
-        else if(tranDau.getKhungGio() == 3)
-            time += "  20:30 - 22:00";
+            String time = tranDau.getNgay();
+            if (tranDau.getKhungGio() == 1)
+                time += "  17:30 - 19:00";
+            else if (tranDau.getKhungGio() == 2)
+                time += "  19:00 - 20:30";
+            else if (tranDau.getKhungGio() == 3)
+                time += "  20:30 - 22:00";
 
-        imgTeamMinh.setImageBitmap(doiMinh.getImageDaiDien());
-        imgTeamBan.setImageBitmap(doiBan.getImageDaiDien());
-        txtNameTeamMinh.setText(doiMinh.getTen());
-        txtNameTeamBan.setText(doiBan.getTen());
-        txtThoiGian.setText(time);
-        Call<SanBong> call = jsonApiSanBong.getChitietsanbong(tranDau.getIdSan());
-        call.enqueue(new Callback<SanBong>() {
-            @Override
-            public void onResponse(Call<SanBong> call, Response<SanBong> response) {
-                SanBong sanBong = response.body();
-                txtSan.setText(sanBong.getTen());
-            }
+            imgTeamMinh.setImageBitmap(doiMinh.getImageDaiDien());
+            imgTeamBan.setImageBitmap(doiBan.getImageDaiDien());
+            txtNameTeamMinh.setText(doiMinh.getTen());
+            txtNameTeamBan.setText(doiBan.getTen());
+            txtThoiGian.setText(time);
+            Call<SanBong> call = jsonApiSanBong.getChitietsanbong(tranDau.getIdSan());
+            call.enqueue(new Callback<SanBong>() {
+                @Override
+                public void onResponse(Call<SanBong> call, Response<SanBong> response) {
+                    SanBong sanBong = response.body();
+                    txtSan.setText(sanBong.getTen());
+                }
 
-            @Override
-            public void onFailure(Call<SanBong> call, Throwable t) {
+                @Override
+                public void onFailure(Call<SanBong> call, Throwable t) {
 
-            }
-        });
-        txtKeo.setText(tranDau.getKeo());
+                }
+            });
+            txtKeo.setText(tranDau.getKeo());
+        }
+        else{
+            DangTinDuongClass tinDang = (DangTinDuongClass) bundle.getSerializable("haidoibong");
+            Log.e("DxTN", tinDang.getDoidangtin_id()+"");
+            Log.e("DxTN", tinDang.getDoibatdoi_id()+"");
+            String time = tinDang.getNgay();
+            if (tinDang.getKhunggio_id() == 1)
+                time += "  17:30 - 19:00";
+            else if (tinDang.getKhunggio_id() == 2)
+                time += "  19:00 - 20:30";
+            else if (tinDang.getKhunggio_id() == 3)
+                time += "  20:30 - 22:00";
+
+//            imgTeamMinh.setImageBitmap(doiMinh.getImageDaiDien());
+//            imgTeamBan.setImageBitmap(doiBan.getImageDaiDien());
+//            txtNameTeamMinh.setText(doiMinh.getTen());
+//            txtNameTeamBan.setText(doiBan.getTen());
+            txtThoiGian.setText(time);
+            Call<SanBong> call = jsonApiSanBong.getChitietsanbong(tinDang.getSanbong_id());
+            call.enqueue(new Callback<SanBong>() {
+                @Override
+                public void onResponse(Call<SanBong> call, Response<SanBong> response) {
+                    SanBong sanBong = response.body();
+                    txtSan.setText(sanBong.getTen());
+                }
+
+                @Override
+                public void onFailure(Call<SanBong> call, Throwable t) {
+
+                }
+            });
+            txtKeo.setText(tinDang.getKeo());
+        }
     }
 
     private void Mapping() {

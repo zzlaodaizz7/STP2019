@@ -72,19 +72,18 @@ public class VoteKetQuaFragment extends Fragment {
                 call.enqueue(new Callback<KetQua>() {
                     @Override
                     public void onResponse(Call<KetQua> call, Response<KetQua> response) {
-                        System.out.println(response.code());
+//                        System.out.println(response.code());
                         Toast.makeText(getActivity(), "Vote KQ xong", Toast.LENGTH_SHORT).show();
                         getFragmentManager().popBackStack();
                     }
 
                     @Override
                     public void onFailure(Call<KetQua> call, Throwable t) {
-                        System.out.println("loi: "+t.getMessage());
+//                        System.out.println("loi: "+t.getMessage());
                     }
                 });
-                System.out.println(""+edtBanThangDoiBan.getText());
-                System.out.println(""+edtBanThangDoiMinh.getText());
-
+//                System.out.println(""+edtBanThangDoiBan.getText());
+//                System.out.println(""+edtBanThangDoiMinh.getText());
             }
         });
     }

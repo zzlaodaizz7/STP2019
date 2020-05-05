@@ -109,24 +109,28 @@ public class TimKiemDoiBongFragment extends Fragment {
     }
 
     private void setListViewHeightBasedOnChildren(TimKiemDoiBongAdapter matchAdapter, ListView listView) {
+        try {
+            if (matchAdapter == null) {
+                return;
+            }
+            int desiredWidth = View.MeasureSpec.makeMeasureSpec(listView.getWidth(), View.MeasureSpec.UNSPECIFIED);
+            int totalHeight = 0;
+            View view = null;
+            for (int i = 0; i < matchAdapter.getCount(); i++) {
+                view = matchAdapter.getView(i, view, listView);
+                if (i == 0)
+                    view.setLayoutParams(new ViewGroup.LayoutParams(desiredWidth, ViewGroup.LayoutParams.WRAP_CONTENT));
 
-        if (matchAdapter == null) {
-            return;
+                view.measure(desiredWidth, View.MeasureSpec.UNSPECIFIED);
+                totalHeight += view.getMeasuredHeight();
+            }
+            ViewGroup.LayoutParams params = listView.getLayoutParams();
+            params.height = totalHeight + (listView.getDividerHeight() * (matchAdapter.getCount() - 1));
+            listView.setLayoutParams(params);
         }
-        int desiredWidth = View.MeasureSpec.makeMeasureSpec(listView.getWidth(), View.MeasureSpec.UNSPECIFIED);
-        int totalHeight = 0;
-        View view = null;
-        for (int i = 0; i < matchAdapter.getCount(); i++) {
-            view = matchAdapter.getView(i, view, listView);
-            if (i == 0)
-                view.setLayoutParams(new ViewGroup.LayoutParams(desiredWidth, ViewGroup.LayoutParams.WRAP_CONTENT));
-
-            view.measure(desiredWidth, View.MeasureSpec.UNSPECIFIED);
-            totalHeight += view.getMeasuredHeight();
+        catch (Exception ex){
+            Log.e("BBB", ex.toString());
         }
-        ViewGroup.LayoutParams params = listView.getLayoutParams();
-        params.height = totalHeight + (listView.getDividerHeight() * (matchAdapter.getCount() - 1));
-        listView.setLayoutParams(params);
     }
 
     private void Mapping() {

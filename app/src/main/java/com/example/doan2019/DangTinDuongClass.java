@@ -26,17 +26,6 @@ public class DangTinDuongClass implements Serializable {
         this.doibatdoi_id = doibatdoi_id;
     }
 
-    public DangTinDuongClass(int id, String ngay, int sanbong_id, int khunggio_id, String keo, Timestamp created_at, Timestamp updated_at, int doibatdoi_id) {
-        this.id = id;
-        this.ngay = ngay;
-        this.sanbong_id = sanbong_id;
-        this.khunggio_id = khunggio_id;
-        this.keo = keo;
-        this.created_at = created_at;
-        this.updated_at = updated_at;
-        this.doibatdoi_id = doibatdoi_id;
-    }
-
     public int getDoidangtin_id() {
         return doidangtin_id;
     }

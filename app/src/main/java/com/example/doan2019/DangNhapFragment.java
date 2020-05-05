@@ -189,7 +189,7 @@ public class DangNhapFragment extends Fragment {
                                         }
                                     });
                                 }
-                                System.out.println("token:" +response.body().getToken());
+//                                System.out.println("token:" +response.body().getToken());
 
                                 langNgheSuKienChuyenFragment.ChuyenHuongFragment(new TaiKhoanDaLoginFragment());
                             }else{

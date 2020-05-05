@@ -79,14 +79,22 @@ public class DanhSachCacTinDaDangFragment extends Fragment {
         lvDanhSachCacTinDaDang.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                DanhSachCacDoiBatDoiFragment danhSachCacDoiBatDoiFragment = new DanhSachCacDoiBatDoiFragment();
-
-                Bundle bundleTinDang = new Bundle();
                 DangTinDuongClass tinDang = arrDangTin.get(i);
-                bundleTinDang.putSerializable("tindang", tinDang);
-                danhSachCacDoiBatDoiFragment.setArguments(bundleTinDang);
 
-                langNgheSuKienChuyenFragment.ChuyenHuongFragment(danhSachCacDoiBatDoiFragment);
+                if(tinDang.getDoibatdoi_id() == -1) {
+                    DanhSachCacDoiBatDoiFragment danhSachCacDoiBatDoiFragment = new DanhSachCacDoiBatDoiFragment();
+                    Bundle bundleTinDang = new Bundle();
+                    bundleTinDang.putSerializable("tindang", tinDang);
+                    danhSachCacDoiBatDoiFragment.setArguments(bundleTinDang);
+                    langNgheSuKienChuyenFragment.ChuyenHuongFragment(danhSachCacDoiBatDoiFragment);
+                }
+                else{
+                    ChiTietTranDauSapToiFragment chiTietTranDauSapToiFragment = new ChiTietTranDauSapToiFragment();
+                    Bundle bundleTranDauSapToi = new Bundle();
+                    bundleTranDauSapToi.putSerializable("haidoibong", tinDang);
+                    chiTietTranDauSapToiFragment.setArguments(bundleTranDauSapToi);
+                    langNgheSuKienChuyenFragment.ChuyenHuongFragment(chiTietTranDauSapToiFragment);
+                }
             }
         });
     }
@@ -99,7 +107,7 @@ public class DanhSachCacTinDaDangFragment extends Fragment {
 
     private void KhoiTaoDuLieu() {
         Log.e("AAA", "Khoi tao du lieu");
-        arrDangTin = new ArrayList<DangTinDuongClass>();
+        arrDangTin = new ArrayList<>();
 
         Call<List<DangTinDuongClass>> call = jsonApiSanBong.getDanhsachdangtins(doiBong.getId());
         call.enqueue(new Callback<List<DangTinDuongClass>>() {
@@ -107,14 +115,14 @@ public class DanhSachCacTinDaDangFragment extends Fragment {
             public void onResponse(Call<List<DangTinDuongClass>> call, Response<List<DangTinDuongClass>> response) {
 
                 List<DangTinDuongClass> dangTinDuongClass = response.body();
-                System.out.println("code: "+response.code());
+//                System.out.println("code: "+response.code());
                 for (DangTinDuongClass dangTinDuongClass1 : dangTinDuongClass){
-                    System.out.println("ngay: "+dangTinDuongClass1.getNgay()+dangTinDuongClass1.getCreated_at());
+//                    System.out.println("ngay: "+dangTinDuongClass1.getNgay()+dangTinDuongClass1.getCreated_at());
                     arrDangTin.add(new DangTinDuongClass(dangTinDuongClass1.getId(),
-                            dangTinDuongClass1.getNgay(),dangTinDuongClass1.getSanbong_id(),
-                            dangTinDuongClass1.getKhunggio_id(), dangTinDuongClass1.getKeo(),
-                            dangTinDuongClass1.getCreated_at(), dangTinDuongClass1.getUpdated_at(),
-                            dangTinDuongClass1.getDoibatdoi_id()));
+                            dangTinDuongClass1.getNgay(),dangTinDuongClass1.getDoidangtin_id(),
+                            dangTinDuongClass1.getSanbong_id(), dangTinDuongClass1.getKhunggio_id(),
+                            dangTinDuongClass1.getKeo(), dangTinDuongClass1.getCreated_at(),
+                            dangTinDuongClass1.getUpdated_at(), dangTinDuongClass1.getDoibatdoi_id()));
                 }
                 adapter = new DanhSachCacTinDaDangAdapter(getActivity(), R.layout.dong_tin_da_dang, arrDangTin);
                 lvDanhSachCacTinDaDang.setAdapter(adapter);
@@ -123,7 +131,7 @@ public class DanhSachCacTinDaDangFragment extends Fragment {
 
             @Override
             public void onFailure(Call<List<DangTinDuongClass>> call, Throwable t) {
-                System.out.println("aaa"+t.getMessage());
+//                System.out.println("aaa"+t.getMessage());
             }
         });
 //        long date = 123456789;
@@ -200,23 +208,28 @@ public class DanhSachCacTinDaDangFragment extends Fragment {
     }
 
     private void SetListViewHeightBasedOnChildren(DanhSachCacTinDaDangAdapter matchAdapter, ListView listView) {
-        if (matchAdapter == null) {
-            return;
-        }
-        int desiredWidth = View.MeasureSpec.makeMeasureSpec(listView.getWidth(), View.MeasureSpec.UNSPECIFIED);
-        int totalHeight = 0;
-        View view = null;
-        for (int i = 0; i < matchAdapter.getCount(); i++) {
-            view = matchAdapter.getView(i, view, listView);
-            if (i == 0)
-                view.setLayoutParams(new ViewGroup.LayoutParams(desiredWidth, ViewGroup.LayoutParams.WRAP_CONTENT));
+        try {
+            if (matchAdapter == null) {
+                return;
+            }
+            int desiredWidth = View.MeasureSpec.makeMeasureSpec(listView.getWidth(), View.MeasureSpec.UNSPECIFIED);
+            int totalHeight = 0;
+            View view = null;
+            for (int i = 0; i < matchAdapter.getCount(); i++) {
+                view = matchAdapter.getView(i, view, listView);
+                if (i == 0)
+                    view.setLayoutParams(new ViewGroup.LayoutParams(desiredWidth, ViewGroup.LayoutParams.WRAP_CONTENT));
 
-            view.measure(desiredWidth, View.MeasureSpec.UNSPECIFIED);
-            totalHeight += view.getMeasuredHeight();
+                view.measure(desiredWidth, View.MeasureSpec.UNSPECIFIED);
+                totalHeight += view.getMeasuredHeight();
+            }
+            ViewGroup.LayoutParams params = listView.getLayoutParams();
+            params.height = totalHeight + (listView.getDividerHeight() * (matchAdapter.getCount() - 1));
+            listView.setLayoutParams(params);
         }
-        ViewGroup.LayoutParams params = listView.getLayoutParams();
-        params.height = totalHeight + (listView.getDividerHeight() * (matchAdapter.getCount() - 1));
-        listView.setLayoutParams(params);
+        catch (Exception ex){
+            Log.e("BBB", ex.toString());
+        }
     }
 
     private void Mapping() {

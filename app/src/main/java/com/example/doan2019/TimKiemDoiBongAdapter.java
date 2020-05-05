@@ -2,6 +2,7 @@ package com.example.doan2019;
 
 import android.content.Context;
 import android.text.Layout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -55,17 +56,21 @@ public class TimKiemDoiBongAdapter extends BaseAdapter {
 
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
-        ViewHolder viewHolder;
+        ViewHolder viewHolder = new ViewHolder();
         if(view == null){
-            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            view = inflater.inflate(layout, null);
-            viewHolder = new ViewHolder();
+            try {
+                LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                view = inflater.inflate(layout, null);
 
-            viewHolder.imgAnhDaiDien = view.findViewById(R.id.ImageViewTimKiemDoiBong);
-            viewHolder.txtDiaChiDoiBong = view.findViewById(R.id.TextViewDiaChiDoiBong);
-            viewHolder.txtTenDoiBong = view.findViewById(R.id.TextViewTenDoiBongDong);
+                viewHolder.imgAnhDaiDien = view.findViewById(R.id.ImageViewTimKiemDoiBong);
+                viewHolder.txtDiaChiDoiBong = view.findViewById(R.id.TextViewDiaChiDoiBong);
+                viewHolder.txtTenDoiBong = view.findViewById(R.id.TextViewTenDoiBongDong);
 
-            view.setTag(viewHolder);
+                view.setTag(viewHolder);
+            }
+            catch (Exception ex){
+                Log.e("BBB", ex.toString());
+            }
         }
         else
             viewHolder = (ViewHolder) view.getTag();
