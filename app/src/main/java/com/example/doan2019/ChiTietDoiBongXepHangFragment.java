@@ -1,7 +1,9 @@
 package com.example.doan2019;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -20,7 +22,9 @@ import android.widget.Toast;
 
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -30,6 +34,7 @@ import com.example.doan2019.Retrofit.APIUtils;
 import com.example.doan2019.Retrofit.DangTin;
 import com.example.doan2019.Retrofit.DoiBong;
 import com.example.doan2019.Retrofit.DoiBong_NguoiDung;
+import com.example.doan2019.Retrofit.HanhKiem;
 import com.example.doan2019.Retrofit.JsonApiDoiBongNGuoiDung;
 import com.example.doan2019.Retrofit.JsonApiSanBong;
 import com.example.doan2019.Retrofit.User;
@@ -57,14 +62,18 @@ public class ChiTietDoiBongXepHangFragment extends Fragment {
     DoiBong doiBong;
     int mode, dbnd_id;
     RatingBar rtb;
+    String Auth ="";
+    Integer IDUser;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        sharedPreferences = getActivity().getSharedPreferences("dataLogin", Context.MODE_PRIVATE);
         view = inflater.inflate(R.layout.fragment_chi_tiet_doi_bong_xep_hang, container, false);
         langNgheSuKienChuyenFragment = (LangNgheSuKienChuyenFragment) getActivity();
         jsonApiDoiBongNGuoiDung = APIUtils.getJsonApiDoiBongNguoiDung();
         jsonApiSanBong = APIUtils.getJsonApiSanBong();
-
+        IDUser = sharedPreferences.getInt("id",0);
+        Auth = sharedPreferences.getString("token","");
         Mapping();
 
         ClickQuayLai();
@@ -98,7 +107,40 @@ public class ChiTietDoiBongXepHangFragment extends Fragment {
                     rtb.setRating(4);
                 else if(rtb.getRating() == 4.5)
                     rtb.setRating(5);
-                Toast.makeText(getActivity(), "Số sao vote: " + rtb.getRating(), Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getActivity(), "Số sao vote: " + rtb.getRating(), Toast.LENGTH_SHORT).show();
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
+                alertDialogBuilder.setTitle("Thông báo");
+                alertDialogBuilder.setMessage("Bạn chắc chắn về quyết định của mình chưa?");
+                //null should be your on click listener
+                alertDialogBuilder.setPositiveButton("Có", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        HanhKiem hanhKiem = new HanhKiem(IDUser,doiBong.getId(),Math.round(rtb.getRating()));
+                        Map<String,String> header = new HashMap<>();
+                        header.put("value","application/json");
+                        header.put("Accept","application/json");
+                        header.put("Authorization","Bearer "+Auth);
+                        Call<HanhKiem> call = jsonApiSanBong.postHanhKiem(header,hanhKiem);
+                        call.enqueue(new Callback<HanhKiem>() {
+                            @Override
+                            public void onResponse(Call<HanhKiem> call, Response<HanhKiem> response) {
+                                System.out.println(response.code());
+                                Toast.makeText(getContext(), "Voted", Toast.LENGTH_SHORT).show();
+                            }
+                            @Override
+                            public void onFailure(Call<HanhKiem> call, Throwable t) {
+                                Toast.makeText(getContext(), "Đánh giá thành công", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+                });
+                alertDialogBuilder.setNegativeButton("Không", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                alertDialogBuilder.create().show();
             }
         });
     }

@@ -70,4 +70,9 @@ public interface JsonApiSanBong {
                             @Body KetQua ketqua);
     @GET("xephang")
     Call<List<DoiBong>> getBangxephang();
+    @POST("votehanhkiem")
+    Call<HanhKiem> postHanhKiem(@HeaderMap Map<String, String> headers,
+                                @Body HanhKiem hanhKiem);
+    @GET("thongbao/{id}")
+    Call<List<ThongBao>> getThongbao(@Path("id") int id);
 }

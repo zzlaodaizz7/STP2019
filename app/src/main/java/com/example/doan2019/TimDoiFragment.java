@@ -80,11 +80,10 @@ public class TimDoiFragment extends Fragment{
     JsonApiDoiBongNGuoiDung jsonApiDoiBongNGuoiDung;
     SharedPreferences sharedPreferences, sharedPreferencesLoadTimDoi;
     LangNgheSuKienChuyenFragment langNgheSuKienChuyenFragment;
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
+        sharedPreferences = getActivity().getSharedPreferences("dataLogin", Context.MODE_PRIVATE);
         view = inflater.inflate(R.layout.fragment_tim_doi, container, false);
         langNgheSuKienChuyenFragment = (LangNgheSuKienChuyenFragment) getActivity();
 
@@ -545,7 +544,8 @@ public class TimDoiFragment extends Fragment{
         btnDangTin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                langNgheSuKienChuyenFragment.ChuyenHuongFragment(new DangTinFragment());
+                if (sharedPreferences.getString("token","")=="") System.out.println("Chua dang nhap");
+                else langNgheSuKienChuyenFragment.ChuyenHuongFragment(new DangTinFragment());
             }
         });
     }

@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -124,13 +125,17 @@ public class TimSanFragment extends Fragment {
 
     private void KhoiTaoListViewSanBong() {
         arrSanBong = new ArrayList<>();
-        Bitmap largeIcon = BitmapFactory.decodeResource(getResources(), R.drawable.icon_app);
+//         = BitmapFactory.decodeResource(getResources(), R.drawable.icon_app);
+        int[] images = {R.drawable.a1,R.drawable.a2,R.drawable.a3,R.drawable.a4};
+
         Call<List<SanBong>> call = jsonApiSanBong.getSanbongs();
         call.enqueue(new Callback<List<SanBong>>() {
             @Override
             public void onResponse(Call<List<SanBong>> call, Response<List<SanBong>> response) {
                 List<SanBong> sanBong = response.body();
                 for (SanBong sanBongs : sanBong){
+                    Random rand = new Random();
+                    Bitmap largeIcon = BitmapFactory.decodeResource(getResources(), images[rand.nextInt(images.length)]);
                     arrSanBong.add(new SanBongClass(sanBongs.getId(), sanBongs.getTen(), sanBongs.getSonguoi(), sanBongs.getDiachi(), sanBongs.getMota(), sanBongs.getSdt(), largeIcon));
                 }
                 adapter = new TimSanAdapter(getActivity(), R.layout.dong_san_bong, arrSanBong);

@@ -94,11 +94,12 @@ public class DanhSachCacDoiBatDoiAdapter extends BaseAdapter{
         viewHolder.btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(context, "Click Đồng ý: " + doiBongList.get(i).getBatdoi_id() + "\nBắt sự kiện trong Adapter nhé", Toast.LENGTH_SHORT).show();
                 jsonApiSanBong = APIUtils.getJsonApiSanBong();
                 Map<String,String> header = new HashMap<>();
                 header.put("value","application/json");
                 header.put("Accept","application/json");
+                sharedPreferences = view.getContext().getSharedPreferences("dataLogin", Context.MODE_PRIVATE);
+                System.out.println(sharedPreferences.getString("token",""));
                 header.put("Authorization","Bearer "+sharedPreferences.getString("token",""));
                 System.out.println();
                 Call<DangTin> call = jsonApiSanBong.chotkeo(header,doiBongList.get(i).getBatdoi_id());

@@ -127,7 +127,7 @@ public class DangTinFragment extends Fragment {
 
     private void LoadListSanBong() {
         arraySanBong = new ArrayList<>();
-        jsonApiSanBong = retrofit.create(JsonApiSanBong.class);
+        jsonApiSanBong = APIUtils.getJsonApiSanBong();
         Call<List<SanBong>> call = jsonApiSanBong.getSanbongs();
         call.enqueue(new Callback<List<SanBong>>() {
             @Override
