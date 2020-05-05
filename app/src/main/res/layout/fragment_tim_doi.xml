@@ -51,8 +51,9 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginRight="18dp"
                 android:layout_toLeftOf="@+id/btnThongBao"
-                android:background="@drawable/custom_simple_button"
+                android:background="@drawable/custom_button_quen_mat_khau"
                 android:focusedByDefault="true"
+                android:textColor="@drawable/custom_text_button_quen_mat_khau"
                 android:text="Đăng tin"
                 android:textSize="13sp"
                 android:textAllCaps="false" />

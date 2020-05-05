@@ -102,7 +102,6 @@ public class DanhSachCacTinDaDangFragment extends Fragment {
     private void GetDuLieuDoiBong() {
         bundle = getArguments();
         doiBong = (DoiBong) bundle.getSerializable("doibong");
-        Toast.makeText(getActivity(), doiBong.getTen() + "", Toast.LENGTH_SHORT).show();
     }
 
     private void KhoiTaoDuLieu() {

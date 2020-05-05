@@ -85,7 +85,6 @@ public class DanhSachCacDoiBatDoiFragment extends Fragment {
     private void GetDuLieuIDDangTin() {
         bundle = getArguments();
         DangTinDuongClass dangTin = (DangTinDuongClass) bundle.getSerializable("tindang");
-        Toast.makeText(getActivity(), "ID tin đăng: " + dangTin.getId(), Toast.LENGTH_SHORT).show();
     }
 
     private void ClickListview() {

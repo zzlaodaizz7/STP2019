@@ -195,47 +195,51 @@ public class ChiTietDoiBongDaThamGiaFragment extends Fragment {
     }
 
     private void GanNoiDungListViewLichSuTranDau() {
-        arrLichSuTranDau = new ArrayList<>();
-        Bitmap anhDaiDien = BitmapFactory.decodeResource(getResources(), R.drawable.icon_app);
-        Bitmap anhBia = BitmapFactory.decodeResource(getResources(), R.drawable.anh_test_doi_bong);
-        Call<List<DangTin>> call = jsonApiSanBong.getCactrandaketthuc(doiBong.getId());
-        call.enqueue(new Callback<List<DangTin>>() {
-            @Override
-            public void onResponse(Call<List<DangTin>> call, Response<List<DangTin>> response) {
-                try {
-                    List<DangTin> dangTin = response.body();
-                    if (response.body() == null) {
-                        return;
-                    }
-                    if (dangTin.size() == 0) {
-                        return;
-                    }
-                    for (int i = 0; i < dangTin.size(); i++) {
-                        dangTin.get(i).getDoibong1().setImageBia(anhBia);
-                        dangTin.get(i).getDoibong1().setImageDaiDien(anhDaiDien);
-                        dangTin.get(i).getDoibong2().setImageBia(anhBia);
-                        dangTin.get(i).getDoibong2().setImageDaiDien(anhDaiDien);
-                        int a = 0, b = 0;
-                        if (dangTin.get(i).getVoted() == 1) {
-                            a = dangTin.get(i).getBanthangdoidangtin();
-                            b = dangTin.get(i).getBanthangdoibatdoi();
+        try {
+            arrLichSuTranDau = new ArrayList<>();
+            Bitmap anhDaiDien = BitmapFactory.decodeResource(getResources(), R.drawable.icon_app);
+            Bitmap anhBia = BitmapFactory.decodeResource(getResources(), R.drawable.anh_test_doi_bong);
+            Call<List<DangTin>> call = jsonApiSanBong.getCactrandaketthuc(doiBong.getId());
+            call.enqueue(new Callback<List<DangTin>>() {
+                @Override
+                public void onResponse(Call<List<DangTin>> call, Response<List<DangTin>> response) {
+                    try {
+                        List<DangTin> dangTin = response.body();
+                        if (response.body() == null) {
+                            return;
                         }
-                        arrLichSuTranDau.add(new TranDauDuongClass(dangTin.get(i).getId(), dangTin.get(i).getDoibong1(), dangTin.get(i).getDoibong2(), dangTin.get(i).getNgay(), dangTin.get(i).getKhunggio_id(), dangTin.get(i).getSan_id(), a, b, dangTin.get(i).getKeo(), dangTin.get(i).getVoted()));
+                        if (dangTin.size() == 0) {
+                            return;
+                        }
+                        for (int i = 0; i < dangTin.size(); i++) {
+                            dangTin.get(i).getDoibong1().setImageBia(anhBia);
+                            dangTin.get(i).getDoibong1().setImageDaiDien(anhDaiDien);
+                            dangTin.get(i).getDoibong2().setImageBia(anhBia);
+                            dangTin.get(i).getDoibong2().setImageDaiDien(anhDaiDien);
+                            int a = 0, b = 0;
+                            if (dangTin.get(i).getVoted() == 1) {
+                                a = dangTin.get(i).getBanthangdoidangtin();
+                                b = dangTin.get(i).getBanthangdoibatdoi();
+                            }
+                            arrLichSuTranDau.add(new TranDauDuongClass(dangTin.get(i).getId(), dangTin.get(i).getDoibong1(), dangTin.get(i).getDoibong2(), dangTin.get(i).getNgay(), dangTin.get(i).getKhunggio_id(), dangTin.get(i).getSan_id(), a, b, dangTin.get(i).getKeo(), dangTin.get(i).getVoted()));
+                        }
+                        adapterLichSuTranDau = new LichSuTranDauAdapter(getActivity(), R.layout.dong_lich_su_tran_dau, arrLichSuTranDau);
+                        lvLichSuTranDau.setAdapter(adapterLichSuTranDau);
+                        SetListViewHeightBasedOnChildrenLichSuTranDau(adapterLichSuTranDau, lvLichSuTranDau);
+                    } catch (Exception ex) {
+                        Log.e("BBB", ex.toString());
                     }
-                    adapterLichSuTranDau = new LichSuTranDauAdapter(getActivity(), R.layout.dong_lich_su_tran_dau, arrLichSuTranDau);
-                    lvLichSuTranDau.setAdapter(adapterLichSuTranDau);
-                    SetListViewHeightBasedOnChildrenLichSuTranDau(adapterLichSuTranDau, lvLichSuTranDau);
                 }
-                catch (Exception ex){
-                    Log.e("BBB", ex.toString());
+
+                @Override
+                public void onFailure(Call<List<DangTin>> call, Throwable t) {
+
                 }
-            }
-
-            @Override
-            public void onFailure(Call<List<DangTin>> call, Throwable t) {
-
-            }
-        });
+            });
+        }
+        catch (Exception ex){
+            Log.e("BBB", ex.toString());
+        }
     }
 
     private void SetListViewHeightBasedOnChildrenLichSuTranDau(LichSuTranDauAdapter matchAdapter, ListView listView) {
@@ -264,41 +268,45 @@ public class ChiTietDoiBongDaThamGiaFragment extends Fragment {
     }
 
     private void GanNoiDungListViewTranDauSapToi() {
-        arrTranDauSapToi = new ArrayList<>();
-        Bitmap anhDaiDien = BitmapFactory.decodeResource(getResources(), R.drawable.icon_app);
-        Bitmap anhBia = BitmapFactory.decodeResource(getResources(), R.drawable.anh_test_doi_bong);
+        try {
+            arrTranDauSapToi = new ArrayList<>();
+            Bitmap anhDaiDien = BitmapFactory.decodeResource(getResources(), R.drawable.icon_app);
+            Bitmap anhBia = BitmapFactory.decodeResource(getResources(), R.drawable.anh_test_doi_bong);
 
-        Call<List<DangTin>> call = jsonApiSanBong.getCactransapdienracuadoi(doiBong.getId());
-        call.enqueue(new Callback<List<DangTin>>() {
-            @Override
-            public void onResponse(Call<List<DangTin>> call, Response<List<DangTin>> response) {
-                List<DangTin> dangTin = response.body();
-                try {
-                    if (dangTin.size() != 0) {
-                        for (int i = 0; i < dangTin.size(); i++) {
-                            dangTin.get(i).getDoibong1().setImageBia(anhBia);
-                            dangTin.get(i).getDoibong1().setImageDaiDien(anhDaiDien);
-                            dangTin.get(i).getDoibong2().setImageBia(anhBia);
-                            dangTin.get(i).getDoibong2().setImageDaiDien(anhDaiDien);
+            Call<List<DangTin>> call = jsonApiSanBong.getCactransapdienracuadoi(doiBong.getId());
+            call.enqueue(new Callback<List<DangTin>>() {
+                @Override
+                public void onResponse(Call<List<DangTin>> call, Response<List<DangTin>> response) {
+                    List<DangTin> dangTin = response.body();
+                    try {
+                        if (dangTin.size() != 0) {
+                            for (int i = 0; i < dangTin.size(); i++) {
+                                dangTin.get(i).getDoibong1().setImageBia(anhBia);
+                                dangTin.get(i).getDoibong1().setImageDaiDien(anhDaiDien);
+                                dangTin.get(i).getDoibong2().setImageBia(anhBia);
+                                dangTin.get(i).getDoibong2().setImageDaiDien(anhDaiDien);
 
-                            arrTranDauSapToi.add(new TranDauDuongClass(dangTin.get(i).getId(), dangTin.get(i).getDoibong1(), dangTin.get(i).getDoibong2(), dangTin.get(i).getNgay(), dangTin.get(i).getKhunggio_id(), dangTin.get(i).getSan_id(), 0, 0, dangTin.get(i).getKeo(), 0));
+                                arrTranDauSapToi.add(new TranDauDuongClass(dangTin.get(i).getId(), dangTin.get(i).getDoibong1(), dangTin.get(i).getDoibong2(), dangTin.get(i).getNgay(), dangTin.get(i).getKhunggio_id(), dangTin.get(i).getSan_id(), 0, 0, dangTin.get(i).getKeo(), 0));
+                            }
+
+                            adapterTranDauSapToi = new TranDauSapToiAdapter(getActivity(), R.layout.dong_tran_dau_sap_toi, arrTranDauSapToi);
+                            lvTranDauSapToi.setAdapter(adapterTranDauSapToi);
+                            SetListViewHeightBasedOnChildrenTranDauSapToi(adapterTranDauSapToi, lvTranDauSapToi);
                         }
-
-                        adapterTranDauSapToi = new TranDauSapToiAdapter(getActivity(), R.layout.dong_tran_dau_sap_toi, arrTranDauSapToi);
-                        lvTranDauSapToi.setAdapter(adapterTranDauSapToi);
-                        SetListViewHeightBasedOnChildrenTranDauSapToi(adapterTranDauSapToi, lvTranDauSapToi);
+                    } catch (Exception ex) {
+                        Log.d("BBB", ex.toString());
                     }
-                } catch (Exception ex) {
-                    Log.d("BBB", ex.toString());
                 }
 
-            }
-
-            @Override
-            public void onFailure(Call<List<DangTin>> call, Throwable t) {
-                System.out.println("Loi~: " + t.getMessage());
-            }
-        });
+                @Override
+                public void onFailure(Call<List<DangTin>> call, Throwable t) {
+                    System.out.println("Loi~: " + t.getMessage());
+                }
+            });
+        }
+        catch (Exception ex){
+            Log.e("BBB", ex.toString());
+        }
     }
 
     private void SetListViewHeightBasedOnChildrenTranDauSapToi(TranDauSapToiAdapter matchAdapter, ListView listView) {
@@ -347,33 +355,38 @@ public class ChiTietDoiBongDaThamGiaFragment extends Fragment {
     }
 
     private void KhoiTaoListViewThanhVien() {
-        arrThanhVien = new ArrayList<>();
-        Call<List<DoiBong_NguoiDung>> call = jsonApiDoiBongNGuoiDung.getDanhSachThanhVien(doiBong.getId());
-        call.enqueue(new Callback<List<DoiBong_NguoiDung>>() {
-            @Override
-            public void onResponse(Call<List<DoiBong_NguoiDung>> call, Response<List<DoiBong_NguoiDung>> response) {
-                List<DoiBong_NguoiDung> doiBong_nguoiDungs = response.body();
-                if (doiBong_nguoiDungs.size() == 0) {
-                    return;
-                }
-                for (DoiBong_NguoiDung doiBong_nguoiDung : doiBong_nguoiDungs) {
-                    if (mode == 1 && doiBong_nguoiDung.getTrangthai() == 0 &&
-                            doiBong_nguoiDung.getUserId() == sharedPreferences.getInt("id", -1)) {
-                        mode = 2;
-                        btnRoiKhoiDoiBong.setText("Hủy tham gia");
+        try {
+            arrThanhVien = new ArrayList<>();
+            Call<List<DoiBong_NguoiDung>> call = jsonApiDoiBongNGuoiDung.getDanhSachThanhVien(doiBong.getId());
+            call.enqueue(new Callback<List<DoiBong_NguoiDung>>() {
+                @Override
+                public void onResponse(Call<List<DoiBong_NguoiDung>> call, Response<List<DoiBong_NguoiDung>> response) {
+                    List<DoiBong_NguoiDung> doiBong_nguoiDungs = response.body();
+                    if (doiBong_nguoiDungs.size() == 0) {
+                        return;
                     }
+                    for (DoiBong_NguoiDung doiBong_nguoiDung : doiBong_nguoiDungs) {
+                        if (mode == 1 && doiBong_nguoiDung.getTrangthai() == 0 &&
+                                doiBong_nguoiDung.getUserId() == sharedPreferences.getInt("id", -1)) {
+                            mode = 2;
+                            btnRoiKhoiDoiBong.setText("Hủy tham gia");
+                        }
 
-                    arrThanhVien.add(doiBong_nguoiDung);
+                        arrThanhVien.add(doiBong_nguoiDung);
+                    }
+                    adapter = new DanhSachThanhVienAdapter(getActivity(), R.layout.dong_thanh_vien, arrThanhVien);
+                    lvDanhSachThanhVien.setAdapter(adapter);
+                    SetListViewHeightBasedOnChildren(adapter, lvDanhSachThanhVien);
                 }
-                adapter = new DanhSachThanhVienAdapter(getActivity(), R.layout.dong_thanh_vien, arrThanhVien);
-                lvDanhSachThanhVien.setAdapter(adapter);
-                SetListViewHeightBasedOnChildren(adapter, lvDanhSachThanhVien);
-            }
 
-            @Override
-            public void onFailure(Call<List<DoiBong_NguoiDung>> call, Throwable t) {
-            }
-        });
+                @Override
+                public void onFailure(Call<List<DoiBong_NguoiDung>> call, Throwable t) {
+                }
+            });
+        }
+        catch (Exception ex){
+            Log.e("BBB", ex.toString());
+        }
 
 
 //        arrThanhVien.add(new ThanhVienDoiBongClass("Nguyễn Văn B", "Thành viên", 1, anhDaiDien, "Hà Nội, Việt Nam", dateConvert,"123"));
@@ -428,25 +441,30 @@ public class ChiTietDoiBongDaThamGiaFragment extends Fragment {
     }
 
     private void GanNoiDungThongTinDoiBong() {
-        bundle = getArguments();
+        try {
+            bundle = getArguments();
 
-        if (doiBong.getAnhdaidien() != null) {
-            Picasso.get().load(doiBong.getAnhdaidien()).into(imgAnhDaiDien);
-        }
-        if (doiBong.getAnhbia() != null) {
-            Picasso.get().load(doiBong.getAnhbia()).into(imgAnhBia);
-        }
-        txtTenDoiBong.setText(doiBong.getTen());
-        txtDiem.setText(doiBong.getSodiem() + " Điểm");
-        txtDiaChi.setText(doiBong.getDiachi());
-        txtTrinhDo.setText(doiBong.getTrinhdo());
-        txtNgayThanhlap.setText(doiBong.getCreated_at().toString());
+            if (doiBong.getAnhdaidien() != null) {
+                Picasso.get().load(doiBong.getAnhdaidien()).into(imgAnhDaiDien);
+            }
+            if (doiBong.getAnhbia() != null) {
+                Picasso.get().load(doiBong.getAnhbia()).into(imgAnhBia);
+            }
+            txtTenDoiBong.setText(doiBong.getTen());
+            txtDiem.setText(doiBong.getSodiem() + " Điểm");
+            txtDiaChi.setText(doiBong.getDiachi());
+            txtTrinhDo.setText(doiBong.getTrinhdo());
+            txtNgayThanhlap.setText(doiBong.getCreated_at().toString());
 //        System.out.println("ngaytao " + doiBong.getCreated_at());
-        txtPhone.setText(doiBong.getSdt());
+            txtPhone.setText(doiBong.getSdt());
 //        arrThanhVien = doiBong.getListThanhVien();
 //        adapter = new DanhSachThanhVienAdapter(getActivity(), R.layout.dong_thanh_vien, arrThanhVien);
 //        lvDanhSachThanhVien.setAdapter(adapter);
 //        SetListViewHeightBasedOnChildren(adapter, lvDanhSachThanhVien);
+        }
+        catch (Exception ex){
+            Log.e("BBB", ex.toString());
+        }
     }
 
     private void Mapping() {

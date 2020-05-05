@@ -564,7 +564,8 @@ public class TimDoiFragment extends Fragment {
                 if (sharedPreferences.getString("token", "") == "") {
                     showDialogTinNhan("Bạn chưa đăng nhập");
                     hideDialogTinNhan();
-                }else getFragmentManager().beginTransaction().replace(R.id.fragment_container, new ThongBaoFragment()).commit();
+                }else
+                    langNgheSuKienChuyenFragment.ChuyenHuongFragment(new ThongBaoFragment());
 
             }
         });

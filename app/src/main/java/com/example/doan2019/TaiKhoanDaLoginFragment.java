@@ -115,35 +115,44 @@ public class TaiKhoanDaLoginFragment extends Fragment {
     }
 
     private void GanNoiDungListViewTranDauSapToi() {
-        arrTranDauSapToi = new ArrayList<>();
+        try {
+            arrTranDauSapToi = new ArrayList<>();
 
-        Bitmap anhDaiDien = BitmapFactory.decodeResource(getResources(), R.drawable.icon_app);
-        Bitmap anhBia = BitmapFactory.decodeResource(getResources(), R.drawable.anh_test_doi_bong);
-        Call<List<DangTin>> call = jsonApiSanBong.getCactransapdienra(sharedPreferences.getInt("id", -1));
-        call.enqueue(new Callback<List<DangTin>>() {
-            @Override
-            public void onResponse(Call<List<DangTin>> call, Response<List<DangTin>> response) {
-                List<DangTin> dangTin = response.body();
-                //System.out.println("size: "+dangTin.size());
-                if (response.body() == null) return;
-                for (int i = 0; i < dangTin.size(); i++) {
-
-                    dangTin.get(i).getDoibong1().setImageBia(anhBia);
-                    dangTin.get(i).getDoibong1().setImageDaiDien(anhDaiDien);
-                    dangTin.get(i).getDoibong2().setImageBia(anhBia);
-                    dangTin.get(i).getDoibong2().setImageDaiDien(anhDaiDien);
-                    arrTranDauSapToi.add(new TranDauDuongClass(dangTin.get(i).getId(), dangTin.get(i).getDoibong1(), dangTin.get(i).getDoibong2(), dangTin.get(i).getNgay(), dangTin.get(i).getKhunggio_id(), dangTin.get(i).getSan_id(), 0, 0, dangTin.get(i).getKeo(), 0));
+            Bitmap anhDaiDien = BitmapFactory.decodeResource(getResources(), R.drawable.icon_app);
+            Bitmap anhBia = BitmapFactory.decodeResource(getResources(), R.drawable.anh_test_doi_bong);
+            Call<List<DangTin>> call = jsonApiSanBong.getCactransapdienra(sharedPreferences.getInt("id", -1));
+            call.enqueue(new Callback<List<DangTin>>() {
+                @Override
+                public void onResponse(Call<List<DangTin>> call, Response<List<DangTin>> response) {
+                    try {
+                        List<DangTin> dangTin = response.body();
+                        //System.out.println("size: "+dangTin.size());
+                        if (response.body() == null) return;
+                        for (int i = 0; i < dangTin.size(); i++) {
+                            dangTin.get(i).getDoibong1().setImageBia(anhBia);
+                            dangTin.get(i).getDoibong1().setImageDaiDien(anhDaiDien);
+                            dangTin.get(i).getDoibong2().setImageBia(anhBia);
+                            dangTin.get(i).getDoibong2().setImageDaiDien(anhDaiDien);
+                            arrTranDauSapToi.add(new TranDauDuongClass(dangTin.get(i).getId(), dangTin.get(i).getDoibong1(), dangTin.get(i).getDoibong2(), dangTin.get(i).getNgay(), dangTin.get(i).getKhunggio_id(), dangTin.get(i).getSan_id(), 0, 0, dangTin.get(i).getKeo(), 0));
+                        }
+                        adapterTranDauSapToi = new TranDauSapToiAdapter(getActivity(), R.layout.dong_tran_dau_sap_toi, arrTranDauSapToi);
+                        lvTranDauSapToi.setAdapter(adapterTranDauSapToi);
+                        SetListViewHeightBasedOnChildrenTranDauSapToi(adapterTranDauSapToi, lvTranDauSapToi);
+                    }
+                    catch (Exception ex){
+                        Log.e("BBB", ex.toString());
+                    }
                 }
-                adapterTranDauSapToi = new TranDauSapToiAdapter(getActivity(), R.layout.dong_tran_dau_sap_toi, arrTranDauSapToi);
-                lvTranDauSapToi.setAdapter(adapterTranDauSapToi);
-                SetListViewHeightBasedOnChildrenTranDauSapToi(adapterTranDauSapToi, lvTranDauSapToi);
-            }
 
-            @Override
-            public void onFailure(Call<List<DangTin>> call, Throwable t) {
+                @Override
+                public void onFailure(Call<List<DangTin>> call, Throwable t) {
 
-            }
-        });
+                }
+            });
+        }
+        catch (Exception ex){
+            Log.e("BBB", ex.toString());
+        }
     }
 
     private void SetListViewHeightBasedOnChildrenTranDauSapToi(TranDauSapToiAdapter matchAdapter, ListView listView) {
@@ -211,15 +220,20 @@ public class TaiKhoanDaLoginFragment extends Fragment {
         call.enqueue(new Callback<List<DoiBong_NguoiDung>>() {
             @Override
             public void onResponse(Call<List<DoiBong_NguoiDung>> call, Response<List<DoiBong_NguoiDung>> response) {
-                List<DoiBong_NguoiDung> doiBongDangTGS = response.body();
+                try {
+                    List<DoiBong_NguoiDung> doiBongDangTGS = response.body();
 //                System.out.println("size: " + response.body().size());
-                if (response.body() == null) return;
-                for (DoiBong_NguoiDung doiBongDangTG : doiBongDangTGS) {
-                    arrDoiBongDangThamGia.add(doiBongDangTG);
-                    cacFCDangThamGiaAdapter = new CacFCDangThamGiaAdapter(getActivity(), R.layout.dong_doi_bong_dang_tham_gia, arrDoiBongDangThamGia);
-                    lvCacFCDangThamGia.setAdapter(cacFCDangThamGiaAdapter);
-                    setListViewHeightBasedOnChildren(cacFCDangThamGiaAdapter, lvCacFCDangThamGia);
-                    Log.d("dangthamgia", doiBongDangTG.getTrangthai() + " " + doiBongDangTG.getDoibong().getId());
+                    if (response.body() == null) return;
+                    for (DoiBong_NguoiDung doiBongDangTG : doiBongDangTGS) {
+                        arrDoiBongDangThamGia.add(doiBongDangTG);
+                        cacFCDangThamGiaAdapter = new CacFCDangThamGiaAdapter(getActivity(), R.layout.dong_doi_bong_dang_tham_gia, arrDoiBongDangThamGia);
+                        lvCacFCDangThamGia.setAdapter(cacFCDangThamGiaAdapter);
+                        setListViewHeightBasedOnChildren(cacFCDangThamGiaAdapter, lvCacFCDangThamGia);
+                        Log.d("dangthamgia", doiBongDangTG.getTrangthai() + " " + doiBongDangTG.getDoibong().getId());
+                    }
+                }
+                catch (Exception ex){
+                    Log.e("BBB", ex.toString());
                 }
             }
 

@@ -88,6 +88,10 @@ public class ChinhSuaTaiKhoanDaLoginFragment extends Fragment {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
                 user = response.body();
+                edtTen.setText(user.getTen());
+                edtEmail.setText(user.getEmail());
+                if(!user.getDiachi().equals("------"))
+                    edtDiaChi.setText(user.getDiachi());
             }
             @Override
             public void onFailure(Call<User> call, Throwable t) {
@@ -99,12 +103,6 @@ public class ChinhSuaTaiKhoanDaLoginFragment extends Fragment {
         btnHoanThanhChinhSua.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getActivity(),
-                        edtTen.getText() + "\n" +
-                                edtEmail.getText() + "\n" +
-                                edtDiaChi.getText() + "\n" +
-                                edtGioiThieuBanThan.getText(), Toast.LENGTH_SHORT).show();
-
                 ten = edtTen.getText().toString();
                 email = edtEmail.getText().toString();
 
