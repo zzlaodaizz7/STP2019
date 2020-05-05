@@ -132,15 +132,20 @@ public class TimSanFragment extends Fragment {
         call.enqueue(new Callback<List<SanBong>>() {
             @Override
             public void onResponse(Call<List<SanBong>> call, Response<List<SanBong>> response) {
-                List<SanBong> sanBong = response.body();
-                for (SanBong sanBongs : sanBong){
-                    Random rand = new Random();
-                    Bitmap largeIcon = BitmapFactory.decodeResource(getResources(), images[rand.nextInt(images.length)]);
-                    arrSanBong.add(new SanBongClass(sanBongs.getId(), sanBongs.getTen(), sanBongs.getSonguoi(), sanBongs.getDiachi(), sanBongs.getMota(), sanBongs.getSdt(), largeIcon));
+                try {
+                    List<SanBong> sanBong = response.body();
+                    for (SanBong sanBongs : sanBong) {
+                        Random rand = new Random();
+                        Bitmap largeIcon = BitmapFactory.decodeResource(getResources(), images[rand.nextInt(images.length)]);
+                        arrSanBong.add(new SanBongClass(sanBongs.getId(), sanBongs.getTen(), sanBongs.getSonguoi(), sanBongs.getDiachi(), sanBongs.getMota(), sanBongs.getSdt(), largeIcon));
+                    }
+                    adapter = new TimSanAdapter(getActivity(), R.layout.dong_san_bong, arrSanBong);
+                    lvSanBong.setAdapter(adapter);
+                    SetListViewHeightBasedOnChildren(adapter, lvSanBong);
                 }
-                adapter = new TimSanAdapter(getActivity(), R.layout.dong_san_bong, arrSanBong);
-                lvSanBong.setAdapter(adapter);
-                SetListViewHeightBasedOnChildren(adapter, lvSanBong);
+                catch (Exception ex){
+                    Log.d("BBB", ex.toString());
+                }
             }
 
             @Override

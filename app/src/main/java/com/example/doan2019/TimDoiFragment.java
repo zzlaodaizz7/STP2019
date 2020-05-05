@@ -384,25 +384,29 @@ public class TimDoiFragment extends Fragment{
     }
 
     private void setListViewHeightBasedOnChildren(DangTinAdapter dangTinAdapter, ListView listView) {
+        try {
+            if (dangTinAdapter == null) {
+                return;
+            }
+            int desiredWidth = View.MeasureSpec.makeMeasureSpec(listView.getWidth(), View.MeasureSpec.UNSPECIFIED);
+            int totalHeight = 0;
+            View view = null;
+            for (int i = 0; i < dangTinAdapter.getCount(); i++) {
+                view = dangTinAdapter.getView(i, view, listView);
+                if (i == 0)
+                    view.setLayoutParams(new ViewGroup.LayoutParams(desiredWidth, ViewGroup.LayoutParams.WRAP_CONTENT));
 
-        if (dangTinAdapter == null) {
-            return;
+                view.measure(desiredWidth, View.MeasureSpec.UNSPECIFIED);
+                //Log.d("timsan", totalHeight+"");
+                totalHeight += view.getMeasuredHeight();
+            }
+            ViewGroup.LayoutParams params = listView.getLayoutParams();
+            params.height = totalHeight + (listView.getDividerHeight() * (dangTinAdapter.getCount() - 1));
+            listView.setLayoutParams(params);
         }
-        int desiredWidth = View.MeasureSpec.makeMeasureSpec(listView.getWidth(), View.MeasureSpec.UNSPECIFIED);
-        int totalHeight = 0;
-        View view = null;
-        for (int i = 0; i < dangTinAdapter.getCount(); i++) {
-            view = dangTinAdapter.getView(i, view, listView);
-            if (i == 0)
-                view.setLayoutParams(new ViewGroup.LayoutParams(desiredWidth, ViewGroup.LayoutParams.WRAP_CONTENT));
-
-            view.measure(desiredWidth, View.MeasureSpec.UNSPECIFIED);
-            //Log.d("timsan", totalHeight+"");
-            totalHeight += view.getMeasuredHeight();
+        catch (Exception ex){
+            Log.e("BBB", ex.toString());
         }
-        ViewGroup.LayoutParams params = listView.getLayoutParams();
-        params.height = totalHeight + (listView.getDividerHeight() * (dangTinAdapter.getCount() - 1));
-        listView.setLayoutParams(params);
     }
 
     private void clickChonTrangThai() {

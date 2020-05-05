@@ -43,45 +43,43 @@ public class CacFCDangThamGiaAdapter extends BaseAdapter {
         return 0;
     }
 
-    private class ViewHolder{
+    private class ViewHolder {
         ImageView imgDoiBong;
         TextView txtTenDoiBong, txtTrangThai;
     }
 
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
-        ViewHolder viewHolder;
-        if(view == null){
-            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            view = inflater.inflate(layout, null);
-            viewHolder = new ViewHolder();
+        try {
+            ViewHolder viewHolder = new ViewHolder();
+            if (view == null) {
+                LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                view = inflater.inflate(layout, null);
 
-            viewHolder.imgDoiBong = view.findViewById(R.id.ImageViewDoiBong);
-            viewHolder.txtTenDoiBong = view.findViewById(R.id.TextViewTenDoiBong);
-            viewHolder.txtTrangThai = view.findViewById(R.id.TextViewTrangThai);
+                viewHolder.imgDoiBong = view.findViewById(R.id.ImageViewDoiBong);
+                viewHolder.txtTenDoiBong = view.findViewById(R.id.TextViewTenDoiBong);
+                viewHolder.txtTrangThai = view.findViewById(R.id.TextViewTrangThai);
 
-            view.setTag(viewHolder);
-        }
-        else
-            viewHolder = (ViewHolder) view.getTag();
+                view.setTag(viewHolder);
+            } else
+                viewHolder = (ViewHolder) view.getTag();
 
-        DoiBong_NguoiDung doiBongDangTG = doiBongDangTGList.get(i);
-        if(doiBongDangTG.getDoibong().getAnhbia()!=null){
-            Picasso.get().load(doiBongDangTG.getDoibong().getAnhbia()).into(viewHolder.imgDoiBong);
+            DoiBong_NguoiDung doiBongDangTG = doiBongDangTGList.get(i);
+            if (doiBongDangTG.getDoibong().getAnhbia() != null) {
+                Picasso.get().load(doiBongDangTG.getDoibong().getAnhbia()).into(viewHolder.imgDoiBong);
+            }
+            Log.d("dangthamgia", doiBongDangTG.getDoibong().getTen() + " " + doiBongDangTG.getDoibong().getId());
+            viewHolder.txtTenDoiBong.setText(doiBongDangTG.getDoibong().getTen());
+            if (doiBongDangTG.getTrangthai() == 0) {
+                viewHolder.txtTrangThai.setText("Chờ phê duyệt từ đội bóng");
+            } else if (doiBongDangTG.getPhanquyenId() == 1) {
+                viewHolder.txtTrangThai.setText("Bạn là đội trưởng đội bóng");
+            } else {
+                viewHolder.txtTrangThai.setText("Bạn là thành viên đội bóng");
+            }
+        } catch (Exception ex) {
+            Log.d("BBB", ex.toString());
         }
-        Log.d("dangthamgia", doiBongDangTG.getDoibong().getTen()+ " "+ doiBongDangTG.getDoibong().getId());
-        viewHolder.txtTenDoiBong.setText(doiBongDangTG.getDoibong().getTen());
-        if(doiBongDangTG.getTrangthai() == 0){
-            viewHolder.txtTrangThai.setText("Chờ phê duyệt từ đội bóng");
-        }
-        else if(doiBongDangTG.getPhanquyenId()==1){
-            viewHolder.txtTrangThai.setText("Bạn là đội trưởng đội bóng");
-        }
-        else {
-            viewHolder.txtTrangThai.setText("Bạn là thành viên đội bóng");
-        }
-
-
         return view;
     }
 }

@@ -50,37 +50,38 @@ public class DanhSachThanhVienAdapter extends BaseAdapter {
 
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
-        ViewHolder viewHolder = new ViewHolder();
-        if(view == null){
-            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            view = inflater.inflate(layout, null);
+        try {
+            ViewHolder viewHolder = new ViewHolder();
+            if (view == null) {
+                LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                view = inflater.inflate(layout, null);
 
-            viewHolder.imgDaiDien = view.findViewById(R.id.ImageViewDaiDienThanhVienDoiBong);
-            viewHolder.txtTen = view.findViewById(R.id.TextViewTenThanhVien);
-            viewHolder.txtChucVu = view.findViewById(R.id.TextViewChucVu);
+                viewHolder.imgDaiDien = view.findViewById(R.id.ImageViewDaiDienThanhVienDoiBong);
+                viewHolder.txtTen = view.findViewById(R.id.TextViewTenThanhVien);
+                viewHolder.txtChucVu = view.findViewById(R.id.TextViewChucVu);
 
-            view.setTag(viewHolder);
-        }
-        else{
-            viewHolder = (ViewHolder) view.getTag();
-        }
+                view.setTag(viewHolder);
+            } else {
+                viewHolder = (ViewHolder) view.getTag();
+            }
 
-        DoiBong_NguoiDung thanhVien = arrThanhVien.get(i);
-        Log.d("danhsach", thanhVien+"");
-        Log.d("danhsach", thanhVien.getUser().getId()+" "+thanhVien.getUser().getAnhbia());
-        if(thanhVien.getUser().getAnhbia() != null ){
-            Picasso.get().load(thanhVien.getUser().getAnhbia()).into(viewHolder.imgDaiDien);
-        }
-        viewHolder.txtTen.setText(thanhVien.getUser().getTen());
-        if(thanhVien.getTrangthai()==0){
-            viewHolder.txtChucVu.setText("Đang chờ phê duyệt");
-        }
-        else if(thanhVien.getPhanquyenId()==1){
-            viewHolder.txtChucVu.setText("Đội trưởng đội bóng");
-        }
-        else viewHolder.txtChucVu.setText("Thành viên đội bóng");
+            DoiBong_NguoiDung thanhVien = arrThanhVien.get(i);
+            Log.d("danhsach", thanhVien + "");
+            Log.d("danhsach", thanhVien.getUser().getId() + " " + thanhVien.getUser().getAnhbia());
+            if (thanhVien.getUser().getAnhbia() != null) {
+                Picasso.get().load(thanhVien.getUser().getAnhbia()).into(viewHolder.imgDaiDien);
+            }
+            viewHolder.txtTen.setText(thanhVien.getUser().getTen());
+            if (thanhVien.getTrangthai() == 0) {
+                viewHolder.txtChucVu.setText("Đang chờ phê duyệt");
+            } else if (thanhVien.getPhanquyenId() == 1) {
+                viewHolder.txtChucVu.setText("Đội trưởng đội bóng");
+            } else viewHolder.txtChucVu.setText("Thành viên đội bóng");
 
-
+        }
+        catch (Exception ex){
+            Log.e("BBB", ex.toString());
+        }
         return view;
     }
 }

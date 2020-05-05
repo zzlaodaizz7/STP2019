@@ -5,6 +5,7 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,7 +38,7 @@ public class TranDauSapToiAdapter extends BaseAdapter {
         return null;
     }
 
-    private class ViewHolder{
+    private class ViewHolder {
         TextView txtDoiThuNhat, txtDoiThuHai, txtNgayTranDauDienRa, txtGioTranDauDienRa;
     }
 
@@ -48,51 +49,53 @@ public class TranDauSapToiAdapter extends BaseAdapter {
 
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
-        ViewHolder viewHolder = new ViewHolder();
-        if(view == null){
-            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            view = inflater.inflate(layout, null);
+        try {
+            ViewHolder viewHolder = new ViewHolder();
+            if (view == null) {
+                LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                view = inflater.inflate(layout, null);
 
-            viewHolder.txtDoiThuNhat = view.findViewById(R.id.TextViewDoiThuNhat);
-            viewHolder.txtDoiThuHai = view.findViewById(R.id.TextViewDoiThuHai);
-            viewHolder.txtNgayTranDauDienRa = view.findViewById(R.id.TextViewNgayDienRaTranDauSapToi);
-            viewHolder.txtGioTranDauDienRa = view.findViewById(R.id.TextViewGioDienRaTranDauSapToi);
+                viewHolder.txtDoiThuNhat = view.findViewById(R.id.TextViewDoiThuNhat);
+                viewHolder.txtDoiThuHai = view.findViewById(R.id.TextViewDoiThuHai);
+                viewHolder.txtNgayTranDauDienRa = view.findViewById(R.id.TextViewNgayDienRaTranDauSapToi);
+                viewHolder.txtGioTranDauDienRa = view.findViewById(R.id.TextViewGioDienRaTranDauSapToi);
 
-            view.setTag(viewHolder);
-        }
-        else{
-            viewHolder = (ViewHolder) view.getTag();
-        }
+                view.setTag(viewHolder);
+            } else {
+                viewHolder = (ViewHolder) view.getTag();
+            }
 
-        TranDauDuongClass tranDau = arrTranDau.get(i);
-        DoiBongClass doiThuNhat = tranDau.getDoiMinh();
-        DoiBongClass doiThuHai = tranDau.getDoiBongDoiThu();
-        Bitmap img = doiThuNhat.getImageDaiDien();
-        Drawable d = new BitmapDrawable(img);
-        d.setBounds(0, 0, 180, 180);
+            TranDauDuongClass tranDau = arrTranDau.get(i);
+            DoiBongClass doiThuNhat = tranDau.getDoiMinh();
+            DoiBongClass doiThuHai = tranDau.getDoiBongDoiThu();
+            Bitmap img = doiThuNhat.getImageDaiDien();
+            Drawable d = new BitmapDrawable(img);
+            d.setBounds(0, 0, 180, 180);
 
-        viewHolder.txtDoiThuNhat.setText(doiThuNhat.getTen());
-        viewHolder.txtDoiThuNhat.setCompoundDrawables(null, d, null, null);
+            viewHolder.txtDoiThuNhat.setText(doiThuNhat.getTen());
+            viewHolder.txtDoiThuNhat.setCompoundDrawables(null, d, null, null);
 
-        img = doiThuHai.getImageDaiDien();
-        d = new BitmapDrawable(img);
-        d.setBounds(0, 0, 180, 180);
+            img = doiThuHai.getImageDaiDien();
+            d = new BitmapDrawable(img);
+            d.setBounds(0, 0, 180, 180);
 
-        viewHolder.txtDoiThuHai.setText(doiThuHai.getTen());
-        viewHolder.txtDoiThuHai.setCompoundDrawables(null, d, null, null);
+            viewHolder.txtDoiThuHai.setText(doiThuHai.getTen());
+            viewHolder.txtDoiThuHai.setCompoundDrawables(null, d, null, null);
 
 //        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 //        String time = dateFormat.format();
 
-        viewHolder.txtNgayTranDauDienRa.setText(tranDau.getNgay());
-        if(tranDau.getKhungGio() == 1){
-            viewHolder.txtGioTranDauDienRa.setText("17:30 - 19:00");
+            viewHolder.txtNgayTranDauDienRa.setText(tranDau.getNgay());
+            if (tranDau.getKhungGio() == 1) {
+                viewHolder.txtGioTranDauDienRa.setText("17:30 - 19:00");
+            } else if (tranDau.getKhungGio() == 2) {
+                viewHolder.txtGioTranDauDienRa.setText("19:00 - 20:30");
+            } else if (tranDau.getKhungGio() == 3) {
+                viewHolder.txtGioTranDauDienRa.setText("20:30 - 22:00");
+            }
         }
-        else if(tranDau.getKhungGio() == 2){
-            viewHolder.txtGioTranDauDienRa.setText("19:00 - 20:30");
-        }
-        else if(tranDau.getKhungGio() == 3){
-            viewHolder.txtGioTranDauDienRa.setText("20:30 - 22:00");
+        catch (Exception ex){
+            Log.d("BBB", ex.toString());
         }
 
         return view;

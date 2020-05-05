@@ -1,6 +1,7 @@
 package com.example.doan2019;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,25 +49,29 @@ public class XepHangAdapter extends BaseAdapter {
 
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
-        ViewHolder viewHolder;
-        if (view == null) {
-            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            view = inflater.inflate(layout, null);
-            viewHolder = new ViewHolder();
+        try {
+            ViewHolder viewHolder;
+            if (view == null) {
+                LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                view = inflater.inflate(layout, null);
+                viewHolder = new ViewHolder();
 
-            viewHolder.txtSoThuTu = view.findViewById(R.id.TextViewThuTuDongXepHang);
-            viewHolder.txtTen = view.findViewById(R.id.TextViewTenDoiBongDongXepHang);
-            viewHolder.txtDiem = view.findViewById(R.id.TextViewDiemDoiBong);
+                viewHolder.txtSoThuTu = view.findViewById(R.id.TextViewThuTuDongXepHang);
+                viewHolder.txtTen = view.findViewById(R.id.TextViewTenDoiBongDongXepHang);
+                viewHolder.txtDiem = view.findViewById(R.id.TextViewDiemDoiBong);
 
-            view.setTag(viewHolder);
-        } else
-            viewHolder = (ViewHolder) view.getTag();
+                view.setTag(viewHolder);
+            } else
+                viewHolder = (ViewHolder) view.getTag();
 
-        //Gan gia tri
-        DoiBong doiBong = doiBongList.get(i);
-        viewHolder.txtSoThuTu.setText(i + 1 + "");
-        viewHolder.txtTen.setText(doiBong.getTen());
-        viewHolder.txtDiem.setText(doiBong.getSodiem() + " Điểm");
+            //Gan gia tri
+            DoiBong doiBong = doiBongList.get(i);
+            viewHolder.txtSoThuTu.setText(i + 1 + "");
+            viewHolder.txtTen.setText(doiBong.getTen());
+            viewHolder.txtDiem.setText(doiBong.getSodiem() + " Điểm");
+        } catch (Exception ex) {
+            Log.d("BBB", ex.toString());
+        }
 
         return view;
     }

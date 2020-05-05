@@ -1,6 +1,7 @@
 package com.example.doan2019;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -72,29 +73,33 @@ public class DangTinAdapter extends BaseAdapter {
     }
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        DangTinAdapter.ViewHolder viewHolder;
-        if(convertView == null){
-            LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = layoutInflater.inflate(layout, null);
-            viewHolder = new DangTinAdapter.ViewHolder();
-            viewHolder.txtTeamHost = (TextView) convertView.findViewById(R.id.txtTeamHost);
-            viewHolder.txtState = (TextView) convertView.findViewById(R.id.txtState);
-            viewHolder.txtTime = (TextView) convertView.findViewById(R.id.txtTime);
-            viewHolder.txtPitch = (TextView) convertView.findViewById(R.id.txtPitch);
-            viewHolder.txtLevel = (TextView) convertView.findViewById(R.id.txtLevel);
-            convertView.setTag(viewHolder);
-        }
-        else{
-            viewHolder = (DangTinAdapter.ViewHolder) convertView.getTag();
-        }
+        try {
+            DangTinAdapter.ViewHolder viewHolder;
+            if (convertView == null) {
+                LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                convertView = layoutInflater.inflate(layout, null);
+                viewHolder = new DangTinAdapter.ViewHolder();
+                viewHolder.txtTeamHost = (TextView) convertView.findViewById(R.id.txtTeamHost);
+                viewHolder.txtState = (TextView) convertView.findViewById(R.id.txtState);
+                viewHolder.txtTime = (TextView) convertView.findViewById(R.id.txtTime);
+                viewHolder.txtPitch = (TextView) convertView.findViewById(R.id.txtPitch);
+                viewHolder.txtLevel = (TextView) convertView.findViewById(R.id.txtLevel);
+                convertView.setTag(viewHolder);
+            } else {
+                viewHolder = (DangTinAdapter.ViewHolder) convertView.getTag();
+            }
 
-        DangTinDTO dangtin = dangTinDTOS.get(position);
-        viewHolder.txtTeamHost.setText(dangtin.getDoidangtin_ten());
-        viewHolder.txtState.setText(dangtin.getTrangthai());
+            DangTinDTO dangtin = dangTinDTOS.get(position);
+            viewHolder.txtTeamHost.setText(dangtin.getDoidangtin_ten());
+            viewHolder.txtState.setText(dangtin.getTrangthai());
 
-        viewHolder.txtTime.setText(dangtin.getNgay());
-        viewHolder.txtPitch.setText(""+dangtin.getSan_ten());
-        viewHolder.txtLevel.setText(""+dangtin.getTrinhdo());
+            viewHolder.txtTime.setText(dangtin.getNgay());
+            viewHolder.txtPitch.setText("" + dangtin.getSan_ten());
+            viewHolder.txtLevel.setText("" + dangtin.getTrinhdo());
+        }
+        catch (Exception ex){
+            Log.e("BBB", ex.toString());
+        }
         return convertView;
     }
 }

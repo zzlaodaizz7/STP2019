@@ -47,10 +47,10 @@ public class ChiTietDoiBongDaThamGiaFragment extends Fragment {
     TextView txtTenDoiBong, txtDiem, txtDiaChi, txtTrinhDo, txtNgayThanhlap, txtPhone, txtDanhSachCacTinDaDang, txtQuayLai;
     ImageView imgAnhBia, imgAnhDaiDien;
     Bundle bundle;
-    ListView lvDanhSachThanhVien,lvTranDauSapToi, lvLichSuTranDau;
+    ListView lvDanhSachThanhVien, lvTranDauSapToi, lvLichSuTranDau;
     DoiBong doiBong;
     Dialog dialogTinNhan;
-    int dbnd_id,mode;
+    int dbnd_id, mode;
     DanhSachThanhVienAdapter adapter;
     TranDauSapToiAdapter adapterTranDauSapToi;
     LichSuTranDauAdapter adapterLichSuTranDau;
@@ -61,7 +61,9 @@ public class ChiTietDoiBongDaThamGiaFragment extends Fragment {
     Button btnDonXinGiaNhap, btnRoiKhoiDoiBong;
     LinearLayout LLButtonDuyetDonXin, LLButtonRoiKhoiDoi;
     SharedPreferences sharedPreferences;
-    JsonApiSanBong jsonApiSanBong; JsonApiDoiBongNGuoiDung jsonApiDoiBongNGuoiDung;
+    JsonApiSanBong jsonApiSanBong;
+    JsonApiDoiBongNGuoiDung jsonApiDoiBongNGuoiDung;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -97,12 +99,12 @@ public class ChiTietDoiBongDaThamGiaFragment extends Fragment {
         return view;
     }
 
-    private void clickRoiKhoiDoiBong(){
+    private void clickRoiKhoiDoiBong() {
         btnRoiKhoiDoiBong.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(mode==3){
-                    DoiBong_NguoiDung doiBong_nguoiDung = new DoiBong_NguoiDung(doiBong.getId(), sharedPreferences.getInt("id",-1));
+                if (mode == 3) {
+                    DoiBong_NguoiDung doiBong_nguoiDung = new DoiBong_NguoiDung(doiBong.getId(), sharedPreferences.getInt("id", -1));
                     Call<DoiBong_NguoiDung> call = jsonApiDoiBongNGuoiDung.postThanhVien(doiBong_nguoiDung);
                     call.enqueue(new Callback<DoiBong_NguoiDung>() {
                         @Override
@@ -113,20 +115,20 @@ public class ChiTietDoiBongDaThamGiaFragment extends Fragment {
                             hideDialogTinNhan();
                             btnRoiKhoiDoiBong.setText("Hủy tham gia");
                         }
+
                         @Override
                         public void onFailure(Call<DoiBong_NguoiDung> call, Throwable t) {
                         }
                     });
-                }
-                else {
+                } else {
                     Call<DoiBong_NguoiDung> call = jsonApiDoiBongNGuoiDung.deleteThanhVien(dbnd_id);
                     call.enqueue(new Callback<DoiBong_NguoiDung>() {
                         @Override
                         public void onResponse(Call<DoiBong_NguoiDung> call, Response<DoiBong_NguoiDung> response) {
-                            if(mode == 2){
+                            if (mode == 2) {
                                 showDialogTinNhan("Bạn đã hủy xin tham gia vào đội bóng.");
                             }
-                            if(mode == 1){
+                            if (mode == 1) {
                                 showDialogTinNhan("Bạn đã rời khỏi đội bóng.");
                             }
                             mode = 3;
@@ -134,6 +136,7 @@ public class ChiTietDoiBongDaThamGiaFragment extends Fragment {
                             btnRoiKhoiDoiBong.setText("Tham gia vào FC");
                             hideDialogTinNhan();
                         }
+
                         @Override
                         public void onFailure(Call<DoiBong_NguoiDung> call, Throwable t) {
 
@@ -200,10 +203,10 @@ public class ChiTietDoiBongDaThamGiaFragment extends Fragment {
             @Override
             public void onResponse(Call<List<DangTin>> call, Response<List<DangTin>> response) {
                 List<DangTin> dangTin = response.body();
-                if(response.body()==null){
+                if (response.body() == null) {
                     return;
                 }
-                if(dangTin.size() == 0){
+                if (dangTin.size() == 0) {
                     return;
                 }
                 for (int i = 0; i < dangTin.size(); i++) {
@@ -211,8 +214,8 @@ public class ChiTietDoiBongDaThamGiaFragment extends Fragment {
                     dangTin.get(i).getDoibong1().setImageDaiDien(anhDaiDien);
                     dangTin.get(i).getDoibong2().setImageBia(anhBia);
                     dangTin.get(i).getDoibong2().setImageDaiDien(anhDaiDien);
-                    int a=0,b=0;
-                    if (dangTin.get(i).getVoted()==1){
+                    int a = 0, b = 0;
+                    if (dangTin.get(i).getVoted() == 1) {
                         a = dangTin.get(i).getBanthangdoidangtin();
                         b = dangTin.get(i).getBanthangdoibatdoi();
                     }
@@ -231,23 +234,28 @@ public class ChiTietDoiBongDaThamGiaFragment extends Fragment {
     }
 
     private void SetListViewHeightBasedOnChildrenLichSuTranDau(LichSuTranDauAdapter matchAdapter, ListView listView) {
-        if (matchAdapter == null) {
-            return;
-        }
-        int desiredWidth = View.MeasureSpec.makeMeasureSpec(listView.getWidth(), View.MeasureSpec.UNSPECIFIED);
-        int totalHeight = 0;
-        View view = null;
-        for (int i = 0; i < matchAdapter.getCount(); i++) {
-            view = matchAdapter.getView(i, view, listView);
-            if (i == 0)
-                view.setLayoutParams(new ViewGroup.LayoutParams(desiredWidth, ViewGroup.LayoutParams.WRAP_CONTENT));
+        try {
+            if (matchAdapter == null) {
+                return;
+            }
+            int desiredWidth = View.MeasureSpec.makeMeasureSpec(listView.getWidth(), View.MeasureSpec.UNSPECIFIED);
+            int totalHeight = 0;
+            View view = null;
+            for (int i = 0; i < matchAdapter.getCount(); i++) {
+                view = matchAdapter.getView(i, view, listView);
+                if (i == 0)
+                    view.setLayoutParams(new ViewGroup.LayoutParams(desiredWidth, ViewGroup.LayoutParams.WRAP_CONTENT));
 
-            view.measure(desiredWidth, View.MeasureSpec.UNSPECIFIED);
-            totalHeight += view.getMeasuredHeight();
+                view.measure(desiredWidth, View.MeasureSpec.UNSPECIFIED);
+                totalHeight += view.getMeasuredHeight();
+            }
+            ViewGroup.LayoutParams params = listView.getLayoutParams();
+            params.height = totalHeight + (listView.getDividerHeight() * (matchAdapter.getCount() - 1));
+            listView.setLayoutParams(params);
         }
-        ViewGroup.LayoutParams params = listView.getLayoutParams();
-        params.height = totalHeight + (listView.getDividerHeight() * (matchAdapter.getCount() - 1));
-        listView.setLayoutParams(params);
+        catch (Exception ex){
+            Log.e("BBB", ex.toString());
+        }
     }
 
     private void GanNoiDungListViewTranDauSapToi() {
@@ -260,26 +268,30 @@ public class ChiTietDoiBongDaThamGiaFragment extends Fragment {
             @Override
             public void onResponse(Call<List<DangTin>> call, Response<List<DangTin>> response) {
                 List<DangTin> dangTin = response.body();
-                if (dangTin.size() != 0){
-                    for (int i = 0; i < dangTin.size(); i++) {
-                        dangTin.get(i).getDoibong1().setImageBia(anhBia);
-                        dangTin.get(i).getDoibong1().setImageDaiDien(anhDaiDien);
-                        dangTin.get(i).getDoibong2().setImageBia(anhBia);
-                        dangTin.get(i).getDoibong2().setImageDaiDien(anhDaiDien);
+                try {
+                    if (dangTin.size() != 0) {
+                        for (int i = 0; i < dangTin.size(); i++) {
+                            dangTin.get(i).getDoibong1().setImageBia(anhBia);
+                            dangTin.get(i).getDoibong1().setImageDaiDien(anhDaiDien);
+                            dangTin.get(i).getDoibong2().setImageBia(anhBia);
+                            dangTin.get(i).getDoibong2().setImageDaiDien(anhDaiDien);
 
-                        arrTranDauSapToi.add(new TranDauDuongClass(dangTin.get(i).getId(), dangTin.get(i).getDoibong1(), dangTin.get(i).getDoibong2(), dangTin.get(i).getNgay(), dangTin.get(i).getKhunggio_id(), dangTin.get(i).getSan_id(), 0, 0, dangTin.get(i).getKeo(), 0));
+                            arrTranDauSapToi.add(new TranDauDuongClass(dangTin.get(i).getId(), dangTin.get(i).getDoibong1(), dangTin.get(i).getDoibong2(), dangTin.get(i).getNgay(), dangTin.get(i).getKhunggio_id(), dangTin.get(i).getSan_id(), 0, 0, dangTin.get(i).getKeo(), 0));
+                        }
+
+                        adapterTranDauSapToi = new TranDauSapToiAdapter(getActivity(), R.layout.dong_tran_dau_sap_toi, arrTranDauSapToi);
+                        lvTranDauSapToi.setAdapter(adapterTranDauSapToi);
+                        SetListViewHeightBasedOnChildrenTranDauSapToi(adapterTranDauSapToi, lvTranDauSapToi);
                     }
-
-                    adapterTranDauSapToi = new TranDauSapToiAdapter(getActivity(), R.layout.dong_tran_dau_sap_toi, arrTranDauSapToi);
-                    lvTranDauSapToi.setAdapter(adapterTranDauSapToi);
-                    SetListViewHeightBasedOnChildrenTranDauSapToi(adapterTranDauSapToi, lvTranDauSapToi);
+                } catch (Exception ex) {
+                    Log.d("BBB", ex.toString());
                 }
 
             }
 
             @Override
             public void onFailure(Call<List<DangTin>> call, Throwable t) {
-                System.out.println("Loi~: "+t.getMessage());
+                System.out.println("Loi~: " + t.getMessage());
             }
         });
     }
@@ -336,12 +348,12 @@ public class ChiTietDoiBongDaThamGiaFragment extends Fragment {
             @Override
             public void onResponse(Call<List<DoiBong_NguoiDung>> call, Response<List<DoiBong_NguoiDung>> response) {
                 List<DoiBong_NguoiDung> doiBong_nguoiDungs = response.body();
-                if(doiBong_nguoiDungs.size() == 0){
+                if (doiBong_nguoiDungs.size() == 0) {
                     return;
                 }
-                for(DoiBong_NguoiDung doiBong_nguoiDung : doiBong_nguoiDungs){
-                    if(mode == 1 && doiBong_nguoiDung.getTrangthai() == 0 &&
-                            doiBong_nguoiDung.getUserId() == sharedPreferences.getInt("id",-1) ){
+                for (DoiBong_NguoiDung doiBong_nguoiDung : doiBong_nguoiDungs) {
+                    if (mode == 1 && doiBong_nguoiDung.getTrangthai() == 0 &&
+                            doiBong_nguoiDung.getUserId() == sharedPreferences.getInt("id", -1)) {
                         mode = 2;
                         btnRoiKhoiDoiBong.setText("Hủy tham gia");
                     }
@@ -372,23 +384,28 @@ public class ChiTietDoiBongDaThamGiaFragment extends Fragment {
     }
 
     private void SetListViewHeightBasedOnChildren(DanhSachThanhVienAdapter matchAdapter, ListView listView) {
-        if (matchAdapter == null) {
-            return;
-        }
-        int desiredWidth = View.MeasureSpec.makeMeasureSpec(listView.getWidth(), View.MeasureSpec.UNSPECIFIED);
-        int totalHeight = 0;
-        View view = null;
-        for (int i = 0; i < matchAdapter.getCount(); i++) {
-            view = matchAdapter.getView(i, view, listView);
-            if (i == 0)
-                view.setLayoutParams(new ViewGroup.LayoutParams(desiredWidth, ViewGroup.LayoutParams.WRAP_CONTENT));
+        try {
+            if (matchAdapter == null) {
+                return;
+            }
+            int desiredWidth = View.MeasureSpec.makeMeasureSpec(listView.getWidth(), View.MeasureSpec.UNSPECIFIED);
+            int totalHeight = 0;
+            View view = null;
+            for (int i = 0; i < matchAdapter.getCount(); i++) {
+                view = matchAdapter.getView(i, view, listView);
+                if (i == 0)
+                    view.setLayoutParams(new ViewGroup.LayoutParams(desiredWidth, ViewGroup.LayoutParams.WRAP_CONTENT));
 
-            view.measure(desiredWidth, View.MeasureSpec.UNSPECIFIED);
-            totalHeight += view.getMeasuredHeight();
+                view.measure(desiredWidth, View.MeasureSpec.UNSPECIFIED);
+                totalHeight += view.getMeasuredHeight();
+            }
+            ViewGroup.LayoutParams params = listView.getLayoutParams();
+            params.height = totalHeight + (listView.getDividerHeight() * (matchAdapter.getCount() - 1));
+            listView.setLayoutParams(params);
         }
-        ViewGroup.LayoutParams params = listView.getLayoutParams();
-        params.height = totalHeight + (listView.getDividerHeight() * (matchAdapter.getCount() - 1));
-        listView.setLayoutParams(params);
+        catch (Exception ex){
+            Log.d("BBB", ex.toString());
+        }
     }
 
     private void ClickDanhSachCacTinDaDang() {
@@ -408,10 +425,10 @@ public class ChiTietDoiBongDaThamGiaFragment extends Fragment {
     private void GanNoiDungThongTinDoiBong() {
         bundle = getArguments();
 
-        if(doiBong.getAnhdaidien() != null){
+        if (doiBong.getAnhdaidien() != null) {
             Picasso.get().load(doiBong.getAnhdaidien()).into(imgAnhDaiDien);
         }
-        if(doiBong.getAnhbia()!=null){
+        if (doiBong.getAnhbia() != null) {
             Picasso.get().load(doiBong.getAnhbia()).into(imgAnhBia);
         }
         txtTenDoiBong.setText(doiBong.getTen());
@@ -419,7 +436,7 @@ public class ChiTietDoiBongDaThamGiaFragment extends Fragment {
         txtDiaChi.setText(doiBong.getDiachi());
         txtTrinhDo.setText(doiBong.getTrinhdo());
         txtNgayThanhlap.setText(doiBong.getCreated_at().toString());
-        System.out.println("ngaytao "+doiBong.getCreated_at());
+        System.out.println("ngaytao " + doiBong.getCreated_at());
         txtPhone.setText(doiBong.getSdt());
 //        arrThanhVien = doiBong.getListThanhVien();
 //        adapter = new DanhSachThanhVienAdapter(getActivity(), R.layout.dong_thanh_vien, arrThanhVien);
@@ -462,18 +479,20 @@ public class ChiTietDoiBongDaThamGiaFragment extends Fragment {
         mode = 1;
         // 1 la roi khoi doi bong, 2 la huy tham gia doi bong, 3 là tham gia FC
 
-        if(doiBong_nguoiDung.getPhanquyenId() != 1){
+        if (doiBong_nguoiDung.getPhanquyenId() != 1) {
             LLButtonDuyetDonXin.setVisibility(View.GONE);
         }
     }
-    private void showDialogTinNhan(String text){
+
+    private void showDialogTinNhan(String text) {
         dialogTinNhan = new Dialog(getActivity());
         dialogTinNhan.setContentView(R.layout.dialog_message);
         dialogTinNhan.show();
         TextView tvTinNhan = (TextView) dialogTinNhan.findViewById(R.id.tvTinNhan);
         tvTinNhan.setText(text);
     }
-    private void hideDialogTinNhan(){
+
+    private void hideDialogTinNhan() {
         TextView tvHuy = dialogTinNhan.findViewById(R.id.tvHuy);
         tvHuy.setOnClickListener(new View.OnClickListener() {
             @Override

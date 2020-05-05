@@ -64,12 +64,14 @@ public class TaiKhoanDaLoginFragment extends Fragment {
     ArrayList<ThanhVienDoiBongClass> listThanhVienDoiBong;
     ArrayList<TranDauDuongClass> arrTranDauSapToi;
     SharedPreferences sharedPreferences, sharedPreferencesOneSignal;
-    DoiBongClass d1,d2;
-    JsonApiSanBong jsonApiSanBong; JsonApiDoiBongNGuoiDung jsonApiDoiBongNGuoiDung;
+    DoiBongClass d1, d2;
+    JsonApiSanBong jsonApiSanBong;
+    JsonApiDoiBongNGuoiDung jsonApiDoiBongNGuoiDung;
     ArrayAdapter arrayAdapter;
     ArrayList<DoiBong_NguoiDung> arrDoiBongDangThamGia;
     ImageView imageProfilePicture2;
     CacFCDangThamGiaAdapter cacFCDangThamGiaAdapter;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -120,13 +122,13 @@ public class TaiKhoanDaLoginFragment extends Fragment {
 
         Bitmap anhDaiDien = BitmapFactory.decodeResource(getResources(), R.drawable.icon_app);
         Bitmap anhBia = BitmapFactory.decodeResource(getResources(), R.drawable.anh_test_doi_bong);
-        Call<List<DangTin>> call = jsonApiSanBong.getCactransapdienra(sharedPreferences.getInt("id",-1));
+        Call<List<DangTin>> call = jsonApiSanBong.getCactransapdienra(sharedPreferences.getInt("id", -1));
         call.enqueue(new Callback<List<DangTin>>() {
             @Override
             public void onResponse(Call<List<DangTin>> call, Response<List<DangTin>> response) {
                 List<DangTin> dangTin = response.body();
                 //System.out.println("size: "+dangTin.size());
-                if(response.body() == null) return;
+                if (response.body() == null) return;
                 for (int i = 0; i < dangTin.size(); i++) {
 
                     dangTin.get(i).getDoibong1().setImageBia(anhBia);
@@ -148,23 +150,27 @@ public class TaiKhoanDaLoginFragment extends Fragment {
     }
 
     private void SetListViewHeightBasedOnChildrenTranDauSapToi(TranDauSapToiAdapter matchAdapter, ListView listView) {
-        if (matchAdapter == null) {
-            return;
-        }
-        int desiredWidth = View.MeasureSpec.makeMeasureSpec(listView.getWidth(), View.MeasureSpec.UNSPECIFIED);
-        int totalHeight = 0;
-        View view = null;
-        for (int i = 0; i < matchAdapter.getCount(); i++) {
-            view = matchAdapter.getView(i, view, listView);
-            if (i == 0)
-                view.setLayoutParams(new ViewGroup.LayoutParams(desiredWidth, ViewGroup.LayoutParams.WRAP_CONTENT));
+        try {
+            if (matchAdapter == null) {
+                return;
+            }
+            int desiredWidth = View.MeasureSpec.makeMeasureSpec(listView.getWidth(), View.MeasureSpec.UNSPECIFIED);
+            int totalHeight = 0;
+            View view = null;
+            for (int i = 0; i < matchAdapter.getCount(); i++) {
+                view = matchAdapter.getView(i, view, listView);
+                if (i == 0)
+                    view.setLayoutParams(new ViewGroup.LayoutParams(desiredWidth, ViewGroup.LayoutParams.WRAP_CONTENT));
 
-            view.measure(desiredWidth, View.MeasureSpec.UNSPECIFIED);
-            totalHeight += view.getMeasuredHeight();
+                view.measure(desiredWidth, View.MeasureSpec.UNSPECIFIED);
+                totalHeight += view.getMeasuredHeight();
+            }
+            ViewGroup.LayoutParams params = listView.getLayoutParams();
+            params.height = totalHeight + (listView.getDividerHeight() * (matchAdapter.getCount() - 1));
+            listView.setLayoutParams(params);
+        } catch (Exception ex) {
+            ex.toString();
         }
-        ViewGroup.LayoutParams params = listView.getLayoutParams();
-        params.height = totalHeight + (listView.getDividerHeight() * (matchAdapter.getCount() - 1));
-        listView.setLayoutParams(params);
     }
 
     private void ClickListViewCacFCDangThamGia() {
@@ -198,58 +204,61 @@ public class TaiKhoanDaLoginFragment extends Fragment {
         Bitmap anhDaiDien = BitmapFactory.decodeResource(getResources(), R.drawable.icon_app);
         Bitmap anhBia = BitmapFactory.decodeResource(getResources(), R.drawable.anh_test_doi_bong);
         //gan ten email
-        txtName.setText(sharedPreferences.getString("ten",""));
-        txtEmail.setText(sharedPreferences.getString("email",""));
-        Log.d("anhbia", "anh bia" + sharedPreferences.getString("anhbia",""));
-        if(!sharedPreferences.getString("anhbia","").equals("")){
-            Picasso.get().load(sharedPreferences.getString("anhbia","")).into(imageProfilePicture2);
+        txtName.setText(sharedPreferences.getString("ten", ""));
+        txtEmail.setText(sharedPreferences.getString("email", ""));
+        Log.d("anhbia", "anh bia" + sharedPreferences.getString("anhbia", ""));
+        if (!sharedPreferences.getString("anhbia", "").equals("")) {
+            Picasso.get().load(sharedPreferences.getString("anhbia", "")).into(imageProfilePicture2);
         }
-        Call<List<DoiBong_NguoiDung>> call = jsonApiDoiBongNGuoiDung.getCacDoiDangThamGia(sharedPreferences.getInt("id",-1));
+        Call<List<DoiBong_NguoiDung>> call = jsonApiDoiBongNGuoiDung.getCacDoiDangThamGia(sharedPreferences.getInt("id", -1));
         call.enqueue(new Callback<List<DoiBong_NguoiDung>>() {
             @Override
             public void onResponse(Call<List<DoiBong_NguoiDung>> call, Response<List<DoiBong_NguoiDung>> response) {
                 List<DoiBong_NguoiDung> doiBongDangTGS = response.body();
-                System.out.println("size: "+response.body().size());
-                if(response.body() == null) return;
-                for(DoiBong_NguoiDung doiBongDangTG : doiBongDangTGS){
+                System.out.println("size: " + response.body().size());
+                if (response.body() == null) return;
+                for (DoiBong_NguoiDung doiBongDangTG : doiBongDangTGS) {
                     arrDoiBongDangThamGia.add(doiBongDangTG);
                     cacFCDangThamGiaAdapter = new CacFCDangThamGiaAdapter(getActivity(), R.layout.dong_doi_bong_dang_tham_gia, arrDoiBongDangThamGia);
                     lvCacFCDangThamGia.setAdapter(cacFCDangThamGiaAdapter);
                     setListViewHeightBasedOnChildren(cacFCDangThamGiaAdapter, lvCacFCDangThamGia);
-                    Log.d("dangthamgia", doiBongDangTG.getTrangthai()+" "+doiBongDangTG.getDoibong().getId());
+                    Log.d("dangthamgia", doiBongDangTG.getTrangthai() + " " + doiBongDangTG.getDoibong().getId());
                 }
             }
+
             @Override
             public void onFailure(Call<List<DoiBong_NguoiDung>> call, Throwable t) {
-                System.out.println("error: "+t.getMessage());
+                System.out.println("error: " + t.getMessage());
             }
         });
-
-
 
 
 //        System.out.println(arrFCThamGia.get(1).getTen())
     }
 
     private void setListViewHeightBasedOnChildren(CacFCDangThamGiaAdapter matchAdapter, ListView listView) {
+        try {
+            if (matchAdapter == null) {
+                return;
+            }
+            int desiredWidth = View.MeasureSpec.makeMeasureSpec(listView.getWidth(), View.MeasureSpec.UNSPECIFIED);
+            int totalHeight = 0;
+            View view = null;
+            for (int i = 0; i < matchAdapter.getCount(); i++) {
+                view = matchAdapter.getView(i, view, listView);
+                if (i == 0)
+                    view.setLayoutParams(new ViewGroup.LayoutParams(desiredWidth, ViewGroup.LayoutParams.WRAP_CONTENT));
 
-        if (matchAdapter == null) {
-            return;
+                view.measure(desiredWidth, View.MeasureSpec.UNSPECIFIED);
+                totalHeight += view.getMeasuredHeight();
+            }
+            ViewGroup.LayoutParams params = listView.getLayoutParams();
+            params.height = totalHeight + (listView.getDividerHeight() * (matchAdapter.getCount() - 1));
+            listView.setLayoutParams(params);
         }
-        int desiredWidth = View.MeasureSpec.makeMeasureSpec(listView.getWidth(), View.MeasureSpec.UNSPECIFIED);
-        int totalHeight = 0;
-        View view = null;
-        for (int i = 0; i < matchAdapter.getCount(); i++) {
-            view = matchAdapter.getView(i, view, listView);
-            if (i == 0)
-                view.setLayoutParams(new ViewGroup.LayoutParams(desiredWidth, ViewGroup.LayoutParams.WRAP_CONTENT));
-
-            view.measure(desiredWidth, View.MeasureSpec.UNSPECIFIED);
-            totalHeight += view.getMeasuredHeight();
+        catch (Exception ex){
+            Log.d("BBB", ex.toString());
         }
-        ViewGroup.LayoutParams params = listView.getLayoutParams();
-        params.height = totalHeight + (listView.getDividerHeight() * (matchAdapter.getCount() - 1));
-        listView.setLayoutParams(params);
     }
 
     private void ClickTaoDoiBong() {
@@ -307,7 +316,7 @@ public class TaiKhoanDaLoginFragment extends Fragment {
                 editor = sharedPreferencesOneSignal.edit();
                 editor.putString("changed", "true");
                 editor.commit();
-                Log.d("dangnhap", "changed: "+sharedPreferencesOneSignal.getString("changed", ""));
+                Log.d("dangnhap", "changed: " + sharedPreferencesOneSignal.getString("changed", ""));
                 LoginManager.getInstance().logOut();
                 langNgheSuKienChuyenFragment.ChuyenHuongFragment(new TaiKhoanFragment());
             }
