@@ -65,6 +65,7 @@
             android:layout_marginTop="5dp"
             android:background="@drawable/custom_edittext"
             android:hint="Nhập tài khoản"
+            android:singleLine="true"
             android:textSize="12sp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@id/TextViewTaiKhoan" />
@@ -89,6 +90,7 @@
             android:background="@drawable/custom_edittext"
             android:hint="Nhập mật khẩu"
             android:inputType="textPassword"
+            android:singleLine="true"
             android:textSize="12sp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@id/TextViewMatKhau" />

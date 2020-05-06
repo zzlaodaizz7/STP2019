@@ -103,19 +103,20 @@
                             android:background="@color/mauChuNhat"
                             android:layout_marginBottom="2dp"
                             android:layout_marginTop="2dp"/>
+
                         <EditText
                             android:id="@+id/editTextTimTheoTenDoiHoacTenSan"
                             android:layout_width="0dp"
-                            android:layout_weight="8"
-                            android:layout_marginLeft="5dp"
                             android:layout_height="45dp"
+                            android:layout_marginLeft="5dp"
+                            android:layout_weight="8"
+                            android:background="@android:color/transparent"
                             android:hint="Nhập tên hoặc địa chỉ"
-                            android:textSize="12sp"
-                            android:textColor="@color/mauChuNhat"
                             android:inputType="textVisiblePassword"
                             android:paddingLeft="10dp"
-                            android:background="@android:color/transparent"
-                            />
+                            android:singleLine="true"
+                            android:textColor="@color/mauChuNhat"
+                            android:textSize="12sp" />
 
                     </LinearLayout>
 

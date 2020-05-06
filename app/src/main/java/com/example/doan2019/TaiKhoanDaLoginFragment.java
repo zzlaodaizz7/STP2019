@@ -194,6 +194,7 @@ public class TaiKhoanDaLoginFragment extends Fragment {
         });
     }
 
+
     private void ClickTimKiemDoi() {
         btnTimDoi.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -202,7 +203,6 @@ public class TaiKhoanDaLoginFragment extends Fragment {
             }
         });
     }
-
     private void GanNoiDungListCacFCDangThamGia() {
         arrFCThamGia = new ArrayList<>();
         listThanhVienDoiBong = new ArrayList<>();
@@ -212,7 +212,11 @@ public class TaiKhoanDaLoginFragment extends Fragment {
         //gan ten email
         txtName.setText(sharedPreferences.getString("ten", ""));
         txtEmail.setText(sharedPreferences.getString("email", ""));
-        Log.d("anhbia", "anh bia" + sharedPreferences.getString("anhbia", ""));
+        if(sharedPreferences.getString("anhbia", "") != ""){
+            profilePictureView.setVisibility(View.INVISIBLE);
+            imageProfilePicture2.setVisibility(View.VISIBLE);
+            Picasso.get().load(sharedPreferences.getString("anhbia", "")).into(imageProfilePicture2);
+        }
         if (!sharedPreferences.getString("anhbia", "").equals("")) {
             Picasso.get().load(sharedPreferences.getString("anhbia", "")).into(imageProfilePicture2);
         }
@@ -288,6 +292,7 @@ public class TaiKhoanDaLoginFragment extends Fragment {
             public void onCompleted(JSONObject object, GraphResponse response) {
                 if (object != null) {
                     try {
+                        Log.e("AnhBia", object.getString("anhbia"));
                         txtName.setText(object.getString("name"));
                         txtEmail.setText(object.getString("email"));
                         profilePictureView.setProfileId(object.getString("id"));

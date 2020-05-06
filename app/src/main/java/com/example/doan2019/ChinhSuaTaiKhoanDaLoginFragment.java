@@ -205,14 +205,19 @@ public class ChinhSuaTaiKhoanDaLoginFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if( requestCode == 123 ) {
-            Uri uri = data.getData();
-            realPath = getRealPathFromURI(uri);
             try {
-                InputStream inputStream = getActivity().getContentResolver().openInputStream(uri);
-                Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
-                imageProfilePicture2.setImageBitmap(bitmap);
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
+                Uri uri = data.getData();
+                realPath = getRealPathFromURI(uri);
+                try {
+                    InputStream inputStream = getActivity().getContentResolver().openInputStream(uri);
+                    Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+                    imageProfilePicture2.setImageBitmap(bitmap);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+            }
+            catch (Exception ex){
+                Log.e("BBB", ex.toString());
             }
         }
     }

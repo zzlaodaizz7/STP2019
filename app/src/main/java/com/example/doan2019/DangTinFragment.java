@@ -185,12 +185,16 @@ public class DangTinFragment extends Fragment {
                     call.enqueue(new Callback<DangTin>() {
                         @Override
                         public void onResponse(Call<DangTin> call, Response<DangTin> response) {
-                            if (response.body().getType() == "success"){
-                                Toast.makeText(getContext(), response.body().getContent(), Toast.LENGTH_SHORT).show();
-                            }else{
-                                Toast.makeText(getContext(), response.body().getContent(), Toast.LENGTH_SHORT).show();
+                            try {
+                                if (response.body().getType() == "success") {
+                                    Toast.makeText(getContext(), response.body().getContent(), Toast.LENGTH_SHORT).show();
+                                } else {
+                                    Toast.makeText(getContext(), response.body().getContent(), Toast.LENGTH_SHORT).show();
+                                }
                             }
-
+                            catch (Exception ex){
+                                Log.e("BBB", ex.toString());
+                            }
                         }
                         @Override
                         public void onFailure(Call<DangTin> call, Throwable t) {

@@ -145,16 +145,21 @@ public class TimDoiFragment extends Fragment {
         call1.enqueue(new Callback<List<KhungGio>>() {
             @Override
             public void onResponse(Call<List<KhungGio>> call, Response<List<KhungGio>> response) {
-                List<KhungGio> khungGios = response.body();
-                if (khungGios.size() == 0) {
-                    hideLoadinggif();
-                    showDialogTinNhan("Không có tin mới nào");
-                    hideDialogTinNhan();
-                    return;
+                try {
+                    List<KhungGio> khungGios = response.body();
+                    if (khungGios.size() == 0) {
+                        hideLoadinggif();
+                        showDialogTinNhan("Không có tin mới nào");
+                        hideDialogTinNhan();
+                        return;
+                    }
+                    for (KhungGio khungGio : khungGios) {
+                        khungGioArrayList.add(khungGio);
+                        Log.d("test", khungGioArrayList + "");
+                    }
                 }
-                for (KhungGio khungGio : khungGios) {
-                    khungGioArrayList.add(khungGio);
-                    Log.d("test", khungGioArrayList + "");
+                catch (Exception ex){
+                    Log.e("BBB", ex.toString());
                 }
             }
 
@@ -169,17 +174,22 @@ public class TimDoiFragment extends Fragment {
         call2.enqueue(new Callback<List<DoiBong>>() {
             @Override
             public void onResponse(Call<List<DoiBong>> call, Response<List<DoiBong>> response) {
+                try {
 //                System.out.println("test");
-                List<DoiBong> doiBongs = response.body();
-                if (doiBongs.size() == 0) {
-                    hideLoadinggif();
-                    showDialogTinNhan("Không có tin mới nào");
-                    hideDialogTinNhan();
-                    return;
+                    List<DoiBong> doiBongs = response.body();
+                    if (doiBongs.size() == 0) {
+                        hideLoadinggif();
+                        showDialogTinNhan("Không có tin mới nào");
+                        hideDialogTinNhan();
+                        return;
+                    }
+                    for (DoiBong doiBong : doiBongs) {
+                        doiBongArrayList.add(doiBong);
+                        Log.d("test", doiBong.getTen() + "");
+                    }
                 }
-                for (DoiBong doiBong : doiBongs) {
-                    doiBongArrayList.add(doiBong);
-                    Log.d("test", doiBong.getTen() + "");
+                catch (Exception ex){
+                    Log.e("BBB", ex.toString());
                 }
             }
 
@@ -215,101 +225,112 @@ public class TimDoiFragment extends Fragment {
                 call3.enqueue(new Callback<List<DoiBong_NguoiDung>>() {
                     @Override
                     public void onResponse(Call<List<DoiBong_NguoiDung>> call, Response<List<DoiBong_NguoiDung>> response) {
-                        List<DoiBong_NguoiDung> doiBong_nguoiDungs = response.body();
-                        if (doiBong_nguoiDungs.size() == 0) {
-                            hideLoadinggif();
-                            showDialogTinNhan("Không có tin mới nào");
-                            hideDialogTinNhan();
-                            return;
+                        try {
+                            List<DoiBong_NguoiDung> doiBong_nguoiDungs = response.body();
+                            if (doiBong_nguoiDungs.size() == 0) {
+                                hideLoadinggif();
+                                showDialogTinNhan("Không có tin mới nào");
+                                hideDialogTinNhan();
+                                return;
+                            }
+                            for (DoiBong_NguoiDung doiBong_nguoiDung : doiBong_nguoiDungs) {
+                                doiBong_nguoiDungArrayList.add(doiBong_nguoiDung);
+                            }
                         }
-                        for (DoiBong_NguoiDung doiBong_nguoiDung : doiBong_nguoiDungs) {
-                            doiBong_nguoiDungArrayList.add(doiBong_nguoiDung);
+                        catch (Exception ex){
+                            Log.e("BBB", ex.toString());
                         }
                         Call<List<DangTin>> callDangTin = jsonApiDangTin.getDangTins(header);
                         callDangTin.enqueue(new Callback<List<DangTin>>() {
                             @Override
                             public void onResponse(Call<List<DangTin>> call, Response<List<DangTin>> response) {
-                                List<DangTin> dangTins = response.body();
-                                Log.d("timdoi", response.body() + " " + dangTins.size());
-                                if (dangTins.size() == 0) {
-                                    Log.d("timdoi", "ko co tin moi");
-                                    hideLoadinggif();
-                                    showDialogTinNhan("Không có tin mới nào");
-                                    hideDialogTinNhan();
-                                    return;
-                                }
-                                for (DangTin dangTin : dangTins) {
-                                    dangTinArrayList.add(dangTin);
-                                    String doidangtin_ten = "";
-                                    String trinhdo = "";
-                                    String trangthai = "";
-                                    String san_ten = "";
-                                    String khunggio_giatri = "";
-                                    String doibatdoi_ten = "";
-                                    doitruongdoidangtin_id = -1;
-                                    doitruongdoibatdoi_id = -1;
+                                try {
+                                    List<DangTin> dangTins = response.body();
+                                    Log.d("timdoi", response.body() + " " + dangTins.size());
+                                    if (dangTins.size() == 0) {
+                                        Log.d("timdoi", "ko co tin moi");
+                                        hideLoadinggif();
+                                        showDialogTinNhan("Không có tin mới nào");
+                                        hideDialogTinNhan();
+                                        return;
+                                    }
+                                    for (DangTin dangTin : dangTins) {
+                                        dangTinArrayList.add(dangTin);
+                                        String doidangtin_ten = "";
+                                        String trinhdo = "";
+                                        String trangthai = "";
+                                        String san_ten = "";
+                                        String khunggio_giatri = "";
+                                        String doibatdoi_ten = "";
+                                        doitruongdoidangtin_id = -1;
+                                        doitruongdoibatdoi_id = -1;
 
-                                    for (DoiBong_NguoiDung doiBong_nguoiDung : doiBong_nguoiDungArrayList) {
-                                        if (doiBong_nguoiDung.getDoibongId() == dangTin.getDoidangtin_id() && doiBong_nguoiDung.getPhanquyenId() == 1) {
-                                            doitruongdoidangtin_id = doiBong_nguoiDung.getUserId();
-                                            break;
-                                        }
-                                    }
-
-                                    for (KhungGio khungGio : khungGioArrayList) {
-                                        if (khungGio.getId() == dangTin.getKhunggio_id()) {
-                                            khunggio_giatri = khungGio.getThoigian();
-                                            break;
-                                        }
-                                    }
-                                    if (dangTin.getSan_id() != -1) {
-                                        trangthai = "Có sân nhà";
-                                        for (SanBong sanBong : sanBongArrayList) {
-                                            if (sanBong.getId() == dangTin.getSan_id()) {
-                                                san_ten = sanBong.getTen();
-                                                break;
-                                            }
-                                        }
-                                    } else {
-                                        san_ten = "Không có sân nhà";
-                                        trangthai = "Cần đi khách";
-                                    }
-                                    if (dangTin.getDoibatdoi_id() != -1) {
-                                        for (DoiBong doiBong : doiBongArrayList) {
-                                            if (doiBong.getId() == dangTin.getDoibatdoi_id()) {
-                                                doibatdoi_ten = doiBong.getTen();
-                                                break;
-                                            }
-                                        }
                                         for (DoiBong_NguoiDung doiBong_nguoiDung : doiBong_nguoiDungArrayList) {
-                                            if (doiBong_nguoiDung.getDoibongId() == dangTin.getDoibatdoi_id() && doiBong_nguoiDung.getPhanquyenId() == 1) {
-                                                doitruongdoibatdoi_id = doiBong_nguoiDung.getUserId();
+                                            if (doiBong_nguoiDung.getDoibongId() == dangTin.getDoidangtin_id() && doiBong_nguoiDung.getPhanquyenId() == 1) {
+                                                doitruongdoidangtin_id = doiBong_nguoiDung.getUserId();
                                                 break;
                                             }
                                         }
-                                    }
-                                    for (DoiBong doiBong : doiBongArrayList) {
-                                        if (doiBong.getId() == dangTin.getDoidangtin_id()) {
-                                            doidangtin_ten = doiBong.getTen();
-                                            trinhdo = doiBong.getTrinhdo();
-                                            break;
+
+                                        for (KhungGio khungGio : khungGioArrayList) {
+                                            if (khungGio.getId() == dangTin.getKhunggio_id()) {
+                                                khunggio_giatri = khungGio.getThoigian();
+                                                break;
+                                            }
                                         }
+                                        if (dangTin.getSan_id() != -1) {
+                                            trangthai = "Có sân nhà";
+                                            for (SanBong sanBong : sanBongArrayList) {
+                                                if (sanBong.getId() == dangTin.getSan_id()) {
+                                                    san_ten = sanBong.getTen();
+                                                    break;
+                                                }
+                                            }
+                                        } else {
+                                            san_ten = "Không có sân nhà";
+                                            trangthai = "Cần đi khách";
+                                        }
+                                        if (dangTin.getDoibatdoi_id() != -1) {
+                                            for (DoiBong doiBong : doiBongArrayList) {
+                                                if (doiBong.getId() == dangTin.getDoibatdoi_id()) {
+                                                    doibatdoi_ten = doiBong.getTen();
+                                                    break;
+                                                }
+                                            }
+                                            for (DoiBong_NguoiDung doiBong_nguoiDung : doiBong_nguoiDungArrayList) {
+                                                if (doiBong_nguoiDung.getDoibongId() == dangTin.getDoibatdoi_id() && doiBong_nguoiDung.getPhanquyenId() == 1) {
+                                                    doitruongdoibatdoi_id = doiBong_nguoiDung.getUserId();
+                                                    break;
+                                                }
+                                            }
+                                        }
+                                        for (DoiBong doiBong : doiBongArrayList) {
+                                            if (doiBong.getId() == dangTin.getDoidangtin_id()) {
+                                                doidangtin_ten = doiBong.getTen();
+                                                trinhdo = doiBong.getTrinhdo();
+                                                break;
+                                            }
+                                        }
+
+
+                                        DangTinDTO dangTinDTO = ModelMapper.toDangTinDTO(dangTin, doidangtin_ten, doitruongdoidangtin_id, doibatdoi_ten, doitruongdoibatdoi_id, trangthai, trinhdo, san_ten, khunggio_giatri);
+                                        dangTinDTOArrayList.add(dangTinDTO);
+
+                                        //Log.d("uu", dangTinDTO.getDoitruongdoibatdoi_id()+" "+dangTinDTO.getDoitruongdoidangtin_id());
                                     }
-
-
-                                    DangTinDTO dangTinDTO = ModelMapper.toDangTinDTO(dangTin, doidangtin_ten, doitruongdoidangtin_id, doibatdoi_ten, doitruongdoibatdoi_id, trangthai, trinhdo, san_ten, khunggio_giatri);
-                                    dangTinDTOArrayList.add(dangTinDTO);
-
-                                    //Log.d("uu", dangTinDTO.getDoitruongdoibatdoi_id()+" "+dangTinDTO.getDoitruongdoidangtin_id());
+                                    SharedPreferences.Editor editor = sharedPreferencesLoadTimDoi.edit();
+                                    editor.putString("isLoaded", "true");
+                                    editor.commit();
+                                    dangTinAdapter = new DangTinAdapter(getActivity(), R.layout._match, dangTinDTOArrayList);
+                                    mainLV.setAdapter(dangTinAdapter);
+                                    listViewTinTimDoi.setAdapter(dangTinAdapter);
+                                    setListViewHeightBasedOnChildren(dangTinAdapter, listViewTinTimDoi);
                                 }
-                                SharedPreferences.Editor editor = sharedPreferencesLoadTimDoi.edit();
-                                editor.putString("isLoaded", "true");
-                                editor.commit();
-                                dangTinAdapter = new DangTinAdapter(getActivity(), R.layout._match, dangTinDTOArrayList);
-                                mainLV.setAdapter(dangTinAdapter);
-                                listViewTinTimDoi.setAdapter(dangTinAdapter);
-                                setListViewHeightBasedOnChildren(dangTinAdapter, listViewTinTimDoi);
+                                catch (Exception ex){
+                                    Log.e("BBB", ex.toString());
+                                }
                             }
+
 
                             @Override
                             public void onFailure(Call<List<DangTin>> call, Throwable t) {
