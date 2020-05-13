@@ -292,10 +292,11 @@ public class TaiKhoanDaLoginFragment extends Fragment {
             public void onCompleted(JSONObject object, GraphResponse response) {
                 if (object != null) {
                     try {
-                        Log.e("AnhBia", object.getString("anhbia"));
                         txtName.setText(object.getString("name"));
                         txtEmail.setText(object.getString("email"));
                         profilePictureView.setProfileId(object.getString("id"));
+                        imageProfilePicture2.setVisibility(View.INVISIBLE);
+                        profilePictureView.setVisibility(View.VISIBLE);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
