@@ -16,6 +16,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,6 +24,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.doan2019.DTO.DangTinDTO;
 import com.example.doan2019.Mapper.ModelMapper;
@@ -73,6 +75,7 @@ public class TimDoiFragment extends Fragment {
     String doibongTK, sanbongTK, trangthaiTK, trinhdoTK, thoigianTK, danhmucTK, Auth = "";
     int doitruongdoidangtin_id, doitruongdoibatdoi_id;
     View view;
+    SwipeRefreshLayout swipeRefreshLayout;
     Map<String, String> header;
     JsonApiKhungGio jsonApiKhungGio;
     JsonApiSanBong jsonApiSanBong;
@@ -81,7 +84,7 @@ public class TimDoiFragment extends Fragment {
     JsonApiDoiBongNGuoiDung jsonApiDoiBongNGuoiDung;
     SharedPreferences sharedPreferences, sharedPreferencesLoadTimDoi;
     LangNgheSuKienChuyenFragment langNgheSuKienChuyenFragment;
-
+    RelativeLayout Match;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -112,7 +115,7 @@ public class TimDoiFragment extends Fragment {
         clickChonTimTranDau();
 
         clickChonListViewTinTimDoi();
-
+        swipeRefresh();
         return view;
     }
 
@@ -127,12 +130,10 @@ public class TimDoiFragment extends Fragment {
 
     private void loadListViewTinTimDoi() {
         if (sharedPreferencesLoadTimDoi.getString("isLoaded", "").equals("true")) {
-
             DangTinService.loadDangTin(mainLV, dangTinDTOArrayList);
             dangTinAdapter = new DangTinAdapter(getActivity(), R.layout._match, dangTinDTOArrayList);
             listViewTinTimDoi.setAdapter(dangTinAdapter);
             setListViewHeightBasedOnChildren(dangTinAdapter, listViewTinTimDoi);
-            //listViewTinTimDoi.getAdapter().ge
         } else {
             loadListDoiBong();
             loadListKhungGio();
@@ -199,10 +200,10 @@ public class TimDoiFragment extends Fragment {
         });
     }
 
-
     private void loadListViewTinTimDoi1() {
         // lay du lieu san bong
         sanBongArrayList = new ArrayList<>();
+        dangTinDTOArrayList = new ArrayList<>();
         Call<List<SanBong>> call = jsonApiSanBong.getSanbongs();
         call.enqueue(new Callback<List<SanBong>>() {
             @Override
@@ -315,8 +316,6 @@ public class TimDoiFragment extends Fragment {
 
                                         DangTinDTO dangTinDTO = ModelMapper.toDangTinDTO(dangTin, doidangtin_ten, doitruongdoidangtin_id, doibatdoi_ten, doitruongdoibatdoi_id, trangthai, trinhdo, san_ten, khunggio_giatri);
                                         dangTinDTOArrayList.add(dangTinDTO);
-
-                                        //Log.d("uu", dangTinDTO.getDoitruongdoibatdoi_id()+" "+dangTinDTO.getDoitruongdoidangtin_id());
                                     }
                                     SharedPreferences.Editor editor = sharedPreferencesLoadTimDoi.edit();
                                     editor.putString("isLoaded", "true");
@@ -373,13 +372,14 @@ public class TimDoiFragment extends Fragment {
         trinhdoTK = "";
         thoigianTK = "";
         danhmucTK = "";
-
+        Match = view.findViewById(R.id.match);
         dangTinArrayList = new ArrayList<>();
         khungGioArrayList = new ArrayList<>();
         doiBongArrayList = new ArrayList<>();
         sanBongArrayList = new ArrayList<>();
         dangTinDTOArrayList = new ArrayList<>();
         doiBong_nguoiDungArrayList = new ArrayList<>();
+        swipeRefreshLayout = view.findViewById(R.id.swipeRefreshlayout);
         scrollView = (ScrollView) view.findViewById(R.id.scrollView);
         btnDangTin = (Button) view.findViewById(R.id.btnDangTin);
         btnChonTrangThai = (Button) view.findViewById(R.id.btnChonTrangThai);
@@ -396,6 +396,26 @@ public class TimDoiFragment extends Fragment {
         gifLoading = (GifTextView) view.findViewById(R.id.gifloading);
     }
 
+    private void swipeRefresh(){
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                showLoadingGif();
+//                SharedPreferences.Editor editor = sharedPreferencesLoadTimDoi.edit();
+//                editor.putString("isLoaded", "false");
+//                editor.commit();
+                dangTinDTOArrayList = new ArrayList<>();
+                dangTinAdapter = new DangTinAdapter(getActivity(), R.layout._match, dangTinDTOArrayList);
+                listViewTinTimDoi.setAdapter(dangTinAdapter);
+                setListViewHeightBasedOnChildren(dangTinAdapter, listViewTinTimDoi);
+                loadListDoiBong();
+                loadListKhungGio();
+                loadListViewTinTimDoi1();
+                swipeRefreshLayout.setRefreshing(false);
+                hideLoadinggif();
+            }
+        });
+    }
     private void showLoadingGif() {
         gifLoading.setVisibility(View.VISIBLE);
     }
