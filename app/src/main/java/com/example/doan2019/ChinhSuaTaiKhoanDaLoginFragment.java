@@ -58,9 +58,9 @@ public class ChinhSuaTaiKhoanDaLoginFragment extends Fragment {
     private TextView txtQuayLai, txtTen;
     private ProfilePictureView profilePictureView;
     private Button btnThayAnh, btnHoanThanhChinhSua;
-    private EditText edtTen, edtEmail, edtDiaChi, edtGioiThieuBanThan;
+    private EditText edtTen, edtEmail, edtDiaChi, edtGioiThieuBanThan, edtMatKhau, edtNhapLaiMatKhau;
     private ImageView imageProfilePicture2;
-    private String ten, email, anhbia;
+    private String ten, email, anhbia, matKhauMoi, nhapLaiMatKhauMoi;
     String base_Url = "http://192.168.1.15/ApiDoAn/public/images/";
     String realPath = "";
     JsonApiUser jsonApiUser;
@@ -105,12 +105,18 @@ public class ChinhSuaTaiKhoanDaLoginFragment extends Fragment {
             public void onClick(View view) {
                 ten = edtTen.getText().toString();
                 email = edtEmail.getText().toString();
+                matKhauMoi = edtMatKhau.getText().toString();
+                nhapLaiMatKhauMoi = edtNhapLaiMatKhau.getText().toString();
 
                 user.setTen(ten);
                 user.setEmail(email);
 
-                if(ten.equals("") || email.equals("")){
-                    showDialogTinNhan("Tên và Email không được để trống.");
+                if(ten.equals("") || email.equals("") || matKhauMoi.equals("") || nhapLaiMatKhauMoi.equals("")){
+                    showDialogTinNhan("Tên, Email, Mật khẩu mới, Nhập lại mật khẩu mới không được để trống.");
+                    hideDialogTinNhan();
+                }
+                else if(!matKhauMoi.equals(nhapLaiMatKhauMoi)){
+                    showDialogTinNhan("Mật khẩu nhập lại chưa đúng");
                     hideDialogTinNhan();
                 }
                 else{
@@ -236,6 +242,8 @@ public class ChinhSuaTaiKhoanDaLoginFragment extends Fragment {
     }
 
     private void Mapping() {
+        edtMatKhau = view.findViewById(R.id.EditTextMatKhauMoi);
+        edtNhapLaiMatKhau = view.findViewById(R.id.EditTextNhapLaiMatKhauMoi);
         sharedPreferences = getActivity().getSharedPreferences("dataLogin", Context.MODE_PRIVATE);
         jsonApiUser = APIUtils.getJsonApiUser();
         profilePictureView = view.findViewById(R.id.ImageProfilePicture);

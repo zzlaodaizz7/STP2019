@@ -164,7 +164,6 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="30dp"
                 android:layout_marginRight="30dp"
                 android:layout_marginTop="30dp"
                 android:orientation="vertical">
@@ -173,6 +172,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Trận Đấu Sắp Tới"
+                    android:paddingLeft="30dp"
+                    android:background="@drawable/custom_border_textview"
                     android:textColor="@android:color/black"
                     android:textSize="14sp" />
 
@@ -180,6 +181,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/CardViewTranDauSapToi"
+                    android:layout_marginLeft="30dp"
                     android:layout_marginTop="10dp"
                     app:cardElevation="10dp">
 
@@ -193,7 +195,8 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="30dp"
+                android:paddingLeft="30dp"
+                android:background="@drawable/custom_border_textview"
                 android:layout_marginTop="30dp"
                 android:text="Các FC Đang Tham Gia"
                 android:textColor="@android:color/black"
@@ -257,7 +260,8 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="30dp"
+                android:background="@drawable/custom_border_textview"
+                android:paddingLeft="30dp"
                 android:layout_marginTop="30dp"
                 android:text="Tạo đội bóng"
                 android:textColor="@android:color/black"

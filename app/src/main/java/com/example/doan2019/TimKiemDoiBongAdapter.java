@@ -14,6 +14,7 @@ import java.util.List;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.doan2019.Retrofit.APIUtils;
 import com.example.doan2019.Retrofit.DoiBong;
 import com.squareup.picasso.Picasso;
 
@@ -77,7 +78,7 @@ public class TimKiemDoiBongAdapter extends BaseAdapter {
 
         DoiBong doiBong = doiBongList.get(i);
         if(doiBong.getAnhdaidien() != null){
-            Picasso.get().load(doiBong.getAnhdaidien()).into(viewHolder.imgAnhDaiDien);
+            Picasso.get().load(APIUtils.BASE_URL+doiBong.getAnhdaidien()).into(viewHolder.imgAnhDaiDien);
         }
 
         viewHolder.txtTenDoiBong.setText(doiBong.getTen());

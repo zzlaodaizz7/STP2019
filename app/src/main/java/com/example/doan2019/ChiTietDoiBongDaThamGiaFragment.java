@@ -445,10 +445,10 @@ public class ChiTietDoiBongDaThamGiaFragment extends Fragment {
             bundle = getArguments();
 
             if (doiBong.getAnhdaidien() != null) {
-                Picasso.get().load(doiBong.getAnhdaidien()).into(imgAnhDaiDien);
+                Picasso.get().load(APIUtils.BASE_URL+doiBong.getAnhdaidien()).into(imgAnhDaiDien);
             }
             if (doiBong.getAnhbia() != null) {
-                Picasso.get().load(doiBong.getAnhbia()).into(imgAnhBia);
+                Picasso.get().load(APIUtils.BASE_URL+doiBong.getAnhbia()).into(imgAnhBia);
             }
             txtTenDoiBong.setText(doiBong.getTen());
             txtDiem.setText(doiBong.getSodiem() + " Điểm");

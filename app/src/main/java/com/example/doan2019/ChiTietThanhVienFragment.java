@@ -14,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.example.doan2019.Retrofit.APIUtils;
 import com.example.doan2019.Retrofit.User;
 import com.squareup.picasso.Picasso;
 
@@ -53,7 +54,7 @@ public class ChiTietThanhVienFragment extends Fragment {
 //        String time = dateFormat.format(thanhVienDoiBongClass.getCreated_at());
 
         if(thanhVienDoiBongClass.getAnhbia() != null){
-            Picasso.get().load(thanhVienDoiBongClass.getAnhbia()).into(imgDaiDien);
+            Picasso.get().load(APIUtils.BASE_URL+thanhVienDoiBongClass.getAnhbia()).into(imgDaiDien);
         }
 
         String time = thanhVienDoiBongClass.getCreated_at();

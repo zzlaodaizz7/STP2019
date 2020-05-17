@@ -200,8 +200,9 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="30dp"
                 android:layout_marginTop="30dp"
+                android:background="@drawable/custom_border_textview"
+                android:paddingLeft="30dp"
                 android:text="Thông tin liên hệ"
                 android:textColor="@android:color/black"
                 android:textSize="14sp" />
@@ -247,8 +248,9 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="30dp"
                 android:layout_marginTop="30dp"
+                android:background="@drawable/custom_border_textview"
+                android:paddingLeft="30dp"
                 android:text="Tham gia vào đội bóng"
                 android:textColor="@android:color/black"
                 android:textSize="14sp" />
@@ -305,8 +307,9 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="30dp"
                 android:layout_marginTop="30dp"
+                android:background="@drawable/custom_border_textview"
+                android:paddingLeft="30dp"
                 android:text="Lịch sử trận đấu"
                 android:textColor="@android:color/black"
                 android:textSize="14sp" />
@@ -328,8 +331,9 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="30dp"
                 android:layout_marginTop="30dp"
+                android:background="@drawable/custom_border_textview"
+                android:paddingLeft="30dp"
                 android:text="Danh sách thành viên"
                 android:textColor="@android:color/black"
                 android:textSize="14sp" />

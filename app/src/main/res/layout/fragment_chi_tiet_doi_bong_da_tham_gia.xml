@@ -32,7 +32,7 @@
         android:clickable="true"
         android:drawableLeft="@drawable/back_18dp"
         android:padding="10dp"
-        android:text="Back"
+        android:text="Quay lại"
         android:textColor="@drawable/custom_text_color"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -251,7 +251,8 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="30dp"
+                android:background="@drawable/custom_border_textview"
+                android:paddingLeft="30dp"
                 android:layout_marginTop="30dp"
                 android:text="Thông tin liên hệ"
                 android:textColor="@android:color/black"
@@ -298,7 +299,8 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="30dp"
+                android:paddingLeft="30dp"
+                android:background="@drawable/custom_border_textview"
                 android:layout_marginTop="30dp"
                 android:text="Trận đấu sắp tới"
                 android:textColor="@android:color/black"
@@ -321,7 +323,8 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="30dp"
+                android:paddingLeft="30dp"
+                android:background="@drawable/custom_border_textview"
                 android:layout_marginTop="30dp"
                 android:text="Lịch sử trận đấu"
                 android:textColor="@android:color/black"
@@ -344,7 +347,8 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="30dp"
+                android:paddingLeft="30dp"
+                android:background="@drawable/custom_border_textview"
                 android:layout_marginTop="30dp"
                 android:text="Danh sách thành viên"
                 android:textColor="@android:color/black"

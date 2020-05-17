@@ -24,7 +24,7 @@
             android:gravity="center"
             android:paddingLeft="5dp"
             android:paddingRight="5dp"
-            android:text="Back"
+            android:text="Quay lại"
             android:clickable="true"
             android:textColor="@drawable/custom_text_color"
             app:layout_constraintBottom_toBottomOf="parent"

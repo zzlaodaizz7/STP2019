@@ -1,30 +1,30 @@
 package com.example.doan2019.Retrofit;
 
 public class APIUtils {
-    public static final String BASE_URL ="http://ecb125cb.ngrok.io/DoAn/public/api/";
+    public static final String BASE_URL ="http://97a1c7e0.ngrok.io/DoAn/public/";
     public static JsonApiKhungGio getJsonApiKhungGio(){
-        return  RetrofitClientInstance.getRetrofitInstance(BASE_URL).create(JsonApiKhungGio.class);
+        return  RetrofitClientInstance.getRetrofitInstance(BASE_URL+"api/").create(JsonApiKhungGio.class);
     }
     public static JsonApiSanBong getJsonApiSanBong(){
-        return  RetrofitClientInstance.getRetrofitInstance(BASE_URL).create(JsonApiSanBong.class);
+        return  RetrofitClientInstance.getRetrofitInstance(BASE_URL+"api/").create(JsonApiSanBong.class);
     }
     public static JsonApiDangTin getJsonApiDangTin(){
-        return  RetrofitClientInstance.getRetrofitInstance(BASE_URL).create(JsonApiDangTin.class);
+        return  RetrofitClientInstance.getRetrofitInstance(BASE_URL+"api/").create(JsonApiDangTin.class);
     }
     public static JsonApiDoiBong getJsonApiDoiBong(){
-        return  RetrofitClientInstance.getRetrofitInstance(BASE_URL).create(JsonApiDoiBong.class);
+        return  RetrofitClientInstance.getRetrofitInstance(BASE_URL+"api/").create(JsonApiDoiBong.class);
     }
     public static JsonApiBatDoi getJsonApiBatDoi(){
-        return RetrofitClientInstance.getRetrofitInstance(BASE_URL).create(JsonApiBatDoi.class);
+        return RetrofitClientInstance.getRetrofitInstance(BASE_URL+"api/").create(JsonApiBatDoi.class);
     }
     public static JsonApiUser getJsonApiUser(){
-        return RetrofitClientInstance.getRetrofitInstance(BASE_URL).create(JsonApiUser.class);
+        return RetrofitClientInstance.getRetrofitInstance(BASE_URL+"api/").create(JsonApiUser.class);
     }
     public static JsonApiDoiBongNGuoiDung getJsonApiDoiBongNguoiDung(){
-        return RetrofitClientInstance.getRetrofitInstance(BASE_URL).create(JsonApiDoiBongNGuoiDung.class);
+        return RetrofitClientInstance.getRetrofitInstance(BASE_URL+"api/").create(JsonApiDoiBongNGuoiDung.class);
     }
     public static JsonApiThongBao getJsonApiThongBao(){
-        return RetrofitClientInstance.getRetrofitInstance(BASE_URL).create(JsonApiThongBao.class);
+        return RetrofitClientInstance.getRetrofitInstance(BASE_URL+"api/").create(JsonApiThongBao.class);
     }
 
 }

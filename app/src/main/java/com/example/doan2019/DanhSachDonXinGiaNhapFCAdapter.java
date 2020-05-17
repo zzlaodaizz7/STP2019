@@ -87,7 +87,7 @@ public class DanhSachDonXinGiaNhapFCAdapter extends BaseAdapter {
         //Gan gia tri
         User thanhVien = listThanhVien.get(i).getUser();
         if(thanhVien.getAnhbia() != null){
-            Picasso.get().load(thanhVien.getAnhbia()).into(viewHolder.imgThanhVien);
+            Picasso.get().load(APIUtils.BASE_URL+thanhVien.getAnhbia()).into(viewHolder.imgThanhVien);
         }
 
         viewHolder.txtTenThanhVien.setText(thanhVien.getTen());

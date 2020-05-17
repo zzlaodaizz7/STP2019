@@ -9,6 +9,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.doan2019.Retrofit.APIUtils;
 import com.example.doan2019.Retrofit.DoiBong_NguoiDung;
 import com.squareup.picasso.Picasso;
 
@@ -66,7 +67,8 @@ public class CacFCDangThamGiaAdapter extends BaseAdapter {
 
             DoiBong_NguoiDung doiBongDangTG = doiBongDangTGList.get(i);
             if (doiBongDangTG.getDoibong().getAnhbia() != null) {
-                Picasso.get().load(doiBongDangTG.getDoibong().getAnhbia()).into(viewHolder.imgDoiBong);
+                Picasso.get().load(APIUtils.BASE_URL+doiBongDangTG.getDoibong().getAnhbia()).into(viewHolder.imgDoiBong);
+//                Log.d("getView: ", );
             }
             Log.d("dangthamgia", doiBongDangTG.getDoibong().getTen() + " " + doiBongDangTG.getDoibong().getId());
             viewHolder.txtTenDoiBong.setText(doiBongDangTG.getDoibong().getTen());
