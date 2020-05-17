@@ -1,5 +1,7 @@
 package com.example.doan2019;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -38,6 +40,7 @@ public class ChiTietTranDauSapToiFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        Log.e("ZZZ", "onCreateView");
         view = inflater.inflate(R.layout.fragment_chi_tiet_tran_dau_sap_toi, container, false);
         langNgheSuKienChuyenFragment = (LangNgheSuKienChuyenFragment) getActivity();
         jsonApiSanBong = APIUtils.getJsonApiSanBong();
@@ -181,5 +184,60 @@ public class ChiTietTranDauSapToiFragment extends Fragment {
         txtSan = view.findViewById(R.id.txtPitch);
         txtKeo = view.findViewById(R.id.txtKeo);
         btnXong = view.findViewById(R.id.ButtonXong);
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Log.e("ZZZ", "onCreate");
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        Log.e("ZZZ", "onActivityCreated");
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        Log.e("ZZZ", "onStart");
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.e("ZZZ", "onResume");
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        getFragmentManager().popBackStack();
+        Log.e("ZZZ", "onPause");
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        Log.e("ZZZ", "onStop");
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        Log.e("ZZZ", "onDestroyView");
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.e("ZZZ", "onDestroy");
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        Log.e("ZZZ", "onDetach");
     }
 }

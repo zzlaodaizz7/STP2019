@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -99,25 +100,34 @@ public class TaoDoiBongDialog extends DialogFragment {
                     header.put("Authorization","Bearer "+Auth);
                     DoiBong doiBong = new DoiBong(edtTen.getText().toString(),btnTrinhDo.getText().toString(),edtDiaChi.getText().toString(),edtDienThoai.getText().toString(),IDUser);
                     Call<DoiBong> call = jsonApiSanBong.postTaodoibongs(header, doiBong);
-                    call.enqueue(new Callback<DoiBong>() {
-                        @Override
-                        public void onResponse(Call<DoiBong> call, Response<DoiBong> response) {
+                    try {
+                        call.enqueue(new Callback<DoiBong>() {
+                            @Override
+                            public void onResponse(Call<DoiBong> call, Response<DoiBong> response) {
 //                            System.out.println(response.body().getContent());
 //                            System.out.println(response.body().getType());
-                            if (response.body().getType() == "success"){
-                                TaoDoiBongDialog.this.getDialog().cancel();
-                                Toast.makeText(getContext(), "Tạo đội thành công!", Toast.LENGTH_SHORT).show();
-                            }else{
+                                try {
+                                    if (response.body().getType() == "success") {
+                                        TaoDoiBongDialog.this.getDialog().cancel();
+                                        Toast.makeText(getContext(), "Tạo đội thành công!", Toast.LENGTH_SHORT).show();
+                                    } else {
 //                                System.out.println("aaa");
 //                            Toast.makeText(getContext(), response.body().getContent(), Toast.LENGTH_SHORT).show();
+                                    }
+                                } catch (Exception ex) {
+                                    Log.e("BBB", ex.toString());
+                                }
                             }
-                        }
 
-                        @Override
-                        public void onFailure(Call<DoiBong> call, Throwable t) {
+                            @Override
+                            public void onFailure(Call<DoiBong> call, Throwable t) {
 
-                        }
-                    });
+                            }
+                        });
+                    }
+                    catch (Exception ex){
+                        Log.e("BBB", ex.toString());
+                    }
                     TaoDoiBongDialog.this.getDialog().cancel();
                 }else{
                     Toast.makeText(getContext(), content, Toast.LENGTH_SHORT).show();

@@ -11,6 +11,7 @@ import android.content.pm.ResolveInfo;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -61,7 +62,7 @@ public class ChinhSuaTaiKhoanDaLoginFragment extends Fragment {
     private EditText edtTen, edtEmail, edtDiaChi, edtGioiThieuBanThan, edtMatKhau, edtNhapLaiMatKhau;
     private ImageView imageProfilePicture2;
     private String ten, email, anhbia, matKhauMoi, nhapLaiMatKhauMoi;
-    String base_Url = "http://192.168.1.15/ApiDoAn/public/images/";
+    String base_Url = "/images/";
     String realPath = "";
     JsonApiUser jsonApiUser;
     User user;
@@ -175,7 +176,12 @@ public class ChinhSuaTaiKhoanDaLoginFragment extends Fragment {
                                         }
                                         editor.putString("anhbia", base_Url+anhbia);
                                         editor.commit();
-                                        Toast.makeText(getActivity(), "Update tai khoan", Toast.LENGTH_LONG).show();
+                                        try {
+                                            Toast.makeText(getActivity(), "Update tai khoan", Toast.LENGTH_LONG).show();
+                                        }
+                                        catch (Exception ex){
+                                            Log.e("BBB", ex.toString());
+                                        }
                                     }
 
                                     @Override
@@ -214,10 +220,14 @@ public class ChinhSuaTaiKhoanDaLoginFragment extends Fragment {
             try {
                 Uri uri = data.getData();
                 realPath = getRealPathFromURI(uri);
+
+                int rotateImage = getCameraPhotoOrientation(getActivity(), uri, realPath);
+
                 try {
                     InputStream inputStream = getActivity().getContentResolver().openInputStream(uri);
                     Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
                     imageProfilePicture2.setImageBitmap(bitmap);
+                    imageProfilePicture2.setRotation(rotateImage);
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                 }
@@ -227,7 +237,6 @@ public class ChinhSuaTaiKhoanDaLoginFragment extends Fragment {
             }
         }
     }
-
 
     public String getRealPathFromURI (Uri contentUri) {
         String path = null;
@@ -239,6 +248,35 @@ public class ChinhSuaTaiKhoanDaLoginFragment extends Fragment {
         }
         cursor.close();
         return path;
+    }
+
+    public int getCameraPhotoOrientation(Context context, Uri imageUri, String imagePath){
+        int rotate = 0;
+        try {
+            context.getContentResolver().notifyChange(imageUri, null);
+            File imageFile = new File(imagePath);
+
+            ExifInterface exif = new ExifInterface(imageFile.getAbsolutePath());
+            int orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
+
+            switch (orientation) {
+                case ExifInterface.ORIENTATION_ROTATE_270:
+                    rotate = 270;
+                    break;
+                case ExifInterface.ORIENTATION_ROTATE_180:
+                    rotate = 180;
+                    break;
+                case ExifInterface.ORIENTATION_ROTATE_90:
+                    rotate = 90;
+                    break;
+            }
+
+            Log.i("RotateImage", "Exif orientation: " + orientation);
+            Log.i("RotateImage", "Rotate value: " + rotate);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rotate;
     }
 
     private void Mapping() {

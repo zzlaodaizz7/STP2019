@@ -88,7 +88,7 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <ImageView
-                        android:scaleType="fitXY"
+                        android:scaleType="fitCenter"
                         android:id="@+id/ImageProfilePicture2"
                         android:layout_width="100dp"
                         android:layout_height="100dp"

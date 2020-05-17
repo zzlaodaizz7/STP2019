@@ -40,6 +40,12 @@ public class ChiTietSanBongFragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        getFragmentManager().popBackStack();
+    }
+
     private void ClickTextViewSDT() {
         tvPhone.setOnClickListener(new View.OnClickListener() {
             @Override
