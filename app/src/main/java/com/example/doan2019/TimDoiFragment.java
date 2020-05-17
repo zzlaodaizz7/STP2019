@@ -401,9 +401,6 @@ public class TimDoiFragment extends Fragment {
             @Override
             public void onRefresh() {
                 showLoadingGif();
-//                SharedPreferences.Editor editor = sharedPreferencesLoadTimDoi.edit();
-//                editor.putString("isLoaded", "false");
-//                editor.commit();
                 dangTinDTOArrayList = new ArrayList<>();
                 dangTinAdapter = new DangTinAdapter(getActivity(), R.layout._match, dangTinDTOArrayList);
                 listViewTinTimDoi.setAdapter(dangTinAdapter);

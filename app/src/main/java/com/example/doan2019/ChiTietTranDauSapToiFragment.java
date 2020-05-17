@@ -121,9 +121,10 @@ public class ChiTietTranDauSapToiFragment extends Fragment {
                 @Override
                 public void onResponse(Call<DoiBong> call, Response<DoiBong> response) {
                     if(response.body().getAnhdaidien() != null) {
-                        Picasso.get().load(response.body().getAnhbia()).into(imgTeamMinh);
+                        Picasso.get().load(APIUtils.BASE_URL+response.body().getAnhbia()).into(imgTeamMinh);
                         txtNameTeamMinh.setText(response.body().getTen());
                     }
+
                 }
 
                 @Override
@@ -136,9 +137,9 @@ public class ChiTietTranDauSapToiFragment extends Fragment {
                 @Override
                 public void onResponse(Call<DoiBong> call, Response<DoiBong> response) {
                     if(response.body().getAnhdaidien() != null) {
-                        Picasso.get().load(response.body().getAnhbia()).into(imgTeamBan);
-                        txtNameTeamBan.setText(response.body().getTen());
+                        Picasso.get().load(APIUtils.BASE_URL+response.body().getAnhbia()).into(imgTeamBan);
                     }
+                    txtNameTeamBan.setText(response.body().getTen());
                 }
 
                 @Override

@@ -9,6 +9,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.doan2019.Retrofit.APIUtils;
 import com.example.doan2019.Retrofit.DoiBong;
 import com.example.doan2019.Retrofit.DoiBong_NguoiDung;
 import com.example.doan2019.Retrofit.User;
@@ -69,7 +70,7 @@ public class DanhSachThanhVienAdapter extends BaseAdapter {
             Log.d("danhsach", thanhVien + "");
             Log.d("danhsach", thanhVien.getUser().getId() + " " + thanhVien.getUser().getAnhbia());
             if (thanhVien.getUser().getAnhbia() != null) {
-                Picasso.get().load(thanhVien.getUser().getAnhbia()).into(viewHolder.imgDaiDien);
+                Picasso.get().load(APIUtils.BASE_URL+thanhVien.getUser().getAnhbia()).into(viewHolder.imgDaiDien);
             }
             viewHolder.txtTen.setText(thanhVien.getUser().getTen());
             if (thanhVien.getTrangthai() == 0) {

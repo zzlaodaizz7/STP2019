@@ -311,10 +311,10 @@ public class ChiTietDoiBongXepHangFragment extends Fragment {
 
         doiBong = (DoiBong) bundle.getSerializable("doibong");
         if(doiBong.getAnhbia() != null){
-            Picasso.get().load(doiBong.getAnhbia()).into(imgAnhBia);
+            Picasso.get().load(APIUtils.BASE_URL+doiBong.getAnhbia()).into(imgAnhBia);
         }
         if(doiBong.getAnhdaidien() != null){
-            Picasso.get().load(doiBong.getAnhdaidien()).into(imgDaiDien);
+            Picasso.get().load(APIUtils.BASE_URL+doiBong.getAnhdaidien()).into(imgDaiDien);
         }
 
         if(doiBong.getHanhkiem() == 1)

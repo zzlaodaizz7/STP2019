@@ -117,7 +117,6 @@ public class TaiKhoanDaLoginFragment extends Fragment {
     private void GanNoiDungListViewTranDauSapToi() {
         try {
             arrTranDauSapToi = new ArrayList<>();
-
             Bitmap anhDaiDien = BitmapFactory.decodeResource(getResources(), R.drawable.icon_app);
             Bitmap anhBia = BitmapFactory.decodeResource(getResources(), R.drawable.anh_test_doi_bong);
             Call<List<DangTin>> call = jsonApiSanBong.getCactransapdienra(sharedPreferences.getInt("id", -1));
@@ -215,10 +214,10 @@ public class TaiKhoanDaLoginFragment extends Fragment {
         if(sharedPreferences.getString("anhbia", "") != ""){
             profilePictureView.setVisibility(View.INVISIBLE);
             imageProfilePicture2.setVisibility(View.VISIBLE);
-            Picasso.get().load(sharedPreferences.getString("anhbia", "")).into(imageProfilePicture2);
+            Picasso.get().load(APIUtils.BASE_URL+sharedPreferences.getString("anhbia", "")).into(imageProfilePicture2);
         }
         if (!sharedPreferences.getString("anhbia", "").equals("")) {
-            Picasso.get().load(sharedPreferences.getString("anhbia", "")).into(imageProfilePicture2);
+            Picasso.get().load(APIUtils.BASE_URL+sharedPreferences.getString("anhbia", "")).into(imageProfilePicture2);
         }
         Call<List<DoiBong_NguoiDung>> call = jsonApiDoiBongNGuoiDung.getCacDoiDangThamGia(sharedPreferences.getInt("id", -1));
         call.enqueue(new Callback<List<DoiBong_NguoiDung>>() {
