@@ -191,6 +191,7 @@ public class DangTinFragment extends Fragment {
                                 } else {
                                     Toast.makeText(getContext(), response.body().getContent(), Toast.LENGTH_SHORT).show();
                                 }
+                                getFragmentManager().popBackStack();
                             }
                             catch (Exception ex){
                                 Log.e("BBB", ex.toString());

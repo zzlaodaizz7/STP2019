@@ -31,4 +31,14 @@
         android:textSize="12sp"
         app:layout_constraintStart_toStartOf="@id/TextViewTenThanhVien"
         app:layout_constraintTop_toBottomOf="@id/TextViewTenThanhVien" />
+
+    <ImageView
+        android:id="@+id/ImageViewDeleteThanhVien"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:padding="5dp"
+        android:src="@drawable/delete_24dp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -62,7 +62,6 @@ public class DanhSachCacTinDaDangAdapter extends BaseAdapter {
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
         ViewHolder viewHolder = new ViewHolder();
-        ;
         if (view == null) {
             try {
                 LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
