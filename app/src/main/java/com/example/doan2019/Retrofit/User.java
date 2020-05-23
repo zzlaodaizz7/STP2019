@@ -31,10 +31,12 @@ public class User implements Serializable {
         this.update_at = update_at;
     }
 
-    public User(String ten, String email, String password) {
+    public User(String ten, String email, String password, String diachi, String sdt) {
         this.ten = ten;
         this.email = email;
         this.password = password;
+        this.diachi = diachi;
+        this.sdt = sdt;
     }
 
     public String getDiachi() {

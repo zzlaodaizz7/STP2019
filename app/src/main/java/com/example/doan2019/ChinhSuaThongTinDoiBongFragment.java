@@ -1,7 +1,15 @@
 package com.example.doan2019;
 
 import android.app.Dialog;
+import android.content.Context;
+import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.media.ExifInterface;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,6 +30,9 @@ import com.example.doan2019.Retrofit.APIUtils;
 import com.example.doan2019.Retrofit.DoiBong;
 import com.squareup.picasso.Picasso;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.ArrayList;
 
 public class ChinhSuaThongTinDoiBongFragment extends Fragment {
@@ -36,11 +47,14 @@ public class ChinhSuaThongTinDoiBongFragment extends Fragment {
     private DoiBong doibong;
     private ListView listViewTrinhDo;
     private Dialog dialogChonTrinhDo;
+    private int REQUEST_CODE_ANH_BIA = 123;
+    private int REQUEST_CODE_ANH_DAI_DIEN = 456;
+    private String realPath = "";
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_sua_thong_tin_doi_bong, container, false);
+        view = inflater.inflate(R.layout.fragment_chinh_sua_thong_tin_doi_bong, container, false);
 
         Mapping();
 
@@ -52,16 +66,117 @@ public class ChinhSuaThongTinDoiBongFragment extends Fragment {
 
         ClickThayAnhBia();
 
+        ClickThayAnhDaiDien();
+
         return view;
+    }
+
+    private void ClickThayAnhDaiDien() {
+        btnThayAnhDaiDien.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_PICK);
+                intent.setType("image/*");
+                startActivityForResult(intent, REQUEST_CODE_ANH_DAI_DIEN);
+            }
+        });
     }
 
     private void ClickThayAnhBia() {
         btnThayAnhBia.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent intent = new Intent(Intent.ACTION_PICK);
+                intent.setType("image/*");
+                startActivityForResult(intent, REQUEST_CODE_ANH_BIA);
             }
         });
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if( requestCode == REQUEST_CODE_ANH_BIA ) {
+            try {
+                Uri uri = data.getData();
+                realPath = getRealPathFromURI(uri);
+
+                int rotateImage = getCameraPhotoOrientation(getActivity(), uri, realPath);
+
+                try {
+                    InputStream inputStream = getActivity().getContentResolver().openInputStream(uri);
+                    Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+                    imgBia.setImageBitmap(bitmap);
+                    imgBia.setRotation(rotateImage);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+            }
+            catch (Exception ex){
+                Log.e("BBB", ex.toString());
+            }
+        }
+        else if(requestCode == REQUEST_CODE_ANH_DAI_DIEN){
+            try {
+                Uri uri = data.getData();
+                realPath = getRealPathFromURI(uri);
+
+                int rotateImage = getCameraPhotoOrientation(getActivity(), uri, realPath);
+
+                try {
+                    InputStream inputStream = getActivity().getContentResolver().openInputStream(uri);
+                    Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+                    imgDaiDien.setImageBitmap(bitmap);
+                    imgDaiDien.setRotation(rotateImage);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+            }
+            catch (Exception ex){
+                Log.e("BBB", ex.toString());
+            }
+        }
+    }
+
+    public String getRealPathFromURI (Uri contentUri) {
+        String path = null;
+        String[] proj = { MediaStore.MediaColumns.DATA };
+        Cursor cursor = getActivity().getContentResolver().query(contentUri, proj, null, null, null);
+        if (cursor.moveToFirst()) {
+            int column_index = cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA);
+            path = cursor.getString(column_index);
+        }
+        cursor.close();
+        return path;
+    }
+
+    public int getCameraPhotoOrientation(Context context, Uri imageUri, String imagePath){
+        int rotate = 0;
+        try {
+            context.getContentResolver().notifyChange(imageUri, null);
+            File imageFile = new File(imagePath);
+
+            ExifInterface exif = new ExifInterface(imageFile.getAbsolutePath());
+            int orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
+
+            switch (orientation) {
+                case ExifInterface.ORIENTATION_ROTATE_270:
+                    rotate = 270;
+                    break;
+                case ExifInterface.ORIENTATION_ROTATE_180:
+                    rotate = 180;
+                    break;
+                case ExifInterface.ORIENTATION_ROTATE_90:
+                    rotate = 90;
+                    break;
+            }
+
+            Log.i("RotateImage", "Exif orientation: " + orientation);
+            Log.i("RotateImage", "Rotate value: " + rotate);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rotate;
     }
 
     private void ClickTrinhDo() {

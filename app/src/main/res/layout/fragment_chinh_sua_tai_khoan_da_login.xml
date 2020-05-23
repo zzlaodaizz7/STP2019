@@ -175,6 +175,33 @@
                         app:layout_constraintTop_toBottomOf="@id/TextViewDiaChi" />
 
                     <TextView
+                        android:id="@+id/TextViewSoDienThoai"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="10dp"
+                        android:drawableLeft="@drawable/ic_phone_18dp"
+                        android:text="Số điện thoại"
+                        android:textColor="@android:color/black"
+                        android:textSize="13sp"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/EditTextDiaChi" />
+
+                    <EditText
+                        android:id="@+id/EditTextSoDienThoai"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginRight="10dp"
+                        android:background="@drawable/custom_edittext"
+                        android:singleLine="true"
+                        android:inputType="number"
+                        android:textSize="12sp"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/TextViewSoDienThoai" />
+
+                    <TextView
                         android:id="@+id/TextViewGioiThieuBanThan"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -185,7 +212,7 @@
                         android:textColor="@android:color/black"
                         android:textSize="13sp"
                         app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/EditTextDiaChi" />
+                        app:layout_constraintTop_toBottomOf="@id/EditTextSoDienThoai" />
 
                     <EditText
                         android:id="@+id/EditTextGioiThieuVeBan"
@@ -206,7 +233,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
                         android:layout_marginTop="10dp"
-                        android:drawableLeft="@drawable/ic_ban_than_18dp"
+                        android:drawableLeft="@drawable/ic_lock_18dp"
                         android:text="Mật khẩu mới"
                         android:textColor="@android:color/black"
                         android:textSize="13sp"
@@ -233,7 +260,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
                         android:layout_marginTop="10dp"
-                        android:drawableLeft="@drawable/ic_ban_than_18dp"
+                        android:drawableLeft="@drawable/ic_lock_18dp"
                         android:text="Nhập lại mật khẩu mới"
                         android:textColor="@android:color/black"
                         android:textSize="13sp"

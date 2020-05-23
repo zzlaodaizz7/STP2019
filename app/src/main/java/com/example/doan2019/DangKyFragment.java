@@ -27,8 +27,8 @@ import retrofit2.Response;
 
 public class DangKyFragment extends Fragment {
     private View view;
-    private EditText edtTen, edtTaiKhoan, edtMatKhau, edtNhapLaiMatKhau;
-    String ten, email, matkhau, nhaplaimatkhau;
+    private EditText edtTen, edtTaiKhoan, edtMatKhau, edtNhapLaiMatKhau, edtSDT, edtDiaChi;
+    String ten, email, matkhau, nhaplaimatkhau, sdt, diachi;
     private Button btnDangKy;
     JsonApiUser jsonApiUser;
     private CheckBox cbHienMatKhau;
@@ -77,17 +77,17 @@ public class DangKyFragment extends Fragment {
                 email = edtTaiKhoan.getText().toString();
                 matkhau = edtMatKhau.getText().toString();
                 nhaplaimatkhau = edtNhapLaiMatKhau.getText().toString();
+                sdt = edtSDT.getText().toString();
+                diachi = edtDiaChi.getText().toString();
 
-
-
-                if(ten.equals("") || email.equals("") || matkhau.equals("") || nhaplaimatkhau.equals("")){
+                if(ten.equals("") || email.equals("") || matkhau.equals("") || nhaplaimatkhau.equals("") || edtSDT.equals("")){
                     Toast.makeText(getActivity(), "Bạn hãy nhập đầy đủ thông tin", Toast.LENGTH_LONG).show();
                 }
                 else if(!matkhau.equals(nhaplaimatkhau)){
                     Toast.makeText(getActivity(), "Mật khẩu nhập lại không trùng khớp", Toast.LENGTH_LONG).show();
                 }
                 else{
-                    User user = new User(ten, email, matkhau);
+                    User user = new User(ten, email, matkhau, diachi, sdt);
                     Call<String> call = jsonApiUser.register(user);
                     call.enqueue(new Callback<String>() {
                         @Override
@@ -111,9 +111,12 @@ public class DangKyFragment extends Fragment {
         edtNhapLaiMatKhau.setText("");
         edtTaiKhoan.setText("");
         edtTen.setText("");
+        edtSDT.setText("");
+        edtDiaChi.setText("");
     }
 
     private void Mapping() {
+        edtSDT = view.findViewById(R.id.EditTextSoDienThoai);
         txtTrangThaiPass = view.findViewById(R.id.TextViewTrangThaiPass);
         imgVisibility = view.findViewById(R.id.ImageViewVisibility);
         cbHienMatKhau = view.findViewById(R.id.CheckBoxHienMatKhau);
@@ -122,5 +125,6 @@ public class DangKyFragment extends Fragment {
         edtMatKhau = view.findViewById(R.id.EditTextMatKhau);
         edtNhapLaiMatKhau = view.findViewById(R.id.EditTextNhapLaiMatKhau);
         btnDangKy = view.findViewById(R.id.ButtonDangKy);
+        edtDiaChi = view.findViewById(R.id.EditTextDiaChi);
     }
 }

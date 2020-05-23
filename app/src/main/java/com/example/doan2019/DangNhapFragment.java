@@ -143,7 +143,7 @@ public class DangNhapFragment extends Fragment {
                     header.put("value","application/json");
                     header.put("Accept","application/json");
                     UserLogin userLogin = new UserLogin(taiKhoan,matKhau);
-                    Call<UserLogin>  call = jsonApiSanBong.postLogin(header,userLogin);
+                    Call<UserLogin> call = jsonApiSanBong.postLogin(header,userLogin);
                     call.enqueue(new Callback<UserLogin>() {
                         @Override
                         public void onResponse(Call<UserLogin> call, Response<UserLogin> response) {
@@ -156,6 +156,10 @@ public class DangNhapFragment extends Fragment {
                                 editor.putString("email",response.body().getEmail());
                                 editor.putString("ten",response.body().getTen());
                                 editor.putString("anhbia", response.body().getAnhbia());
+                                editor.putString("sdt", response.body().getSdt());
+                                editor.putString("diachi", response.body().getDiachi());
+
+                                //Log.e("diachidangnhap", response.body().getDiachi());
 
                                 editor.commit();
                                 Log.d("anhbia", "anh bia: "+sharedPreferences.getString("anhbia",""));

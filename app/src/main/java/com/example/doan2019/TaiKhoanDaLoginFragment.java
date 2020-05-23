@@ -54,7 +54,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class TaiKhoanDaLoginFragment extends Fragment {
     ProfilePictureView profilePictureView;
     Button btnTaoDoiBong, btnTimDoi;
-    TextView txtName, txtEmail, txtDiaChi, txtDangXuat, txtChinhSua, txtNoiDungCacFCDangThamGia;
+    TextView txtName, txtEmail, txtDiaChi, txtDangXuat, txtChinhSua, txtNoiDungCacFCDangThamGia, txtSDT;
     private View view;
     ListView lvCacFCDangThamGia, lvTranDauSapToi;
     TranDauSapToiAdapter adapterTranDauSapToi;
@@ -214,12 +214,17 @@ public class TaiKhoanDaLoginFragment extends Fragment {
         //gan ten email
         txtName.setText(sharedPreferences.getString("ten", ""));
         txtEmail.setText(sharedPreferences.getString("email", ""));
-        if(sharedPreferences.getString("anhbia", "") != ""){
+        txtDiaChi.setText(sharedPreferences.getString("diachi", ""));
+        txtSDT.setText(sharedPreferences.getString("sdt", ""));
+        Toast.makeText(getActivity(), "Dia chi: " + sharedPreferences.getString("diachi", ""), Toast.LENGTH_SHORT).show();
+//        if(sharedPreferences.getString("anhbia", "") != ""){
+//            profilePictureView.setVisibility(View.INVISIBLE);
+//            imageProfilePicture2.setVisibility(View.VISIBLE);
+//            Picasso.get().load(APIUtils.BASE_URL+sharedPreferences.getString("anhbia", "")).into(imageProfilePicture2);
+//        }
+        if (!sharedPreferences.getString("anhbia", "").equals("")) {
             profilePictureView.setVisibility(View.INVISIBLE);
             imageProfilePicture2.setVisibility(View.VISIBLE);
-            Picasso.get().load(APIUtils.BASE_URL+sharedPreferences.getString("anhbia", "")).into(imageProfilePicture2);
-        }
-        if (!sharedPreferences.getString("anhbia", "").equals("")) {
             Picasso.get().load(APIUtils.BASE_URL+sharedPreferences.getString("anhbia", "")).into(imageProfilePicture2);
         }
         Call<List<DoiBong_NguoiDung>> call = jsonApiDoiBongNGuoiDung.getCacDoiDangThamGia(sharedPreferences.getInt("id", -1));
@@ -311,7 +316,6 @@ public class TaiKhoanDaLoginFragment extends Fragment {
         parameters.putString("fields", "id,name,email");
         graphRequest.setParameters(parameters);
         graphRequest.executeAsync();
-        txtDiaChi.setText("Hà Nội, Việt Nam");
     }
 
     private void ClickChinhSua() {
@@ -332,6 +336,8 @@ public class TaiKhoanDaLoginFragment extends Fragment {
                 editor.remove("email");
                 editor.remove("token");
                 editor.remove("id");
+                editor.remove("sdt");
+                editor.remove("diachi");
                 editor.commit();
                 editor = sharedPreferencesOneSignal.edit();
                 editor.putString("changed", "true");
@@ -359,5 +365,6 @@ public class TaiKhoanDaLoginFragment extends Fragment {
         txtDangXuat = view.findViewById(R.id.TextViewDangXuat);
         txtChinhSua = view.findViewById(R.id.TextViewChinhSua);
         imageProfilePicture2 = view.findViewById(R.id.ImageProfilePicture2);
+        txtSDT = view.findViewById(R.id.TextViewSoDienThoai);
     }
 }
