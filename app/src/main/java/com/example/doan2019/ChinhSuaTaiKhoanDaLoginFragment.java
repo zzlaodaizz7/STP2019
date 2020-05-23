@@ -331,6 +331,8 @@ public class ChinhSuaTaiKhoanDaLoginFragment extends Fragment {
         });
     }
 
+    //từ dòng 147 đến 332. dòng nào đó sẽ là up ảnh =))
+
     private void ClickThayAnh() {
         btnThayAnh.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -28,12 +28,14 @@ public class DanhSachThanhVienAdapter extends BaseAdapter {
     private Context context;
     private int layout;
     private List<DoiBong_NguoiDung> arrThanhVien;
+    private int quyen;
     Dialog dialogTinNhan;
 
-    public DanhSachThanhVienAdapter(Context context, int layout, List<DoiBong_NguoiDung> arrThanhVien) {
+    public DanhSachThanhVienAdapter(Context context, int layout, List<DoiBong_NguoiDung> arrThanhVien, int chucVu) {
         this.context = context;
         this.layout = layout;
         this.arrThanhVien = arrThanhVien;
+        this.quyen = chucVu;
     }
 
     @Override
@@ -82,35 +84,28 @@ public class DanhSachThanhVienAdapter extends BaseAdapter {
             if (thanhVien.getUser().getAnhbia() != null) {
                 Picasso.get().load(APIUtils.BASE_URL+thanhVien.getUser().getAnhbia()).into(viewHolder.imgDaiDien);
             }
+            if(quyen == 2)
+                viewHolder.imgDelete.setVisibility(View.INVISIBLE);
             viewHolder.txtTen.setText(thanhVien.getUser().getTen());
             if (thanhVien.getTrangthai() == 0) {
                 viewHolder.txtChucVu.setText("Đang chờ phê duyệt");
             } else if (thanhVien.getPhanquyenId() == 1) {
                 viewHolder.txtChucVu.setText("Đội trưởng đội bóng");
+                viewHolder.imgDelete.setVisibility(View.INVISIBLE);
             } else viewHolder.txtChucVu.setText("Thành viên đội bóng");
             viewHolder.imgDelete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
-
-                    //Set title for AlertDialog
                     builder.setTitle("");
-
-                    //Set body message of Dialog
                     builder.setMessage("Bạn có đồng ý xóa");
-
-                    //// Is dismiss when touching outside?
                     builder.setCancelable(true);
-
-                    //Positive Button and it onClicked event listener
                     builder.setPositiveButton("Xóa",
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
                                     Toast.makeText(v.getContext(), "Xóa!\nBắt sự kiện trong Adapter", Toast.LENGTH_SHORT).show();
                                 }
                             });
-
-                    //Negative Button
                     builder.setNegativeButton("Hủy",
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {

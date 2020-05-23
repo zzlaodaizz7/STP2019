@@ -39,25 +39,26 @@ import retrofit2.Response;
 
 public class ChiTietDoiBongDaThamGiaFragment extends Fragment {
     private View view;
-    TextView txtTenDoiBong, txtDiem, txtDiaChi, txtTrinhDo, txtNgayThanhlap, txtPhone, txtDanhSachCacTinDaDang, txtQuayLai;
-    ImageView imgAnhBia, imgAnhDaiDien;
-    Bundle bundle;
-    ListView lvDanhSachThanhVien, lvTranDauSapToi, lvLichSuTranDau;
-    DoiBong doiBong;
-    Dialog dialogTinNhan;
-    int dbnd_id, mode;
-    DanhSachThanhVienAdapter adapter;
-    TranDauSapToiAdapter adapterTranDauSapToi;
-    LichSuTranDauAdapter adapterLichSuTranDau;
-    ArrayList<DoiBong_NguoiDung> arrThanhVien;
-    ArrayList<TranDauDuongClass> arrTranDauSapToi;
-    ArrayList<TranDauDuongClass> arrLichSuTranDau;
-    LangNgheSuKienChuyenFragment langNgheSuKienChuyenFragment;
-    Button btnDonXinGiaNhap, btnRoiKhoiDoiBong, btnSuaThongTinDoiBong;
-    LinearLayout LLButtonDuyetDonXin, LLButtonRoiKhoiDoi;
-    SharedPreferences sharedPreferences;
-    JsonApiSanBong jsonApiSanBong;
-    JsonApiDoiBongNGuoiDung jsonApiDoiBongNGuoiDung;
+    private TextView txtTenDoiBong, txtDiem, txtDiaChi, txtTrinhDo, txtNgayThanhlap, txtPhone, txtDanhSachCacTinDaDang, txtQuayLai;
+    private ImageView imgAnhBia, imgAnhDaiDien;
+    private Bundle bundle;
+    private ListView lvDanhSachThanhVien, lvTranDauSapToi, lvLichSuTranDau;
+    private DoiBong doiBong;
+    private Dialog dialogTinNhan;
+    private int dbnd_id, mode;
+    private DanhSachThanhVienAdapter adapter;
+    private TranDauSapToiAdapter adapterTranDauSapToi;
+    private LichSuTranDauAdapter adapterLichSuTranDau;
+    private ArrayList<DoiBong_NguoiDung> arrThanhVien;
+    private ArrayList<TranDauDuongClass> arrTranDauSapToi;
+    private ArrayList<TranDauDuongClass> arrLichSuTranDau;
+    private LangNgheSuKienChuyenFragment langNgheSuKienChuyenFragment;
+    private Button btnDonXinGiaNhap, btnRoiKhoiDoiBong, btnSuaThongTinDoiBong;
+    private LinearLayout LLButtonDuyetDonXin, LLButtonRoiKhoiDoi;
+    private SharedPreferences sharedPreferences;
+    private JsonApiSanBong jsonApiSanBong;
+    private JsonApiDoiBongNGuoiDung jsonApiDoiBongNGuoiDung;
+    private int quyen;
 
     @Nullable
     @Override
@@ -386,7 +387,7 @@ public class ChiTietDoiBongDaThamGiaFragment extends Fragment {
 
                         arrThanhVien.add(doiBong_nguoiDung);
                     }
-                    adapter = new DanhSachThanhVienAdapter(getActivity(), R.layout.dong_thanh_vien, arrThanhVien);
+                    adapter = new DanhSachThanhVienAdapter(getActivity(), R.layout.dong_thanh_vien, arrThanhVien, quyen);
                     lvDanhSachThanhVien.setAdapter(adapter);
                     SetListViewHeightBasedOnChildren(adapter, lvDanhSachThanhVien);
                 }
@@ -483,6 +484,7 @@ public class ChiTietDoiBongDaThamGiaFragment extends Fragment {
         bundle = getArguments();
 
         DoiBong_NguoiDung doiBong_nguoiDung = (DoiBong_NguoiDung) bundle.getSerializable("doibong1");
+        quyen = doiBong_nguoiDung.getPhanquyenId();
 
         dbnd_id = doiBong_nguoiDung.getId();
 
@@ -517,6 +519,12 @@ public class ChiTietDoiBongDaThamGiaFragment extends Fragment {
 
         if (doiBong_nguoiDung.getPhanquyenId() != 1) {
             LLButtonDuyetDonXin.setVisibility(View.GONE);
+        }
+
+        if(quyen == 2) {
+            txtDanhSachCacTinDaDang.setVisibility(View.INVISIBLE);
+            btnSuaThongTinDoiBong.setVisibility(View.INVISIBLE);
+            btnDonXinGiaNhap.setVisibility(View.INVISIBLE);
         }
     }
 

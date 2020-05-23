@@ -79,6 +79,7 @@ public class TaiKhoanDaLoginFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_tai_khoan_da_login, container, false);
         langNgheSuKienChuyenFragment = (LangNgheSuKienChuyenFragment) getActivity();
         jsonApiSanBong = APIUtils.getJsonApiSanBong();
+
         Mapping();
 
         GanNoiDung();
@@ -216,7 +217,6 @@ public class TaiKhoanDaLoginFragment extends Fragment {
         txtEmail.setText(sharedPreferences.getString("email", ""));
         txtDiaChi.setText(sharedPreferences.getString("diachi", ""));
         txtSDT.setText(sharedPreferences.getString("sdt", ""));
-        Toast.makeText(getActivity(), "Dia chi: " + sharedPreferences.getString("diachi", ""), Toast.LENGTH_SHORT).show();
 //        if(sharedPreferences.getString("anhbia", "") != ""){
 //            profilePictureView.setVisibility(View.INVISIBLE);
 //            imageProfilePicture2.setVisibility(View.VISIBLE);
@@ -227,6 +227,7 @@ public class TaiKhoanDaLoginFragment extends Fragment {
             imageProfilePicture2.setVisibility(View.VISIBLE);
             Picasso.get().load(APIUtils.BASE_URL+sharedPreferences.getString("anhbia", "")).into(imageProfilePicture2);
         }
+
         Call<List<DoiBong_NguoiDung>> call = jsonApiDoiBongNGuoiDung.getCacDoiDangThamGia(sharedPreferences.getInt("id", -1));
         call.enqueue(new Callback<List<DoiBong_NguoiDung>>() {
             @Override

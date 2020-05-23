@@ -360,7 +360,7 @@ public class ChiTietDoiBongXepHangFragment extends Fragment {
                     }
                     arrThanhVien.add(doiBong_nguoiDung);
                 }
-                adapter = new DanhSachThanhVienAdapter(getActivity(), R.layout.dong_thanh_vien, arrThanhVien);
+                adapter = new DanhSachThanhVienAdapter(getActivity(), R.layout.dong_thanh_vien, arrThanhVien, 2);
                 lvDanhSachThanhVien.setAdapter(adapter);
                 SetListViewHeightBasedOnChildren(adapter, lvDanhSachThanhVien);
             }

@@ -75,4 +75,6 @@ public interface JsonApiSanBong {
                                 @Body HanhKiem hanhKiem);
     @GET("thongbao/{id}")
     Call<List<ThongBao>> getThongbao(@Path("id") int id);
+    @PUT("doibong/{id}")
+    Call<DoiBong> putSuathongtindoibong(@Body DoiBong doiBong);
 }

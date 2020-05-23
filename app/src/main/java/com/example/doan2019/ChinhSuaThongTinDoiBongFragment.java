@@ -28,12 +28,22 @@ import androidx.fragment.app.Fragment;
 
 import com.example.doan2019.Retrofit.APIUtils;
 import com.example.doan2019.Retrofit.DoiBong;
+import com.example.doan2019.Retrofit.JsonApiSanBong;
+import com.example.doan2019.Retrofit.JsonApiUser;
+import com.example.doan2019.Retrofit.User;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.ArrayList;
+
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ChinhSuaThongTinDoiBongFragment extends Fragment {
     private View view;
@@ -49,13 +59,19 @@ public class ChinhSuaThongTinDoiBongFragment extends Fragment {
     private Dialog dialogChonTrinhDo;
     private int REQUEST_CODE_ANH_BIA = 123;
     private int REQUEST_CODE_ANH_DAI_DIEN = 456;
-    private String realPath = "";
+    private JsonApiUser jsonApiUser;
+    JsonApiSanBong jsonApiSanBong;
+    private String realPathBia = "";
+    private String realPathDaiDien = "";
+    private String anhbia = "", anhDaiDien = "";
+    private DoiBong doiBong;
+    String base_Url = "/images/";
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_chinh_sua_thong_tin_doi_bong, container, false);
-
+        jsonApiSanBong = APIUtils.getJsonApiSanBong();
         Mapping();
 
         GanNoiDungDoiBong();
@@ -68,7 +84,66 @@ public class ChinhSuaThongTinDoiBongFragment extends Fragment {
 
         ClickThayAnhDaiDien();
 
+        ClickLuu();
+
         return view;
+    }
+
+    private void ClickLuu() {
+        btnLuu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Ảnh bìa
+                File fileBia = new File(realPathBia);
+                String file_pathBia = fileBia.getAbsolutePath();
+                String[] tenFileArray = file_pathBia.split("\\.");
+                file_pathBia = tenFileArray[0] + System.currentTimeMillis() + "." + tenFileArray[1];
+                Log.d("path", file_pathBia);
+                RequestBody requestBody =RequestBody.create(MediaType.parse("multipart/form-data"), fileBia);
+                MultipartBody.Part body = MultipartBody.Part.createFormData("uploaded_file", file_pathBia, requestBody);
+                Log.d("anhbia", body+"");
+                Call<String> call = jsonApiUser.upload(body);
+                call.enqueue(new Callback<String>() {
+                    @Override
+                    public void onResponse(Call<String> call, Response<String> response) {
+                        anhbia = response.body();
+                        doiBong.setAnhbia(base_Url+anhbia);
+                        Log.e("CCC", base_Url+anhbia + "");
+                    }
+
+                    @Override
+                    public void onFailure(Call<String> call, Throwable t) {
+                        Log.e("BBB", "Up ảnh bìa thất bại" + t.toString());
+                    }
+                });
+
+                //Ảnh đại diện
+                File fileDaiDien = new File(realPathDaiDien);
+                String file_pathDaiDien = fileDaiDien.getAbsolutePath();
+                String[] tenFileArrayDaiDien = file_pathDaiDien.split("\\.");
+                file_pathDaiDien = tenFileArrayDaiDien[0] + System.currentTimeMillis() + "." + tenFileArrayDaiDien[1];
+                Log.d("path", file_pathDaiDien);
+                RequestBody requestBodyDaiDien =RequestBody.create(MediaType.parse("multipart/form-data"), fileDaiDien);
+                MultipartBody.Part bodyDaiDien = MultipartBody.Part.createFormData("uploaded_file", file_pathDaiDien, requestBodyDaiDien);
+                Log.d("anhbia", bodyDaiDien+"");
+                Call<String> callDaiDien = jsonApiUser.upload(bodyDaiDien);
+                callDaiDien.enqueue(new Callback<String>() {
+                    @Override
+                    public void onResponse(Call<String> call, Response<String> response) {
+                        anhDaiDien = response.body();
+                        doiBong.setAnhdaidien(base_Url+anhDaiDien);
+                        Log.e("CCC", base_Url+anhDaiDien + "");
+                    }
+
+                    @Override
+                    public void onFailure(Call<String> call, Throwable t) {
+                        Log.e("BBB", "Up ảnh bìa thất bại" + t.toString());
+                    }
+                });
+                //DoiBong a = new DoiBong(edtTen.getText().toString(),btnTrinhDo.getText().toString(),edtDiaChi.getText().toString(),edtSoDienThoai.getText().toString(),);
+                //Call<DoiBong> doiBongCall = jsonApiSanBong.putSuathongtindoibong()
+            }
+        });
     }
 
     private void ClickThayAnhDaiDien() {
@@ -99,9 +174,9 @@ public class ChinhSuaThongTinDoiBongFragment extends Fragment {
         if( requestCode == REQUEST_CODE_ANH_BIA ) {
             try {
                 Uri uri = data.getData();
-                realPath = getRealPathFromURI(uri);
+                realPathBia = getRealPathFromURI(uri);
 
-                int rotateImage = getCameraPhotoOrientation(getActivity(), uri, realPath);
+                int rotateImage = getCameraPhotoOrientation(getActivity(), uri, realPathBia);
 
                 try {
                     InputStream inputStream = getActivity().getContentResolver().openInputStream(uri);
@@ -119,9 +194,9 @@ public class ChinhSuaThongTinDoiBongFragment extends Fragment {
         else if(requestCode == REQUEST_CODE_ANH_DAI_DIEN){
             try {
                 Uri uri = data.getData();
-                realPath = getRealPathFromURI(uri);
+                realPathDaiDien = getRealPathFromURI(uri);
 
-                int rotateImage = getCameraPhotoOrientation(getActivity(), uri, realPath);
+                int rotateImage = getCameraPhotoOrientation(getActivity(), uri, realPathDaiDien);
 
                 try {
                     InputStream inputStream = getActivity().getContentResolver().openInputStream(uri);
