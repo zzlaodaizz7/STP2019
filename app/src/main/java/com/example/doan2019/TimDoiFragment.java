@@ -115,6 +115,7 @@ public class TimDoiFragment extends Fragment {
         clickChonTimTranDau();
 
         clickChonListViewTinTimDoi();
+
         swipeRefresh();
         return view;
     }
@@ -640,7 +641,6 @@ public class TimDoiFragment extends Fragment {
     }
 
     private void clickChonTimTranDau() {
-
         btnTimTranDau.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

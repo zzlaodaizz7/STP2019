@@ -16,9 +16,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,14 +31,11 @@ import com.example.doan2019.Retrofit.DoiBong_NguoiDung;
 import com.example.doan2019.Retrofit.JsonApiDoiBongNGuoiDung;
 import com.example.doan2019.Retrofit.JsonApiSanBong;
 import com.example.doan2019.Retrofit.User;
-import com.example.doan2019.Retrofit.UserLogin;
 import com.squareup.picasso.Picasso;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ChiTietDoiBongDaThamGiaFragment extends Fragment {
     private View view;
@@ -58,7 +53,7 @@ public class ChiTietDoiBongDaThamGiaFragment extends Fragment {
     ArrayList<TranDauDuongClass> arrTranDauSapToi;
     ArrayList<TranDauDuongClass> arrLichSuTranDau;
     LangNgheSuKienChuyenFragment langNgheSuKienChuyenFragment;
-    Button btnDonXinGiaNhap, btnRoiKhoiDoiBong;
+    Button btnDonXinGiaNhap, btnRoiKhoiDoiBong, btnSuaThongTinDoiBong;
     LinearLayout LLButtonDuyetDonXin, LLButtonRoiKhoiDoi;
     SharedPreferences sharedPreferences;
     JsonApiSanBong jsonApiSanBong;
@@ -71,6 +66,7 @@ public class ChiTietDoiBongDaThamGiaFragment extends Fragment {
         langNgheSuKienChuyenFragment = (LangNgheSuKienChuyenFragment) getActivity();
 
         jsonApiSanBong = APIUtils.getJsonApiSanBong();
+
         Mapping();
 
         KhoiTaoListViewThanhVien();
@@ -96,7 +92,23 @@ public class ChiTietDoiBongDaThamGiaFragment extends Fragment {
 
         clickRoiKhoiDoiBong();
 
+        ClickSuaThongTinDoiBong();
+
         return view;
+    }
+
+    private void ClickSuaThongTinDoiBong() {
+        btnSuaThongTinDoiBong.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ChinhSuaThongTinDoiBongFragment chinhSuaThongTinDoiBongFragment = new ChinhSuaThongTinDoiBongFragment();
+                Bundle bundleSuaThongTinDoiBong = new Bundle();
+                bundleSuaThongTinDoiBong.putSerializable("doibong", doiBong);
+                chinhSuaThongTinDoiBongFragment.setArguments(bundleSuaThongTinDoiBong);
+
+                langNgheSuKienChuyenFragment.ChuyenHuongFragment(chinhSuaThongTinDoiBongFragment);
+            }
+        });
     }
 
     private void clickRoiKhoiDoiBong() {
@@ -478,6 +490,7 @@ public class ChiTietDoiBongDaThamGiaFragment extends Fragment {
 
         jsonApiDoiBongNGuoiDung = APIUtils.getJsonApiDoiBongNguoiDung();
 
+        btnSuaThongTinDoiBong = view.findViewById(R.id.ButtonSuaThongTinDoiBong);
         btnDonXinGiaNhap = view.findViewById(R.id.ButtonDuyetDon);
         lvTranDauSapToi = view.findViewById(R.id.ListViewTranDauSapToi);
         lvLichSuTranDau = view.findViewById(R.id.ListViewLichSuTranDau);

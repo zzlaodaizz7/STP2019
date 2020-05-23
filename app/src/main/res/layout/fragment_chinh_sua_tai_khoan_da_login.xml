@@ -28,6 +28,7 @@
         android:clickable="true"
         android:drawableLeft="@drawable/back_18dp"
         android:padding="10dp"
+        android:textSize="13sp"
         android:text="Quay lại"
         android:textColor="@drawable/custom_text_color"
         app:layout_constraintLeft_toLeftOf="parent"

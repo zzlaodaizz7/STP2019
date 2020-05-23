@@ -32,6 +32,7 @@ import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.login.widget.ProfilePictureView;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -88,11 +89,19 @@ public class ChinhSuaTaiKhoanDaLoginFragment extends Fragment {
         calluser.enqueue(new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
-                user = response.body();
-                edtTen.setText(user.getTen());
-                edtEmail.setText(user.getEmail());
-                if(!user.getDiachi().equals("------"))
-                    edtDiaChi.setText(user.getDiachi());
+                try {
+                    user = response.body();
+                    if(user.getAnhbia() != null){
+                        Picasso.get().load(APIUtils.BASE_URL+user.getAnhbia()).into(imageProfilePicture2);
+                    }
+                    edtTen.setText(user.getTen());
+                    edtEmail.setText(user.getEmail());
+                    if (!user.getDiachi().equals("------"))
+                        edtDiaChi.setText(user.getDiachi());
+                }
+                catch (Exception ex){
+                    Log.e("BBB", ex.toString());
+                }
             }
             @Override
             public void onFailure(Call<User> call, Throwable t) {
