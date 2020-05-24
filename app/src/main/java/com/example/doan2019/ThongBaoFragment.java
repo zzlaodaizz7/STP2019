@@ -3,6 +3,7 @@ package com.example.doan2019;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -67,13 +68,18 @@ public class ThongBaoFragment extends Fragment {
         call.enqueue(new Callback<List<ThongBao>>() {
             @Override
             public void onResponse(Call<List<ThongBao>> call, Response<List<ThongBao>> response) {
+                try {
 //                System.out.println(response.code());
-                List<ThongBao> thongBao = response.body();
-                for (ThongBao thongBao1 : thongBao){
-                    notificationArrayList.add(new Notification(thongBao1.getNoidung()));
+                    List<ThongBao> thongBao = response.body();
+                    for (ThongBao thongBao1 : thongBao) {
+                        notificationArrayList.add(new Notification(thongBao1.getNoidung()));
+                    }
+                    NotificationAdapter notificationAdapter = new NotificationAdapter(getActivity(), R.layout._notification, notificationArrayList);
+                    listViewNotification.setAdapter(notificationAdapter);
                 }
-                NotificationAdapter notificationAdapter = new NotificationAdapter(getActivity(), R.layout._notification, notificationArrayList);
-                listViewNotification.setAdapter(notificationAdapter);
+                catch (Exception ex){
+                    Log.e("BBB", ex.toString());
+                }
             }
 
             @Override

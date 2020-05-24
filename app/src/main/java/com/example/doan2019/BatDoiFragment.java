@@ -277,7 +277,7 @@ public class BatDoiFragment extends Fragment {
             });
         }
         else{
-            Toast.makeText(getActivity(), "Xóa tin "+dangTinDTO.getId(), Toast.LENGTH_LONG).show();
+//            Toast.makeText(getActivity(), "Xóa tin "+dangTinDTO.getId(), Toast.LENGTH_LONG).show();
             btnBatDoi.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
