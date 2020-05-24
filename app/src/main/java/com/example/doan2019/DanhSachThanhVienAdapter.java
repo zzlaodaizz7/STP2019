@@ -19,10 +19,15 @@ import androidx.fragment.app.DialogFragment;
 import com.example.doan2019.Retrofit.APIUtils;
 import com.example.doan2019.Retrofit.DoiBong;
 import com.example.doan2019.Retrofit.DoiBong_NguoiDung;
+import com.example.doan2019.Retrofit.JsonApiSanBong;
 import com.example.doan2019.Retrofit.User;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class DanhSachThanhVienAdapter extends BaseAdapter {
     private Context context;
@@ -30,6 +35,7 @@ public class DanhSachThanhVienAdapter extends BaseAdapter {
     private List<DoiBong_NguoiDung> arrThanhVien;
     private int quyen;
     Dialog dialogTinNhan;
+    JsonApiSanBong jsonApiSanBong;
 
     public DanhSachThanhVienAdapter(Context context, int layout, List<DoiBong_NguoiDung> arrThanhVien, int chucVu) {
         this.context = context;
@@ -96,6 +102,7 @@ public class DanhSachThanhVienAdapter extends BaseAdapter {
             viewHolder.imgDelete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+
                     AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
                     builder.setTitle("");
                     builder.setMessage("Bạn có đồng ý xóa");
@@ -103,13 +110,28 @@ public class DanhSachThanhVienAdapter extends BaseAdapter {
                     builder.setPositiveButton("Xóa",
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
-                                    Toast.makeText(v.getContext(), "Xóa!\nBắt sự kiện trong Adapter", Toast.LENGTH_SHORT).show();
+                                    jsonApiSanBong = APIUtils.getJsonApiSanBong();
+//                                    DoiBong_NguoiDung a = new DoiBong_NguoiDung(arrThanhVien.get(i).getDoibongId(),arrThanhVien.get(i).getUserId());
+                                    DoiBong_NguoiDung a = arrThanhVien.get(i);
+                                    Call<DoiBong_NguoiDung> doiBong_nguoiDungCall = jsonApiSanBong.deleteThanhvien(a);
+                                    doiBong_nguoiDungCall.enqueue(new Callback<DoiBong_NguoiDung>() {
+                                        @Override
+                                        public void onResponse(Call<DoiBong_NguoiDung> call, Response<DoiBong_NguoiDung> response) {
+                                            Toast.makeText(context, "Xóa thành công", Toast.LENGTH_SHORT).show();
+                                        }
+
+                                        @Override
+                                        public void onFailure(Call<DoiBong_NguoiDung> call, Throwable t) {
+                                            //Toast.makeText(context, "Xóa thất bại", Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+//                                    Toast.makeText(context, arrThanhVien.get(i).getDoibongId() + "", Toast.LENGTH_SHORT).show();
+//                                    Toast.makeText(context, arrThanhVien.get(i).getUserId() + "", Toast.LENGTH_SHORT).show();
                                 }
                             });
                     builder.setNegativeButton("Hủy",
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
-                                    Toast.makeText(v.getContext(), "Hủy!\nBắt sự kiện trong Adapter", Toast.LENGTH_SHORT).show();
                                 }
                             });
                     AlertDialog dialog = builder.create();

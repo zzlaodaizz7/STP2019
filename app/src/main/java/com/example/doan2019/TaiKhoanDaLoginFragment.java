@@ -225,7 +225,10 @@ public class TaiKhoanDaLoginFragment extends Fragment {
         if (!sharedPreferences.getString("anhbia", "").equals("")) {
             profilePictureView.setVisibility(View.INVISIBLE);
             imageProfilePicture2.setVisibility(View.VISIBLE);
-            Picasso.get().load(APIUtils.BASE_URL+sharedPreferences.getString("anhbia", "")).into(imageProfilePicture2);
+            Picasso.get()
+                    .load(APIUtils.BASE_URL+sharedPreferences.getString("anhbia", ""))
+                    .rotate(0)
+                    .into(imageProfilePicture2);
         }
 
         Call<List<DoiBong_NguoiDung>> call = jsonApiDoiBongNGuoiDung.getCacDoiDangThamGia(sharedPreferences.getInt("id", -1));

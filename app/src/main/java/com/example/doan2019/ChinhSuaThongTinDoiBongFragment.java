@@ -21,6 +21,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -93,55 +94,73 @@ public class ChinhSuaThongTinDoiBongFragment extends Fragment {
         btnLuu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Ảnh bìa
-                File fileBia = new File(realPathBia);
-                String file_pathBia = fileBia.getAbsolutePath();
-                String[] tenFileArray = file_pathBia.split("\\.");
-                file_pathBia = tenFileArray[0] + System.currentTimeMillis() + "." + tenFileArray[1];
-                Log.d("path", file_pathBia);
-                RequestBody requestBody =RequestBody.create(MediaType.parse("multipart/form-data"), fileBia);
-                MultipartBody.Part body = MultipartBody.Part.createFormData("uploaded_file", file_pathBia, requestBody);
-                Log.d("anhbia", body+"");
-                Call<String> call = jsonApiUser.upload(body);
-                call.enqueue(new Callback<String>() {
+
+
+
+//                //Ảnh bìa
+//                File fileBia = new File(realPathBia);
+//                String file_pathBia = fileBia.getAbsolutePath();
+//                String[] tenFileArray = file_pathBia.split("\\.");
+//                file_pathBia = tenFileArray[0] + System.currentTimeMillis() + "." + tenFileArray[1];
+//                Log.d("path", file_pathBia);
+//                RequestBody requestBody =RequestBody.create(MediaType.parse("multipart/form-data"), fileBia);
+//                MultipartBody.Part body = MultipartBody.Part.createFormData("uploaded_file", file_pathBia, requestBody);
+//                Log.d("anhbia", body+"");
+//                Call<String> call = jsonApiUser.upload(body);
+//                call.enqueue(new Callback<String>() {
+//                    @Override
+//                    public void onResponse(Call<String> call, Response<String> response) {
+//                        anhbia = response.body();
+//                        doiBong.setAnhbia(base_Url+anhbia);
+//                        Log.e("CCC", base_Url+anhbia + "");
+//                    }
+//
+//                    @Override
+//                    public void onFailure(Call<String> call, Throwable t) {
+//                        Log.e("BBB", "Up ảnh bìa thất bại" + t.toString());
+//                    }
+//                });
+//
+//                //Ảnh đại diện
+//                File fileDaiDien = new File(realPathDaiDien);
+//                String file_pathDaiDien = fileDaiDien.getAbsolutePath();
+//                String[] tenFileArrayDaiDien = file_pathDaiDien.split("\\.");
+//                file_pathDaiDien = tenFileArrayDaiDien[0] + System.currentTimeMillis() + "." + tenFileArrayDaiDien[1];
+//                Log.d("path", file_pathDaiDien);
+//                RequestBody requestBodyDaiDien =RequestBody.create(MediaType.parse("multipart/form-data"), fileDaiDien);
+//                MultipartBody.Part bodyDaiDien = MultipartBody.Part.createFormData("uploaded_file", file_pathDaiDien, requestBodyDaiDien);
+//                Log.d("anhbia", bodyDaiDien+"");
+//                Call<String> callDaiDien = jsonApiUser.upload(bodyDaiDien);
+//                callDaiDien.enqueue(new Callback<String>() {
+//                    @Override
+//                    public void onResponse(Call<String> call, Response<String> response) {
+//                        anhDaiDien = response.body();
+//                        doiBong.setAnhdaidien(base_Url+anhDaiDien);
+//                        Log.e("CCC", base_Url+anhDaiDien + "");
+//                    }
+//
+//                    @Override
+//                    public void onFailure(Call<String> call, Throwable t) {
+//                        Log.e("BBB", "Up ảnh bìa thất bại" + t.toString());
+//                    }
+//                });
+
+
+                DoiBong a = new DoiBong(edtTen.getText().toString(),btnTrinhDo.getText().toString(),edtDiaChi.getText().toString(),edtSoDienThoai.getText().toString());
+                System.out.println(edtTen.getText().toString());
+                Call<DoiBong> doiBongCall = jsonApiSanBong.putSuathongtindoibong(a,idDoiBong);
+                System.out.println("ID: "+idDoiBong);
+                doiBongCall.enqueue(new Callback<DoiBong>() {
                     @Override
-                    public void onResponse(Call<String> call, Response<String> response) {
-                        anhbia = response.body();
-                        doiBong.setAnhbia(base_Url+anhbia);
-                        Log.e("CCC", base_Url+anhbia + "");
+                    public void onResponse(Call<DoiBong> call, Response<DoiBong> response) {
+                        Toast.makeText(getActivity(), "Sửa thông tin thành công", Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
-                    public void onFailure(Call<String> call, Throwable t) {
-                        Log.e("BBB", "Up ảnh bìa thất bại" + t.toString());
+                    public void onFailure(Call<DoiBong> call, Throwable t) {
+                        System.out.println("loi :" + t.getMessage());
                     }
                 });
-
-                //Ảnh đại diện
-                File fileDaiDien = new File(realPathDaiDien);
-                String file_pathDaiDien = fileDaiDien.getAbsolutePath();
-                String[] tenFileArrayDaiDien = file_pathDaiDien.split("\\.");
-                file_pathDaiDien = tenFileArrayDaiDien[0] + System.currentTimeMillis() + "." + tenFileArrayDaiDien[1];
-                Log.d("path", file_pathDaiDien);
-                RequestBody requestBodyDaiDien =RequestBody.create(MediaType.parse("multipart/form-data"), fileDaiDien);
-                MultipartBody.Part bodyDaiDien = MultipartBody.Part.createFormData("uploaded_file", file_pathDaiDien, requestBodyDaiDien);
-                Log.d("anhbia", bodyDaiDien+"");
-                Call<String> callDaiDien = jsonApiUser.upload(bodyDaiDien);
-                callDaiDien.enqueue(new Callback<String>() {
-                    @Override
-                    public void onResponse(Call<String> call, Response<String> response) {
-                        anhDaiDien = response.body();
-                        doiBong.setAnhdaidien(base_Url+anhDaiDien);
-                        Log.e("CCC", base_Url+anhDaiDien + "");
-                    }
-
-                    @Override
-                    public void onFailure(Call<String> call, Throwable t) {
-                        Log.e("BBB", "Up ảnh bìa thất bại" + t.toString());
-                    }
-                });
-                //DoiBong a = new DoiBong(edtTen.getText().toString(),btnTrinhDo.getText().toString(),edtDiaChi.getText().toString(),edtSoDienThoai.getText().toString(),);
-                //Call<DoiBong> doiBongCall = jsonApiSanBong.putSuathongtindoibong()
             }
         });
     }

@@ -8,7 +8,9 @@ import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
+import retrofit2.http.HTTP;
 import retrofit2.http.HeaderMap;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
@@ -76,5 +78,10 @@ public interface JsonApiSanBong {
     @GET("thongbao/{id}")
     Call<List<ThongBao>> getThongbao(@Path("id") int id);
     @PUT("doibong/{id}")
-    Call<DoiBong> putSuathongtindoibong(@Body DoiBong doiBong);
+    Call<DoiBong> putSuathongtindoibong(@Body DoiBong doiBong,@Path("id") int id);
+//    @DELETE("thanhvien/1")
+//    Call<DoiBong_NguoiDung> deleteThanhvien(@Body DoiBong_NguoiDung doiBong_nguoiDung);
+
+    @HTTP(method = "DELETE", path = "thanhvien/1", hasBody = true)
+    Call<DoiBong_NguoiDung> deleteThanhvien(@Body DoiBong_NguoiDung doiBong_nguoiDung);
 }

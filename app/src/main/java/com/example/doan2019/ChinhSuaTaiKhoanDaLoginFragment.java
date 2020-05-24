@@ -188,6 +188,7 @@ public class ChinhSuaTaiKhoanDaLoginFragment extends Fragment {
                                     @Override
                                     public void onResponse(Call<String> call, Response<String> response) {
                                         anhbia = response.body();
+                                        Log.e("LinkAnh", base_Url+anhbia);
                                         user.setAnhbia(base_Url+anhbia);
                                         //Log.d("update", user.getAnhbia());
                                         Call<String> call1 = jsonApiUser.update(user, sharedPreferences.getInt("id", -1));
@@ -212,7 +213,7 @@ public class ChinhSuaTaiKhoanDaLoginFragment extends Fragment {
                                                 editor.putString("anhbia", base_Url+anhbia);
                                                 editor.commit();
                                                 try {
-                                                    Toast.makeText(getActivity(), "Update tai khoan", Toast.LENGTH_LONG).show();
+                                                    //Toast.makeText(getActivity(), "Update tai khoan", Toast.LENGTH_LONG).show();
                                                 }
                                                 catch (Exception ex){
                                                     Log.e("BBB", ex.toString());
@@ -221,7 +222,7 @@ public class ChinhSuaTaiKhoanDaLoginFragment extends Fragment {
 
                                             @Override
                                             public void onFailure(Call<String> call, Throwable t) {
-
+                                                Log.e("Lỗi", t.getMessage());
                                             }
                                         });
                                         //Log.d("upload", "thanh cong"+response.body());
@@ -236,6 +237,7 @@ public class ChinhSuaTaiKhoanDaLoginFragment extends Fragment {
                         }
                     }
                     else{
+                        //Toast.makeText(getActivity(), "Không đổi mật khẩu", Toast.LENGTH_SHORT).show();
                         if(realPath.equals("")){
                             Call<String> call1 = jsonApiUser.update(user, sharedPreferences.getInt("id", -1));
                             call1.enqueue(new Callback<String>() {
@@ -280,6 +282,7 @@ public class ChinhSuaTaiKhoanDaLoginFragment extends Fragment {
                                 @Override
                                 public void onResponse(Call<String> call, Response<String> response) {
                                     anhbia = response.body();
+                                    Log.e("LinkAnh", base_Url+anhbia);
                                     user.setAnhbia(base_Url+anhbia);
                                     //Log.d("update", user.getAnhbia());
                                     Call<String> call1 = jsonApiUser.update(user, sharedPreferences.getInt("id", -1));
@@ -303,12 +306,6 @@ public class ChinhSuaTaiKhoanDaLoginFragment extends Fragment {
                                             }
                                             editor.putString("anhbia", base_Url+anhbia);
                                             editor.commit();
-                                            try {
-                                                Toast.makeText(getActivity(), "Update tai khoan", Toast.LENGTH_LONG).show();
-                                            }
-                                            catch (Exception ex){
-                                                Log.e("BBB", ex.toString());
-                                            }
                                         }
 
                                         @Override
@@ -330,8 +327,6 @@ public class ChinhSuaTaiKhoanDaLoginFragment extends Fragment {
             }
         });
     }
-
-    //từ dòng 147 đến 332. dòng nào đó sẽ là up ảnh =))
 
     private void ClickThayAnh() {
         btnThayAnh.setOnClickListener(new View.OnClickListener() {

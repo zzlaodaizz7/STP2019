@@ -163,14 +163,19 @@ public class BatDoiFragment extends Fragment {
         call.enqueue(new Callback<List<DoiBong>>() {
             @Override
             public void onResponse(Call<List<DoiBong>> call, Response<List<DoiBong>> response) {
-                List<DoiBong> doiBongs = response.body();
-                for (DoiBong doiBong : doiBongs){
-                    doiBongArrayList.add(doiBong);
-                    if(doiBong.getUser_id() == dangTinDTO.getDoitruongdoidangtin_id()){
-                        btnBatDoi.setText("Hủy trận đấu");
+                try {
+                    List<DoiBong> doiBongs = response.body();
+                    for (DoiBong doiBong : doiBongs) {
+                        doiBongArrayList.add(doiBong);
+                        if (doiBong.getUser_id() == dangTinDTO.getDoitruongdoidangtin_id()) {
+                            btnBatDoi.setText("Hủy trận đấu");
+                        }
                     }
+                    Log.d("batdoi", doiBongArrayList + "555");
                 }
-                Log.d("batdoi", doiBongArrayList+"555");
+                catch (Exception ex){
+                    Log.e("BBB", ex.toString());
+                }
             }
             @Override
             public void onFailure(Call<List<DoiBong>> call, Throwable t) {

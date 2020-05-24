@@ -54,13 +54,11 @@ public class DoiBong implements Serializable {
         this.created_at = created_at;
     }
 
-    public DoiBong(String ten, String trinhdo, String diachi, String sdt, String anhbia, String anhdaidien) {
+    public DoiBong(String ten, String trinhdo, String diachi, String sdt) {
         this.ten = ten;
         this.trinhdo = trinhdo;
         this.diachi = diachi;
         this.sdt = sdt;
-        this.anhbia = anhbia;
-        this.anhdaidien = anhdaidien;
     }
 
     public Timestamp getUpdated_at() {
