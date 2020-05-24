@@ -11,7 +11,9 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -37,13 +39,16 @@ public class TimSanFragment extends Fragment {
     private View view;
     private ListView lvSanBong, lvSoNguoi;
     Button btnTimKiem, btnSoNguoi;
-    ArrayList<SanBongClass> arrSanBong;
+    ArrayList<SanBongClass> arrSanBong,arrSanBong1;
     TimSanAdapter adapter;
     Dialog dialogSoNguoi;
     ArrayList<Integer> arrSoNguoi;
     LangNgheSuKienChuyenFragment langNgheSuKienChuyenFragment;
     Retrofit retrofit;
     JsonApiSanBong jsonApiSanBong;
+    Dialog dialogChonTrangThai, dialogChonTrinhDo, dialogChonTimKiemTheoTenHaySan, dialogTinNhan;
+    TextView txtChonNgay, tvTinNhan, tvHuy;
+    EditText edtTimKiem;
     GifTextView gifLoading;
     @Nullable
     @Override
@@ -68,11 +73,52 @@ public class TimSanFragment extends Fragment {
         btnTimKiem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Toast.makeText(getActivity(), "Click Button Tìm Kiếm", Toast.LENGTH_SHORT).show();
+                arrSanBong1 = new ArrayList<>();
+                for (int i = 0; i< arrSanBong.size(); i++){
+                    if (!btnSoNguoi.getText().toString().equals("Số người")){
+                        if (arrSanBong.get(i).getSoNguoi() == Integer.parseInt(btnSoNguoi.getText().toString())){
+                            int[] images = {R.drawable.a1,R.drawable.a2,R.drawable.a3,R.drawable.a4};
+                            Random rand = new Random();
+                            Bitmap largeIcon = BitmapFactory.decodeResource(getResources(), images[rand.nextInt(images.length)]);
+                            arrSanBong1.add(new SanBongClass(arrSanBong.get(i).getId(), arrSanBong.get(i).getTenSanBong(), arrSanBong.get(i).getSoNguoi(), arrSanBong.get(i).getDiaChi(), arrSanBong.get(i).getMoTa(), arrSanBong.get(i).getSoDienThoai(), largeIcon));
+                        }
+                    }else if (!edtTimKiem.getText().toString().equals("")) {
+                        if (arrSanBong.get(i).getTenSanBong().toLowerCase().contains(edtTimKiem.getText().toString().toLowerCase())) {
+                            int[] images = {R.drawable.a1,R.drawable.a2,R.drawable.a3,R.drawable.a4};
+                            Random rand = new Random();
+                            Bitmap largeIcon = BitmapFactory.decodeResource(getResources(), images[rand.nextInt(images.length)]);
+                            arrSanBong1.add(new SanBongClass(arrSanBong.get(i).getId(), arrSanBong.get(i).getTenSanBong(), arrSanBong.get(i).getSoNguoi(), arrSanBong.get(i).getDiaChi(), arrSanBong.get(i).getMoTa(), arrSanBong.get(i).getSoDienThoai(), largeIcon));
+                        }
+                    }
+                }
+                if (arrSanBong1.size()==0){
+                    showDialogTinNhan("Không có dữ liệu");
+                    hideDialogTinNhan();
+                }else{
+                    adapter = new TimSanAdapter(getActivity(), R.layout.dong_san_bong, arrSanBong1);
+                    lvSanBong.setAdapter(adapter);
+                    SetListViewHeightBasedOnChildren(adapter, lvSanBong);
+                }
             }
         });
     }
+    private void showDialogTinNhan(String text) {
+        dialogTinNhan = new Dialog(getActivity());
+        dialogTinNhan.setContentView(R.layout.dialog_message);
+        dialogTinNhan.show();
+        tvTinNhan = (TextView) dialogTinNhan.findViewById(R.id.tvTinNhan);
+        tvTinNhan.setText(text);
+    }
 
+    private void hideDialogTinNhan() {
+        TextView tvHuy = dialogTinNhan.findViewById(R.id.tvHuy);
+        tvHuy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialogTinNhan.cancel();
+            }
+        });
+    }
     private void ClickSoNguoi() {
         btnSoNguoi.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -87,7 +133,7 @@ public class TimSanFragment extends Fragment {
         lvSoNguoi.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                btnSoNguoi.setText(arrSoNguoi.get(i).toString() + " người");
+                btnSoNguoi.setText(arrSoNguoi.get(i).toString());
                 dialogSoNguoi.cancel();
             }
         });
@@ -201,6 +247,7 @@ public class TimSanFragment extends Fragment {
     private void Mapping() {
         gifLoading = (GifTextView) view.findViewById(R.id.gifloading);
         btnTimKiem = view.findViewById(R.id.ButtonTimKiemSanBong);
+        edtTimKiem = view.findViewById(R.id.EditTextTimKiemSanBong);
         btnSoNguoi = view.findViewById(R.id.ButtonSoNguoi);
         lvSanBong = view.findViewById(R.id.ListViewSanBong);
     }
