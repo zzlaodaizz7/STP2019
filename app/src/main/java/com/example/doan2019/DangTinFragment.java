@@ -49,11 +49,11 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class DangTinFragment extends Fragment {
     EditText edtKeoDau;
-    ListView lvDoiBong, lvSanBong;
+    ListView lvDoiBong, lvSanBong, lvChonGio;
     TextView tvChonFC, tvChonNgay, tvChonSan, tvChonGio, tvBack;
     Button tvTime1, tvTime2, tvTime3, btnDangTin;
     Dialog dialogChonDoiBong, dialogChonSan, dialogChonGio;
-    ArrayList<String> arrayDoiBong, arraySanBong;
+    ArrayList<String> arrayDoiBong, arraySanBong, arrGio;
     ConstraintLayout layoutChonNgay, layoutChonSan;
     Switch btnCoSan;
     List<SanBong> sanBongs;
@@ -230,27 +230,11 @@ public class DangTinFragment extends Fragment {
     }
 
     private void BatSuKienClickDialogChonGio() {
-        tvTime1.setOnClickListener(new View.OnClickListener() {
+        lvChonGio.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onClick(View v) {
-                tvChonGio.setText(tvTime1.getText());
-                IDKhungGio = 1;
-                dialogChonGio.cancel();
-            }
-        });
-        tvTime2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                tvChonGio.setText(tvTime2.getText());
-                IDKhungGio = 2;
-                dialogChonGio.cancel();
-            }
-        });
-        tvTime3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                tvChonGio.setText(tvTime3.getText());
-                IDKhungGio = 3;
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                IDKhungGio = position + 7;
+                tvChonGio.setText(arrGio.get(IDKhungGio - 7));
                 dialogChonGio.cancel();
             }
         });
@@ -259,10 +243,19 @@ public class DangTinFragment extends Fragment {
     private void ShowDialogChonGio() {
         dialogChonGio = new Dialog(getActivity());
         dialogChonGio.setContentView(R.layout.dialog_chon_gio);
+        lvChonGio = dialogChonGio.findViewById(R.id.ListViewGio);
+        arrGio = new ArrayList<>();
+        for(int i = 7; i <= 21; i++){
+            if(i < 10){
+                arrGio.add("0" + i + ":00");
+            }
+            else{
+                arrGio.add(i + ":00");
+            }
+        }
+        ArrayAdapter adapterGio = new ArrayAdapter(getActivity(), android.R.layout.simple_list_item_1, arrGio);
+        lvChonGio.setAdapter(adapterGio);
         dialogChonGio.show();
-        tvTime1 = dialogChonGio.findViewById(R.id.TextViewTime1);
-        tvTime2 = dialogChonGio.findViewById(R.id.TextViewTime2);
-        tvTime3 = dialogChonGio.findViewById(R.id.TextViewTime3);
     }
 
     private void ClickCoHoacKhongSan() {

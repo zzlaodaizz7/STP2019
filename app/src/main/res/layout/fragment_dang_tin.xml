@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,305 +7,326 @@
     android:orientation="vertical"
     tools:context=".DangTinFragment">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:background="@drawable/custom_mau_action_bar_dx"
-        android:paddingBottom="5dp"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent">
-
-        <TextView
-            android:id="@+id/TextViewBack"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:drawableLeft="@drawable/back_18dp"
-            android:gravity="center"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
-            android:text="Quay lại"
-            android:textColor="@drawable/custom_text_color"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="Đăng Tin"
-            android:textColor="#FFF"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/LayoutTren"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="9"
-        android:background="@color/mauNenXam"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <androidx.cardview.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_margin="20dp"
-            app:cardElevation="10dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="#fff"
-                android:orientation="vertical"
-                tools:layout_editor_absoluteX="16dp"
-                tools:layout_editor_absoluteY="6dp">
-
-                <TextView
-                    android:id="@+id/TextViewTenDoi"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:drawableLeft="@drawable/person_black_18dp"
-                    android:padding="5dp"
-                    android:text="Tên đội"
-                    android:textColor="@color/mauChuDam"
-                    android:textSize="13sp"
-                    android:textStyle="bold"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"></TextView>
-
-                <TextView
-                    android:id="@+id/TextViewChonFC"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:background="@drawable/custom_edittext"
-                    android:drawableRight="@drawable/icon_updown_18dp"
-                    android:padding="5dp"
-                    android:text="- Chọn FC"
-                    android:textColor="@color/mauChuNhat"
-                    android:textSize="12sp"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/TextViewTenDoi"></TextView>
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/ConstrainLayoutChonNgay"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginBottom="5dp"
-                    android:background="@drawable/custom_khung_chon_ngay"
-                    android:paddingLeft="5dp"
-                    android:paddingTop="10dp"
-                    android:paddingBottom="10dp"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/TextViewChonFC">
-
-                    <TextView
-                        android:id="@+id/TextViewChonNgay"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Chọn ngày"
-                        android:textColor="@color/mauChuDam"
-                        android:textSize="13sp"
-                        android:textStyle="bold"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"></TextView>
-
-                    <TextView
-                        android:id="@+id/BenPhaiTextViewChonNgay"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:drawableRight="@drawable/icon_right_18dp"
-                        android:text="--:--"
-                        android:textColor="@color/mauChuNhat"
-                        android:textSize="12sp"
-                        app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"></TextView>
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/ConstrainLayoutCoSanHayKhong"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginBottom="5dp"
-                    android:padding="5dp"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/ConstrainLayoutChonNgay">
-
-                    <TextView
-                        android:id="@+id/TextViewSanNha"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Có sân nhà"
-                        android:textColor="@color/mauChuDam"
-                        android:textSize="13sp"
-                        android:textStyle="bold"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"></TextView>
-
-                    <Switch
-                        android:id="@+id/ButtonCoSan"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"></Switch>
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/ConstrainLayoutChonSanBong"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="5dp"
-                    android:visibility="gone"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/ConstrainLayoutCoSanHayKhong">
-
-                    <ImageView
-                        android:id="@+id/ImageViewIconYardSoccer"
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:scaleType="centerInside"
-                        android:src="@drawable/icon_yard_soccer"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"></ImageView>
-
-                    <TextView
-                        android:id="@+id/TextViewSan"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="5dp"
-                        android:text="Chọn sân"
-                        android:textColor="@color/mauChuDam"
-                        android:textSize="13sp"
-                        android:textStyle="bold"
-                        app:layout_constraintLeft_toRightOf="@id/ImageViewIconYardSoccer"
-                        app:layout_constraintTop_toTopOf="parent"></TextView>
-
-                    <TextView
-                        android:id="@+id/TextViewChonSan"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:layout_marginBottom="5dp"
-                        android:background="@drawable/custom_edittext"
-                        android:drawableRight="@drawable/icon_updown_18dp"
-                        android:padding="5dp"
-                        android:text="- Chọn sân"
-                        android:textColor="@color/mauChuNhat"
-                        android:textSize="12sp"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/TextViewSan"></TextView>
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/ConstrainLayoutChonThoiGian"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="5dp">
-
-                    <TextView
-                        android:id="@+id/TextViewChonThoiGian"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:drawableLeft="@drawable/ic_clock_18dp"
-                        android:text="Chọn khung giờ"
-                        android:textColor="@color/mauChuDam"
-                        android:textSize="13sp"
-                        android:textStyle="bold"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"></TextView>
-
-                    <TextView
-                        android:id="@+id/TextViewChonKhungGio"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:layout_marginBottom="5dp"
-                        android:background="@drawable/custom_edittext"
-                        android:drawableRight="@drawable/icon_updown_18dp"
-                        android:padding="5dp"
-                        android:text="- Chọn khung giờ"
-                        android:textColor="@color/mauChuNhat"
-                        android:textSize="12sp"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/TextViewChonThoiGian"></TextView>
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/ConstrainLayoutChonKeo"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="5dp">
-
-                    <TextView
-                        android:id="@+id/TextViewChonKeo"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:drawableLeft="@drawable/ic_keo_18dp"
-                        android:text="Kèo"
-                        android:textColor="@color/mauChuDam"
-                        android:textSize="13sp"
-                        android:textStyle="bold"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"></TextView>
-
-                    <EditText
-                        android:id="@+id/EditTextNhapKeo"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:background="@drawable/custom_edittext"
-                        android:hint="3 - 4 - 5 Sân nước..."
-                        android:padding="5dp"
-                        android:singleLine="true"
-                        android:textColor="@color/mauChuNhat"
-                        android:textSize="12sp"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/TextViewChonKeo"></EditText>
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-            </LinearLayout>
-        </androidx.cardview.widget.CardView>
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="2"
-        android:background="@color/mauNenXam"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <Button
-            android:id="@+id/ButtonDangTin"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="8"
-            android:background="@drawable/custom_button_default_dx"
-            android:text="Đăng Tin"
-            android:textAllCaps="false"
-            android:layout_marginLeft="30dp"
-            android:layout_marginRight="30dp"
-            android:textColor="@drawable/custom_text_color"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/LayoutTren"
-            tools:ignore="NotSibling"></Button>
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="10dp"
-            app:layout_constraintTop_toBottomOf="@id/ButtonDangTin" />
+            android:layout_height="0dp"
+            android:layout_weight="1.5"
+            android:background="@drawable/custom_mau_action_bar_dx" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</LinearLayout>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/TextViewBack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/back_18dp"
+        android:gravity="center"
+        android:padding="10dp"
+        android:text="Quay lại"
+        android:textColor="@drawable/custom_text_color"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="10dp"
+        android:text="Đăng Tin"
+        android:textColor="#FFF"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/TextViewBack">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/LayoutTren"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/CardView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:cardElevation="10dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="#fff"
+                        android:orientation="vertical"
+                        tools:layout_editor_absoluteX="16dp"
+                        tools:layout_editor_absoluteY="6dp">
+
+                        <TextView
+                            android:id="@+id/TextViewTenDoi"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:drawableLeft="@drawable/person_black_18dp"
+                            android:padding="5dp"
+                            android:text="Tên đội"
+                            android:textColor="@color/mauChuDam"
+                            android:textSize="13sp"
+                            android:textStyle="bold"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"></TextView>
+
+                        <TextView
+                            android:id="@+id/TextViewChonFC"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="5dp"
+                            android:background="@drawable/custom_edittext"
+                            android:drawableRight="@drawable/icon_updown_18dp"
+                            android:padding="5dp"
+                            android:text="- Chọn FC"
+                            android:textColor="@color/mauChuNhat"
+                            android:textSize="12sp"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/TextViewTenDoi"></TextView>
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/ConstrainLayoutChonNgay"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginBottom="5dp"
+                            android:background="@drawable/custom_khung_chon_ngay"
+                            android:paddingLeft="5dp"
+                            android:paddingTop="10dp"
+                            android:paddingBottom="10dp"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/TextViewChonFC">
+
+                            <TextView
+                                android:id="@+id/TextViewChonNgay"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Chọn ngày"
+                                android:textColor="@color/mauChuDam"
+                                android:textSize="13sp"
+                                android:textStyle="bold"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintLeft_toLeftOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"></TextView>
+
+                            <TextView
+                                android:id="@+id/BenPhaiTextViewChonNgay"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:drawableRight="@drawable/icon_right_18dp"
+                                android:text="--:--"
+                                android:textColor="@color/mauChuNhat"
+                                android:textSize="12sp"
+                                app:layout_constraintRight_toRightOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"></TextView>
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/ConstrainLayoutCoSanHayKhong"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginBottom="5dp"
+                            android:padding="5dp"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/ConstrainLayoutChonNgay">
+
+                            <TextView
+                                android:id="@+id/TextViewSanNha"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Có sân nhà"
+                                android:textColor="@color/mauChuDam"
+                                android:textSize="13sp"
+                                android:textStyle="bold"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintLeft_toLeftOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"></TextView>
+
+                            <Switch
+                                android:id="@+id/ButtonCoSan"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                app:layout_constraintRight_toRightOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"></Switch>
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/ConstrainLayoutChonSanBong"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:padding="5dp"
+                            android:visibility="gone"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/ConstrainLayoutCoSanHayKhong">
+
+                            <ImageView
+                                android:id="@+id/ImageViewIconYardSoccer"
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:scaleType="centerInside"
+                                android:src="@drawable/icon_yard_soccer"
+                                app:layout_constraintLeft_toLeftOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"></ImageView>
+
+                            <TextView
+                                android:id="@+id/TextViewSan"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="5dp"
+                                android:text="Chọn sân"
+                                android:textColor="@color/mauChuDam"
+                                android:textSize="13sp"
+                                android:textStyle="bold"
+                                app:layout_constraintLeft_toRightOf="@id/ImageViewIconYardSoccer"
+                                app:layout_constraintTop_toTopOf="parent"></TextView>
+
+                            <TextView
+                                android:id="@+id/TextViewChonSan"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="5dp"
+                                android:layout_marginBottom="5dp"
+                                android:background="@drawable/custom_edittext"
+                                android:drawableRight="@drawable/icon_updown_18dp"
+                                android:padding="5dp"
+                                android:text="- Chọn sân"
+                                android:textColor="@color/mauChuNhat"
+                                android:textSize="12sp"
+                                app:layout_constraintLeft_toLeftOf="parent"
+                                app:layout_constraintTop_toBottomOf="@id/TextViewSan"></TextView>
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/ConstrainLayoutChonThoiGian"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:padding="5dp">
+
+                            <TextView
+                                android:id="@+id/TextViewChonThoiGian"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:drawableLeft="@drawable/ic_clock_18dp"
+                                android:text="Chọn khung giờ"
+                                android:textColor="@color/mauChuDam"
+                                android:textSize="13sp"
+                                android:textStyle="bold"
+                                app:layout_constraintLeft_toLeftOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"></TextView>
+
+                            <TextView
+                                android:id="@+id/TextViewChonKhungGio"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="5dp"
+                                android:layout_marginBottom="5dp"
+                                android:background="@drawable/custom_edittext"
+                                android:drawableRight="@drawable/icon_updown_18dp"
+                                android:padding="5dp"
+                                android:text="- Chọn khung giờ"
+                                android:textColor="@color/mauChuNhat"
+                                android:textSize="12sp"
+                                app:layout_constraintLeft_toLeftOf="parent"
+                                app:layout_constraintTop_toBottomOf="@id/TextViewChonThoiGian"></TextView>
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/ConstrainLayoutChonKeo"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:padding="5dp">
+
+                            <TextView
+                                android:id="@+id/TextViewChonKeo"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:drawableLeft="@drawable/ic_keo_18dp"
+                                android:text="Kèo"
+                                android:textColor="@color/mauChuDam"
+                                android:textSize="13sp"
+                                android:textStyle="bold"
+                                app:layout_constraintLeft_toLeftOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"></TextView>
+
+                            <EditText
+                                android:id="@+id/EditTextNhapKeo"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="5dp"
+                                android:background="@drawable/custom_edittext"
+                                android:hint="3 - 4 - 5 Sân nước..."
+                                android:padding="5dp"
+                                android:singleLine="true"
+                                android:textColor="@color/mauChuNhat"
+                                android:textSize="12sp"
+                                app:layout_constraintLeft_toLeftOf="parent"
+                                app:layout_constraintTop_toBottomOf="@id/TextViewChonKeo"></EditText>
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintTop_toTopOf="parent">
+
+                            <Button
+                                android:id="@+id/ButtonDangTin"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="30dp"
+                                android:layout_marginRight="30dp"
+                                android:layout_weight="8"
+                                android:background="@drawable/custom_button_default_dx"
+                                android:text="Đăng Tin"
+                                android:textAllCaps="false"
+                                android:textColor="@drawable/custom_text_color"
+                                app:layout_constraintLeft_toLeftOf="parent"
+                                app:layout_constraintRight_toRightOf="parent"
+                                app:layout_constraintTop_toBottomOf="@id/LayoutTren"
+                                tools:ignore="NotSibling"></Button>
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="20dp"
+                                app:layout_constraintTop_toBottomOf="@id/ButtonDangTin" />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    app:layout_constraintTop_toBottomOf="@id/CardView" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
+    </ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>
