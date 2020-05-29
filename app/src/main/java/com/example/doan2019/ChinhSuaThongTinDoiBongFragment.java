@@ -51,13 +51,13 @@ public class ChinhSuaThongTinDoiBongFragment extends Fragment {
     private ArrayList<String> levelArrayList;
     private ImageView imgDaiDien, imgBia;
     private Button btnThayAnhDaiDien, btnThayAnhBia, btnLuu, btnTrinhDo;
-    private TextView txtQuayLai;
+    private TextView txtQuayLai, tvChonKhungGio, tvQuayLai, tvXongChonGio;
     private EditText edtTen, edtDiaChi, edtSoDienThoai;
     private int idDoiBong;
     private Bundle bundle;
     private DoiBong doibong;
-    private ListView listViewTrinhDo;
-    private Dialog dialogChonTrinhDo;
+    private ListView listViewTrinhDo, lvChonGio;
+    private Dialog dialogChonTrinhDo, dialogChonGio;
     private int REQUEST_CODE_ANH_BIA = 123;
     private int REQUEST_CODE_ANH_DAI_DIEN = 456;
     private JsonApiUser jsonApiUser;
@@ -66,7 +66,9 @@ public class ChinhSuaThongTinDoiBongFragment extends Fragment {
     private String realPathDaiDien = "";
     private String anhbia = "", anhDaiDien = "";
     private DoiBong doiBong;
+    private ArrayList<Boolean> arrGioDaChon;
     String base_Url = "/images/";
+    ArrayList<String> arrGio;
 
     @Nullable
     @Override
@@ -81,6 +83,8 @@ public class ChinhSuaThongTinDoiBongFragment extends Fragment {
 
         ClickTrinhDo();
 
+        ClickSuaGio();
+
         ClickThayAnhBia();
 
         ClickThayAnhDaiDien();
@@ -88,6 +92,92 @@ public class ChinhSuaThongTinDoiBongFragment extends Fragment {
         ClickLuu();
 
         return view;
+    }
+
+    private void ClickSuaGio() {
+        tvChonKhungGio.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ShowDialogChonGio();
+                BatSuKienClickDialogChonGio();
+            }
+        });
+    }
+
+    private void BatSuKienClickDialogChonGio() {
+        lvChonGio.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if(arrGioDaChon.get(position) == false)
+                    arrGioDaChon.set(position, true);
+                else
+                    arrGioDaChon.set(position, false);
+            }
+        });
+    }
+
+    private void ShowDialogChonGio() {
+        dialogChonGio = new Dialog(getActivity());
+        dialogChonGio.setContentView(R.layout.dialog_chon_gio_tao_doi_bong);
+        lvChonGio = dialogChonGio.findViewById(R.id.ListViewGio);
+        tvQuayLai = dialogChonGio.findViewById(R.id.TextViewBack);
+        tvXongChonGio = dialogChonGio.findViewById(R.id.TextViewXong);
+
+        tvQuayLai.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialogChonGio.cancel();
+            }
+        });
+
+        tvXongChonGio.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String gioDaChon = "";
+                int j = 1;
+                for(int i = 7; i <= 21; i++){
+                    if(arrGioDaChon.get(i - 7) == true && i < 10){
+                        gioDaChon += "0" + i + ":00";
+                        j = i;
+                        break;
+                    }
+                    else if(arrGioDaChon.get(i - 7) == true && i >= 10){
+                        gioDaChon += i + ":00";
+                        j = i;
+                        break;
+                    }
+                }
+                if(j != 1) {
+                    for (int i = j + 1; i <= 21; i++) {
+                        if (arrGioDaChon.get(i - 7) == true && i < 10) {
+                            gioDaChon += ", 0" + i + ":00";
+                        } else if (arrGioDaChon.get(i - 7) == true && i >= 10) {
+                            gioDaChon += ", " + i + ":00";
+                        }
+                    }
+                }
+                if(!gioDaChon.equals(""))
+                    tvChonKhungGio.setText(gioDaChon);
+                dialogChonGio.cancel();
+            }
+        });
+
+        lvChonGio.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+        arrGio = new ArrayList<>();
+        for(int i = 7; i <= 21; i++){
+            if(i < 10){
+                arrGio.add("0" + i + ":00");
+            }
+            else{
+                arrGio.add(i + ":00");
+            }
+        }
+        ArrayAdapter adapterGio = new ArrayAdapter(getActivity(), android.R.layout.simple_list_item_multiple_choice, arrGio);
+        lvChonGio.setAdapter(adapterGio);
+        for(int i = 7; i <= 21; i++){
+            lvChonGio.setItemChecked(i - 7, arrGioDaChon.get(i - 7));
+        }
+        dialogChonGio.show();
     }
 
     private void ClickLuu() {
@@ -339,6 +429,11 @@ public class ChinhSuaThongTinDoiBongFragment extends Fragment {
     }
 
     private void Mapping() {
+        arrGioDaChon = new ArrayList<>();
+        for(int i = 7; i <= 21; i++){
+            arrGioDaChon.add(false);
+        }
+        tvChonKhungGio = view.findViewById(R.id.TextViewChonKhungGio);
         imgBia = view.findViewById(R.id.ImageViewBiaDoiBong);
         imgDaiDien = view.findViewById(R.id.ImageViewDaiDienDoiBong);
         edtTen = view.findViewById(R.id.EditTextTen);

@@ -170,14 +170,43 @@
                         android:id="@+id/ButtonTrinhDoDoiBong"
                         android:layout_width="100dp"
                         android:layout_height="30dp"
-                        android:layout_marginTop="10dp"
                         android:layout_marginLeft="10dp"
+                        android:layout_marginTop="10dp"
                         android:background="@drawable/custom_button_quen_mat_khau"
                         android:drawableRight="@drawable/ic_down_18dp"
                         android:text="Trình độ"
                         android:textAllCaps="false"
                         android:textColor="@drawable/custom_text_button_quen_mat_khau"
                         android:textSize="13sp" />
+
+                    <TextView
+                        android:id="@+id/TextViewKhungGioHayChoi"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="10dp"
+                        android:drawableLeft="@drawable/ic_location_18dp"
+                        android:text="Khung giờ chơi"
+                        android:textColor="@android:color/black"
+                        android:textSize="13sp"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/ButtonTrinhDoDoiBong" />
+
+                    <TextView
+                        android:id="@+id/TextViewChonKhungGio"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginRight="10dp"
+                        android:background="@drawable/custom_edittext"
+                        android:drawableRight="@drawable/icon_updown_18dp"
+                        android:padding="5dp"
+                        android:text="- Chọn khung giờ"
+                        android:textColor="@color/mauChuNhat"
+                        android:textSize="12sp"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/TextViewKhungGioHayChoi"></TextView>
 
                     <TextView
                         android:id="@+id/TextViewSoDienThoai"
