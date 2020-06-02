@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import androidx.annotation.NonNull;
@@ -27,7 +28,9 @@ import androidx.fragment.app.DialogFragment;
 
 import com.example.doan2019.Retrofit.APIUtils;
 import com.example.doan2019.Retrofit.DoiBong;
+import com.example.doan2019.Retrofit.JsonApiKhungGio;
 import com.example.doan2019.Retrofit.JsonApiSanBong;
+import com.example.doan2019.Retrofit.KhungGio;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -45,14 +48,18 @@ public class TaoDoiBongDialog extends DialogFragment {
     ListView listViewTrinhDo;
     Dialog dialogChonGio;
     ListView lvChonGio;
+    List<KhungGio> khungGios;
     ArrayList<String> levelArrayList;
     SharedPreferences sharedPreferences;
     Retrofit retrofit;
     JsonApiSanBong jsonApiSanBong;
     ArrayList<Boolean> arrGioDaChon;
     ArrayList<String> arrGio;
+    ArrayList<Integer> arrIDKhungGioDaChon;
     String Auth = "";
     Integer IDUser = -1;
+    JsonApiKhungGio jsonApiKhungGio;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -60,8 +67,10 @@ public class TaoDoiBongDialog extends DialogFragment {
         sharedPreferences = getActivity().getSharedPreferences("dataLogin", Context.MODE_PRIVATE);
 
         jsonApiSanBong = APIUtils.getJsonApiSanBong();
-        IDUser = sharedPreferences.getInt("id",0);
-        Auth = sharedPreferences.getString("token","");
+        IDUser = sharedPreferences.getInt("id", 0);
+        Auth = sharedPreferences.getString("token", "");
+
+        LoadListKhungGio();
 
         Mapping();
 
@@ -81,16 +90,16 @@ public class TaoDoiBongDialog extends DialogFragment {
             @Override
             public void onClick(View v) {
                 ShowDialogChonGio();
-                BatSuKienClickDialogChonGio();
+                BatSuKienClickListViewChonGio();
             }
         });
     }
 
-    private void BatSuKienClickDialogChonGio() {
+    private void BatSuKienClickListViewChonGio() {
         lvChonGio.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if(arrGioDaChon.get(position) == false)
+                if (arrGioDaChon.get(position) == false)
                     arrGioDaChon.set(position, true);
                 else
                     arrGioDaChon.set(position, false);
@@ -102,6 +111,15 @@ public class TaoDoiBongDialog extends DialogFragment {
         dialogChonGio = new Dialog(getActivity());
         dialogChonGio.setContentView(R.layout.dialog_chon_gio_tao_doi_bong);
         lvChonGio = dialogChonGio.findViewById(R.id.ListViewGio);
+        lvChonGio.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+        ArrayAdapter adapterGio = new ArrayAdapter(getActivity(), android.R.layout.simple_list_item_multiple_choice, arrGio);
+        lvChonGio.setAdapter(adapterGio);
+
+        for (int i = 0; i < arrGio.size(); i++) {
+            lvChonGio.setItemChecked(i, arrGioDaChon.get(i));
+        }
+        dialogChonGio.show();
+
         tvQuayLai = dialogChonGio.findViewById(R.id.TextViewBack);
         tvXongChonGio = dialogChonGio.findViewById(R.id.TextViewXong);
 
@@ -115,51 +133,30 @@ public class TaoDoiBongDialog extends DialogFragment {
         tvXongChonGio.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                arrIDKhungGioDaChon = new ArrayList<>();
                 String gioDaChon = "";
                 int j = 1;
-                for(int i = 7; i <= 21; i++){
-                    if(arrGioDaChon.get(i - 7) == true && i < 10){
-                        gioDaChon += "0" + i + ":00";
-                        j = i;
-                        break;
-                    }
-                    else if(arrGioDaChon.get(i - 7) == true && i >= 10){
-                        gioDaChon += i + ":00";
+                for (int i = 0; i < arrGio.size(); i++) {
+                    if (arrGioDaChon.get(i) == true) {
+                        arrIDKhungGioDaChon.add(i);
+                        gioDaChon += arrGio.get(i);
                         j = i;
                         break;
                     }
                 }
-                if(j != 1) {
-                    for (int i = j + 1; i <= 21; i++) {
-                        if (arrGioDaChon.get(i - 7) == true && i < 10) {
-                            gioDaChon += ", 0" + i + ":00";
-                        } else if (arrGioDaChon.get(i - 7) == true && i >= 10) {
-                            gioDaChon += ", " + i + ":00";
+                if (j != 1) {
+                    for (int i = j + 1; i < arrGio.size(); i++) {
+                        if (arrGioDaChon.get(i) == true) {
+                            arrIDKhungGioDaChon.add(i);
+                            gioDaChon += ", " + arrGio.get(i);
                         }
                     }
                 }
-                if(!gioDaChon.equals(""))
+                if (!gioDaChon.equals(""))
                     tvChonKhungGio.setText(gioDaChon);
                 dialogChonGio.cancel();
             }
         });
-
-        lvChonGio.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
-        arrGio = new ArrayList<>();
-        for(int i = 7; i <= 21; i++){
-            if(i < 10){
-                arrGio.add("0" + i + ":00");
-            }
-            else{
-                arrGio.add(i + ":00");
-            }
-        }
-        ArrayAdapter adapterGio = new ArrayAdapter(getActivity(), android.R.layout.simple_list_item_multiple_choice, arrGio);
-        lvChonGio.setAdapter(adapterGio);
-        for(int i = 7; i <= 21; i++){
-            lvChonGio.setItemChecked(i - 7, arrGioDaChon.get(i - 7));
-        }
-        dialogChonGio.show();
     }
 
     private void ClickClosePopup() {
@@ -179,19 +176,19 @@ public class TaoDoiBongDialog extends DialogFragment {
 //                System.out.println(btnTrinhDo.getText());
 //                System.out.println(Auth);
 //                System.out.println(IDUser);
-                String content="";
+                String content = "";
                 if (edtTen.getText().toString().matches("")) {
                     content += "Bạn chưa nhập tên đội! \n";
                 }
-                if (btnTrinhDo.getText().equals("Trình độ")){
+                if (btnTrinhDo.getText().equals("Trình độ")) {
                     content += "Bạn chưa chọn trình độ";
                 }
-                if (content == ""){
-                    Map<String,String> header = new HashMap<>();
-                    header.put("value","application/json");
-                    header.put("Accept","application/json");
-                    header.put("Authorization","Bearer "+Auth);
-                    DoiBong doiBong = new DoiBong(edtTen.getText().toString(),btnTrinhDo.getText().toString(),edtDiaChi.getText().toString(),edtDienThoai.getText().toString(),IDUser);
+                if (content == "") {
+                    Map<String, String> header = new HashMap<>();
+                    header.put("value", "application/json");
+                    header.put("Accept", "application/json");
+                    header.put("Authorization", "Bearer " + Auth);
+                    DoiBong doiBong = new DoiBong(edtTen.getText().toString(), btnTrinhDo.getText().toString(), edtDiaChi.getText().toString(), edtDienThoai.getText().toString(), IDUser);
                     Call<DoiBong> call = jsonApiSanBong.postTaodoibongs(header, doiBong);
                     try {
                         call.enqueue(new Callback<DoiBong>() {
@@ -217,12 +214,11 @@ public class TaoDoiBongDialog extends DialogFragment {
 
                             }
                         });
-                    }
-                    catch (Exception ex){
+                    } catch (Exception ex) {
                         Log.e("BBB", ex.toString());
                     }
                     TaoDoiBongDialog.this.getDialog().cancel();
-                }else{
+                } else {
                     Toast.makeText(getContext(), content, Toast.LENGTH_SHORT).show();
                 }
 
@@ -240,11 +236,33 @@ public class TaoDoiBongDialog extends DialogFragment {
         });
     }
 
+    private void LoadListKhungGio() {
+        arrGio = new ArrayList<>();
+        jsonApiKhungGio = APIUtils.getJsonApiKhungGio();
+        Call<List<KhungGio>> call = jsonApiKhungGio.getKhungGios();
+        call.enqueue(new Callback<List<KhungGio>>() {
+            @Override
+            public void onResponse(Call<List<KhungGio>> call, Response<List<KhungGio>> response) {
+                khungGios = response.body();
+                for (KhungGio khungGio : khungGios) {
+                    arrGio.add(khungGio.getThoigian());
+//                    Log.e("BBB", "arrGio: " + khungGio.getThoigian());
+//                    Log.e("BBB", "size_arrGio: " + arrGio.size());
+                }
+                arrGioDaChon = new ArrayList<>();
+                for (int i = 0; i < arrGio.size(); i++) {
+                    arrGioDaChon.add(false);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<KhungGio>> call, Throwable t) {
+
+            }
+        });
+    }
+
     private void Mapping() {
-        arrGioDaChon = new ArrayList<>();
-        for(int i = 7; i <= 21; i++){
-            arrGioDaChon.add(false);
-        }
         tvChonKhungGio = view.findViewById(R.id.TextViewChonKhungGio);
         txtXong = view.findViewById(R.id.TextViewXongTaoDoiBong);
         imvClose = view.findViewById(R.id.ImageViewCLosePopup);
