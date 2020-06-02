@@ -10,4 +10,7 @@ import retrofit2.http.HeaderMap;
 public interface JsonApiKhungGio {
     @GET("khunggio")
     Call<List<KhungGio>> getKhungGios(@HeaderMap Map<String, String> headers);
+
+    @GET("khunggio")
+    Call<List<KhungGio>> getKhungGios();
 }

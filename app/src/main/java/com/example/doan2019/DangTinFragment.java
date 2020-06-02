@@ -37,7 +37,9 @@ import java.util.Map;
 import com.example.doan2019.Retrofit.APIUtils;
 import com.example.doan2019.Retrofit.DangTin;
 import com.example.doan2019.Retrofit.DoiBong;
+import com.example.doan2019.Retrofit.JsonApiKhungGio;
 import com.example.doan2019.Retrofit.JsonApiSanBong;
+import com.example.doan2019.Retrofit.KhungGio;
 import com.example.doan2019.Retrofit.SanBong;
 
 import androidx.fragment.app.FragmentManager;
@@ -58,6 +60,7 @@ public class DangTinFragment extends Fragment {
     Switch btnCoSan;
     List<SanBong> sanBongs;
     List<DoiBong> doiBongs;
+    List<KhungGio> khungGios;
     int IDSanBong = -1;
     int IDDoiBong = -1;
     int IDKhungGio = -1;
@@ -65,6 +68,7 @@ public class DangTinFragment extends Fragment {
     int cosan = 0;
     String keo = "";
     JsonApiSanBong jsonApiSanBong;
+    JsonApiKhungGio jsonApiKhungGio;
     String d = "-1";
     String Auth = "";
     SharedPreferences sharedPreferences;
@@ -86,6 +90,8 @@ public class DangTinFragment extends Fragment {
         LoadListSanBong();
 
         LoadListDoiBong();
+
+        LoadListKhungGio();
 
         Mapping();
 
@@ -146,6 +152,26 @@ public class DangTinFragment extends Fragment {
             @Override
             public void onFailure(Call<List<SanBong>> call, Throwable t) {
 //                System.out.println("loi: "+t.getMessage());
+            }
+        });
+    }
+
+    private void LoadListKhungGio(){
+        arrGio = new ArrayList<>();
+        jsonApiKhungGio = APIUtils.getJsonApiKhungGio();
+        Call<List<KhungGio>> call = jsonApiKhungGio.getKhungGios();
+        call.enqueue(new Callback<List<KhungGio>>() {
+            @Override
+            public void onResponse(Call<List<KhungGio>> call, Response<List<KhungGio>> response) {
+                khungGios = response.body();
+                for(KhungGio khungGio : khungGios){
+                    arrGio.add(khungGio.getThoigian());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<KhungGio>> call, Throwable t) {
+
             }
         });
     }
@@ -233,8 +259,7 @@ public class DangTinFragment extends Fragment {
         lvChonGio.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                IDKhungGio = position + 7;
-                tvChonGio.setText(arrGio.get(IDKhungGio - 7));
+                tvChonGio.setText(arrGio.get(position));
                 dialogChonGio.cancel();
             }
         });
@@ -244,15 +269,6 @@ public class DangTinFragment extends Fragment {
         dialogChonGio = new Dialog(getActivity());
         dialogChonGio.setContentView(R.layout.dialog_chon_gio);
         lvChonGio = dialogChonGio.findViewById(R.id.ListViewGio);
-        arrGio = new ArrayList<>();
-        for(int i = 7; i <= 21; i++){
-            if(i < 10){
-                arrGio.add("0" + i + ":00");
-            }
-            else{
-                arrGio.add(i + ":00");
-            }
-        }
         ArrayAdapter adapterGio = new ArrayAdapter(getActivity(), android.R.layout.simple_list_item_1, arrGio);
         lvChonGio.setAdapter(adapterGio);
         dialogChonGio.show();
@@ -292,14 +308,11 @@ public class DangTinFragment extends Fragment {
                     }
                 }, nam, thang, ngay);
                 datePickerDialog.show();
-
             }
         });
-
     }
 
     void Mapping() {
-
         btnDangTin = view.findViewById(R.id.ButtonDangTin);
         tvChonFC = view.findViewById(R.id.TextViewChonFC);
         layoutChonNgay = view.findViewById(R.id.ConstrainLayoutChonNgay);

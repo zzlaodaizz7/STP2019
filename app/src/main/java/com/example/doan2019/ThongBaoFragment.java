@@ -7,8 +7,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -28,7 +30,7 @@ import retrofit2.Response;
 public class ThongBaoFragment extends Fragment {
     View view;
     ListView listViewNotification;
-    ArrayList<Notification> notificationArrayList;
+    ArrayList<Notification> notificationArrayList, arrIDNotification;
     SharedPreferences sharedPreferences;
     String Auth ="";
     TextView txtBack;
@@ -46,23 +48,25 @@ public class ThongBaoFragment extends Fragment {
 
         ClickBack();
 
+        KhoiTaoListViewThongBao();
+
+        ClickListViewThongBao();
+
         return view;
     }
 
-    private void ClickBack() {
-        txtBack.setOnClickListener(new View.OnClickListener() {
+    private void ClickListViewThongBao() {
+        listViewNotification.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onClick(View v) {
-                getActivity().onBackPressed();
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(getActivity(), arrIDNotification.get(position).getId() + "", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
-    private void mapping(){
-        txtBack = view.findViewById(R.id.TextViewBack);
-        listViewNotification = (ListView) view.findViewById(R.id.listViewNotification);
-
+    private void KhoiTaoListViewThongBao() {
         notificationArrayList = new ArrayList<>();
+        arrIDNotification = new ArrayList<>();
 
         Call<List<ThongBao>> call = jsonApiSanBong.getThongbao(IDUser);
         call.enqueue(new Callback<List<ThongBao>>() {
@@ -73,6 +77,7 @@ public class ThongBaoFragment extends Fragment {
                     List<ThongBao> thongBao = response.body();
                     for (ThongBao thongBao1 : thongBao) {
                         notificationArrayList.add(new Notification(thongBao1.getNoidung()));
+                        arrIDNotification.add(new Notification(thongBao1.getId()));
                     }
                     NotificationAdapter notificationAdapter = new NotificationAdapter(getActivity(), R.layout._notification, notificationArrayList);
                     listViewNotification.setAdapter(notificationAdapter);
@@ -87,10 +92,20 @@ public class ThongBaoFragment extends Fragment {
 
             }
         });
+    }
 
+    private void ClickBack() {
+        txtBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().onBackPressed();
+            }
+        });
+    }
 
-
-
+    private void mapping(){
+        txtBack = view.findViewById(R.id.TextViewBack);
+        listViewNotification = (ListView) view.findViewById(R.id.listViewNotification);
     }
 
 }
