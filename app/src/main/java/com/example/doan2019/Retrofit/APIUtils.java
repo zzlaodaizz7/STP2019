@@ -7,7 +7,7 @@ import com.example.doan2019.MainActivity;
 public class APIUtils {
     MainActivity mainActivity;
     //public static final String BASE_URL ="https://e81419860da2.ngrok.io/DoAn/public/";
-    public static final String BASE_URL = "http://192.168.1.6:8008/DoAn/public/";
+    public static final String BASE_URL = "http://192.168.124.104/DoAn/public/";
     //public static final String BASE_URL = "http://" + MainActivity.ipDx + "DoAn/public/";
 
     public static JsonApiKhungGio getJsonApiKhungGio() {

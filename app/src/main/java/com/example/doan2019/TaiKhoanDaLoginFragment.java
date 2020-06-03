@@ -265,6 +265,8 @@ public class TaiKhoanDaLoginFragment extends Fragment {
                     if (response.body() == null) return;
                     txtNoiDungCacFCDangThamGia.setVisibility(View.GONE);
                     for (DoiBong_NguoiDung doiBongDangTG : doiBongDangTGS) {
+//                        if (doiBongDangTG.getDoibong().getAnhdaidien()==null)  doiBongDangTG.getDoibong().setAnhdaidien();
+                        System.out.println("ID: "+doiBongDangTG.getId());
                         arrDoiBongDangThamGia.add(doiBongDangTG);
                         cacFCDangThamGiaAdapter = new CacFCDangThamGiaAdapter(getActivity(), R.layout.dong_doi_bong_dang_tham_gia, arrDoiBongDangThamGia);
                         lvCacFCDangThamGia.setAdapter(cacFCDangThamGiaAdapter);

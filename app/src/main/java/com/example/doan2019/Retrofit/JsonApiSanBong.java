@@ -84,4 +84,7 @@ public interface JsonApiSanBong {
 
     @HTTP(method = "DELETE", path = "thanhvien/1", hasBody = true)
     Call<DoiBong_NguoiDung> deleteThanhvien(@Body DoiBong_NguoiDung doiBong_nguoiDung);
+
+    @GET("doibongkhunggio/{id}")
+    Call<List<KhungGio>> getKhunggiodachon(@Path("id")int id);
 }

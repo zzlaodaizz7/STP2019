@@ -135,7 +135,7 @@ public class TaoDoiBongDialog extends DialogFragment {
             public void onClick(View v) {
                 arrIDKhungGioDaChon = new ArrayList<>();
                 String gioDaChon = "";
-                int j = 1;
+                int j = -1;
                 for (int i = 0; i < arrGio.size(); i++) {
                     if (arrGioDaChon.get(i) == true) {
                         arrIDKhungGioDaChon.add(i);
@@ -144,7 +144,7 @@ public class TaoDoiBongDialog extends DialogFragment {
                         break;
                     }
                 }
-                if (j != 1) {
+                if (j != -1) {
                     for (int i = j + 1; i < arrGio.size(); i++) {
                         if (arrGioDaChon.get(i) == true) {
                             arrIDKhungGioDaChon.add(i);
@@ -152,8 +152,7 @@ public class TaoDoiBongDialog extends DialogFragment {
                         }
                     }
                 }
-                if (!gioDaChon.equals(""))
-                    tvChonKhungGio.setText(gioDaChon);
+                tvChonKhungGio.setText(gioDaChon);
                 dialogChonGio.cancel();
             }
         });
@@ -172,10 +171,7 @@ public class TaoDoiBongDialog extends DialogFragment {
         txtXong.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                System.out.println(edtTen.getText());
-//                System.out.println(btnTrinhDo.getText());
-//                System.out.println(Auth);
-//                System.out.println(IDUser);
+                System.out.println("size: "+arrIDKhungGioDaChon.size());
                 String content = "";
                 if (edtTen.getText().toString().matches("")) {
                     content += "Bạn chưa nhập tên đội! \n";
@@ -188,7 +184,7 @@ public class TaoDoiBongDialog extends DialogFragment {
                     header.put("value", "application/json");
                     header.put("Accept", "application/json");
                     header.put("Authorization", "Bearer " + Auth);
-                    DoiBong doiBong = new DoiBong(edtTen.getText().toString(), btnTrinhDo.getText().toString(), edtDiaChi.getText().toString(), edtDienThoai.getText().toString(), IDUser);
+                    DoiBong doiBong = new DoiBong(edtTen.getText().toString(), btnTrinhDo.getText().toString(), edtDiaChi.getText().toString(), edtDienThoai.getText().toString(), IDUser,arrIDKhungGioDaChon);
                     Call<DoiBong> call = jsonApiSanBong.postTaodoibongs(header, doiBong);
                     try {
                         call.enqueue(new Callback<DoiBong>() {

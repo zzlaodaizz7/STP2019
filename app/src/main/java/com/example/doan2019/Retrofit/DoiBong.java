@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 
 public class DoiBong implements Serializable {
     private int id;
@@ -20,6 +21,7 @@ public class DoiBong implements Serializable {
     private String title;
     private String content;
     private int user_id;
+    private ArrayList<Integer> arrGio;
     public DoiBong(String ten, String trinhdo, String diachi, String sdt,int user_id) {
         this.ten = ten;
         this.trinhdo = trinhdo;
@@ -28,6 +30,21 @@ public class DoiBong implements Serializable {
         this.user_id = user_id;
     }
 
+    public DoiBong(String ten, String trinhdo, String diachi, String sdt, int user_id, ArrayList<Integer> arrGio) {
+        this.ten = ten;
+        this.trinhdo = trinhdo;
+        this.diachi = diachi;
+        this.sdt = sdt;
+        this.user_id = user_id;
+        this.arrGio = arrGio;
+    }
+    public DoiBong(String ten, String trinhdo, String diachi, String sdt, ArrayList<Integer> arrGio) {
+        this.ten = ten;
+        this.trinhdo = trinhdo;
+        this.diachi = diachi;
+        this.sdt = sdt;
+        this.arrGio = arrGio;
+    }
     public DoiBong(int id, String ten, String trinhdo, String diachi, String sdt, String anhbia, String anhdaidien, int sodiem, int hanhkiem, Timestamp created_at, Timestamp updated_at) {
         this.id = id;
         this.ten = ten;

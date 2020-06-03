@@ -39,10 +39,18 @@ import com.example.doan2019.Retrofit.DangTin;
 import com.example.doan2019.Retrofit.DoiBong;
 import com.example.doan2019.Retrofit.JsonApiKhungGio;
 import com.example.doan2019.Retrofit.JsonApiSanBong;
+import com.example.doan2019.Retrofit.JsonApiThongBao;
 import com.example.doan2019.Retrofit.KhungGio;
 import com.example.doan2019.Retrofit.SanBong;
+import com.example.doan2019.Retrofit.ThongBao;
+import com.example.doan2019.Retrofit.User;
+import com.onesignal.OneSignal;
 
 import androidx.fragment.app.FragmentManager;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -75,6 +83,7 @@ public class DangTinFragment extends Fragment {
     private View view;
     LangNgheSuKienChuyenFragment langNgheSuKienChuyenFragment;
     Retrofit retrofit;
+    JsonApiThongBao jsonApiThongBao;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -84,7 +93,7 @@ public class DangTinFragment extends Fragment {
 //        Toast.makeText(getContext(),sharedPreferences.getString("token",""), Toast.LENGTH_SHORT).show();
         IDUser = sharedPreferences.getInt("id",0);
         Auth = sharedPreferences.getString("token","");
-
+        jsonApiThongBao = APIUtils.getJsonApiThongBao();
         jsonApiSanBong = APIUtils.getJsonApiSanBong();
 
         LoadListSanBong();
@@ -141,19 +150,25 @@ public class DangTinFragment extends Fragment {
         arraySanBong = new ArrayList<>();
         jsonApiSanBong = APIUtils.getJsonApiSanBong();
         Call<List<SanBong>> call = jsonApiSanBong.getSanbongs();
-        call.enqueue(new Callback<List<SanBong>>() {
-            @Override
-            public void onResponse(Call<List<SanBong>> call, retrofit2.Response<List<SanBong>> response) {
-                sanBongs = response.body();
-                for (SanBong sanBong : sanBongs){
-                    arraySanBong.add(sanBong.getTen());
+        try {
+            call.enqueue(new Callback<List<SanBong>>() {
+                @Override
+                public void onResponse(Call<List<SanBong>> call, retrofit2.Response<List<SanBong>> response) {
+                    sanBongs = response.body();
+                    for (SanBong sanBong : sanBongs) {
+                        arraySanBong.add(sanBong.getTen());
+                    }
                 }
-            }
-            @Override
-            public void onFailure(Call<List<SanBong>> call, Throwable t) {
+
+                @Override
+                public void onFailure(Call<List<SanBong>> call, Throwable t) {
 //                System.out.println("loi: "+t.getMessage());
-            }
-        });
+                }
+            });
+        }
+        catch (Exception ex){
+            Log.e("BBB", ex.toString());
+        }
     }
 
     private void LoadListKhungGio(){
@@ -217,10 +232,29 @@ public class DangTinFragment extends Fragment {
                                 } else {
                                     Toast.makeText(getContext(), response.body().getContent(), Toast.LENGTH_SHORT).show();
                                 }
+                                List<User> userLogins = response.body().getListgoiy();
+                                for (User user : userLogins){
+                                    System.out.println("Device: "+user.getDevice());
+                                    dayThongBaoOneSignal("Có tin đăng mới cùng khung giờ bạn hay đá", user.getDevice());
+                                    ThongBao  a = new ThongBao(user.getId(),"Có tin đăng mới cùng khung giờ bạn hay đá",response.body().getId()+"",user.getDevice());
+                                    Call<ThongBao> call2 = jsonApiThongBao.createThongBao(a);
+                                    call2.enqueue(new Callback<ThongBao>() {
+                                        @Override
+                                        public void onResponse(Call<ThongBao> call, Response<ThongBao> response) {
+                                            System.out.println("11111111");
+                                        }
+
+                                        @Override
+                                        public void onFailure(Call<ThongBao> call, Throwable t) {
+                                            System.out.println("loi: "+t.getMessage());
+                                        }
+                                    });
+                                }
+
                                 getFragmentManager().popBackStack();
                             }
                             catch (Exception ex){
-                                Log.e("BBB", ex.toString());
+                                Log.e("BBBa", ex.toString());
                             }
                         }
                         @Override
@@ -259,6 +293,8 @@ public class DangTinFragment extends Fragment {
         lvChonGio.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                IDKhungGio = position;
+                Toast.makeText(getActivity(), IDKhungGio + "", Toast.LENGTH_SHORT).show();
                 tvChonGio.setText(arrGio.get(position));
                 dialogChonGio.cancel();
             }
@@ -311,7 +347,21 @@ public class DangTinFragment extends Fragment {
             }
         });
     }
-
+    //day thong bao voi onesignal
+    private void dayThongBaoOneSignal(String noidung, String userId ){
+        try {
+            //
+            // id người nhận, id do oneSignal cấp cho thiết bị android ngay sau khi ứng dụng thiết lập trên thiết bị
+            String headings = "Thông báo";
+            String contents = noidung;
+            JSONObject notification = new JSONObject("{'contents': {'en':'"+contents+"'}, " +
+                    "'include_player_ids': ['" + userId + "']," +
+                    "'headings':{'en':'"+headings+"'}}");
+            OneSignal.postNotification(notification, null);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
     void Mapping() {
         btnDangTin = view.findViewById(R.id.ButtonDangTin);
         tvChonFC = view.findViewById(R.id.TextViewChonFC);

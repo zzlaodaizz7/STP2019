@@ -4,6 +4,7 @@ import com.example.doan2019.DoiBongClass;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.List;
 
 public class DangTin implements Serializable {
 //    private int doidangtin_id,san_id,khunggio_id;
@@ -15,7 +16,7 @@ public class DangTin implements Serializable {
     private int doidangtin_id;
     private int doibatdoi_id;
     private DoiBongClass doibong1,doibong2;
-
+    private List<User> listgoiy;
     private String ngay;
     private String keo;
     private int san_id;
@@ -58,7 +59,13 @@ public class DangTin implements Serializable {
 
     public DangTin(int id, String ngay, int san_id, int khunggio_id, String keo, Timestamp created_at, Timestamp updated_at, int doibatdoi_id) {
     }
+    public List<User> getListgoiy() {
+        return listgoiy;
+    }
 
+    public void setListgoiy(List<User> listgoiy) {
+        this.listgoiy = listgoiy;
+    }
     public DoiBongClass getDoibong1() {
         return doibong1;
     }

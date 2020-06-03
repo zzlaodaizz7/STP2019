@@ -29,8 +29,10 @@ import androidx.fragment.app.Fragment;
 
 import com.example.doan2019.Retrofit.APIUtils;
 import com.example.doan2019.Retrofit.DoiBong;
+import com.example.doan2019.Retrofit.JsonApiKhungGio;
 import com.example.doan2019.Retrofit.JsonApiSanBong;
 import com.example.doan2019.Retrofit.JsonApiUser;
+import com.example.doan2019.Retrofit.KhungGio;
 import com.example.doan2019.Retrofit.User;
 import com.squareup.picasso.Picasso;
 
@@ -38,6 +40,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.List;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -54,8 +57,10 @@ public class ChinhSuaThongTinDoiBongFragment extends Fragment {
     private TextView txtQuayLai, tvChonKhungGio, tvQuayLai, tvXongChonGio;
     private EditText edtTen, edtDiaChi, edtSoDienThoai;
     private int idDoiBong;
+    ArrayList<Integer> arrIDKhungGioDaChon = new ArrayList<>();
     private Bundle bundle;
     private DoiBong doibong;
+    List<KhungGio> khungGios;
     private ListView listViewTrinhDo, lvChonGio;
     private Dialog dialogChonTrinhDo, dialogChonGio;
     private int REQUEST_CODE_ANH_BIA = 123;
@@ -66,18 +71,22 @@ public class ChinhSuaThongTinDoiBongFragment extends Fragment {
     private String realPathDaiDien = "";
     private String anhbia = "", anhDaiDien = "";
     private DoiBong doiBong;
-    private ArrayList<Boolean> arrGioDaChon;
+    private ArrayList<Boolean> arrGioDaChon = new ArrayList<>();
     String base_Url = "/images/";
     ArrayList<String> arrGio;
+    JsonApiKhungGio jsonApiKhungGio;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_chinh_sua_thong_tin_doi_bong, container, false);
         jsonApiSanBong = APIUtils.getJsonApiSanBong();
+
         Mapping();
 
         GanNoiDungDoiBong();
+
+        LoadListKhungGio();
 
         ClickQuayLai();
 
@@ -108,7 +117,7 @@ public class ChinhSuaThongTinDoiBongFragment extends Fragment {
         lvChonGio.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if(arrGioDaChon.get(position) == false)
+                if (arrGioDaChon.get(position) == false)
                     arrGioDaChon.set(position, true);
                 else
                     arrGioDaChon.set(position, false);
@@ -116,10 +125,83 @@ public class ChinhSuaThongTinDoiBongFragment extends Fragment {
         });
     }
 
+    private void LoadListKhungGio() {
+        arrGio = new ArrayList<>();
+        jsonApiKhungGio = APIUtils.getJsonApiKhungGio();
+        Call<List<KhungGio>> call = jsonApiKhungGio.getKhungGios();
+        call.enqueue(new Callback<List<KhungGio>>() {
+            @Override
+            public void onResponse(Call<List<KhungGio>> call, Response<List<KhungGio>> response) {
+                khungGios = response.body();
+                for (KhungGio khungGio : khungGios) {
+                    arrGio.add(khungGio.getThoigian());
+                }
+                arrGioDaChon = new ArrayList<>();
+                for (int i = 0; i < arrGio.size(); i++) {
+                    arrGioDaChon.add(false);
+                }
+                Call<List<KhungGio>> call1 = jsonApiSanBong.getKhunggiodachon(idDoiBong);
+                call1.enqueue(new Callback<List<KhungGio>>() {
+                    @Override
+                    public void onResponse(Call<List<KhungGio>> call, Response<List<KhungGio>> response) {
+                        List<KhungGio> khungGios = response.body();
+                        for (KhungGio khungGio : khungGios){
+                            Log.d("TAG", "onResponse: "+khungGio.getKhunggio_id());
+                            arrIDKhungGioDaChon.add(khungGio.getKhunggio_id());
+                            arrGioDaChon.set(khungGio.getKhunggio_id(),true);
+                        }
+                        String gioDaChon = "";
+                        int j = -1;
+                        for (int i = 0; i < arrGio.size(); i++) {
+                            if (arrGioDaChon.get(i) == true) {
+                                arrIDKhungGioDaChon.add(i);
+                                gioDaChon += arrGio.get(i);
+                                j = i;
+                                break;
+                            }
+                        }
+                        if (j != -1) {
+                            for (int i = j + 1; i < arrGio.size(); i++) {
+                                if (arrGioDaChon.get(i) == true) {
+                                    arrIDKhungGioDaChon.add(i);
+                                    gioDaChon += ", " + arrGio.get(i);
+                                }
+                            }
+                        }
+                        tvChonKhungGio.setText(gioDaChon);
+                    }
+
+                    @Override
+                    public void onFailure(Call<List<KhungGio>> call, Throwable t) {
+
+                    }
+                });
+            }
+
+            @Override
+            public void onFailure(Call<List<KhungGio>> call, Throwable t) {
+
+            }
+        });
+    }
+
     private void ShowDialogChonGio() {
-        dialogChonGio = new Dialog(getActivity());
-        dialogChonGio.setContentView(R.layout.dialog_chon_gio_tao_doi_bong);
-        lvChonGio = dialogChonGio.findViewById(R.id.ListViewGio);
+        lvChonGio.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+        ArrayAdapter adapterGio = new ArrayAdapter(getActivity(), android.R.layout.simple_list_item_multiple_choice, arrGio);
+        lvChonGio.setAdapter(adapterGio);
+
+        for (int i = 0; i < arrGio.size(); i++) {
+            lvChonGio.setItemChecked(i, arrGioDaChon.get(i));
+        }
+
+
+
+//        for(int i = 0; i < arrIDKhungGioDaChon.size(); i++){
+//            lvChonGio.setItemChecked(arrIDKhungGioDaChon.get(i), true);
+//        }
+
+        dialogChonGio.show();
+
         tvQuayLai = dialogChonGio.findViewById(R.id.TextViewBack);
         tvXongChonGio = dialogChonGio.findViewById(R.id.TextViewXong);
 
@@ -134,50 +216,28 @@ public class ChinhSuaThongTinDoiBongFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 String gioDaChon = "";
-                int j = 1;
-                for(int i = 7; i <= 21; i++){
-                    if(arrGioDaChon.get(i - 7) == true && i < 10){
-                        gioDaChon += "0" + i + ":00";
-                        j = i;
-                        break;
-                    }
-                    else if(arrGioDaChon.get(i - 7) == true && i >= 10){
-                        gioDaChon += i + ":00";
+                arrIDKhungGioDaChon = new ArrayList<>();
+                int j = -1;
+                for (int i = 0; i < arrGio.size(); i++) {
+                    if (arrGioDaChon.get(i) == true) {
+                        arrIDKhungGioDaChon.add(i);
+                        gioDaChon += arrGio.get(i);
                         j = i;
                         break;
                     }
                 }
-                if(j != 1) {
-                    for (int i = j + 1; i <= 21; i++) {
-                        if (arrGioDaChon.get(i - 7) == true && i < 10) {
-                            gioDaChon += ", 0" + i + ":00";
-                        } else if (arrGioDaChon.get(i - 7) == true && i >= 10) {
-                            gioDaChon += ", " + i + ":00";
+                if (j != -1) {
+                    for (int i = j + 1; i < arrGio.size(); i++) {
+                        if (arrGioDaChon.get(i) == true) {
+                            arrIDKhungGioDaChon.add(i);
+                            gioDaChon += ", " + arrGio.get(i);
                         }
                     }
                 }
-                if(!gioDaChon.equals(""))
-                    tvChonKhungGio.setText(gioDaChon);
+                tvChonKhungGio.setText(gioDaChon);
                 dialogChonGio.cancel();
             }
         });
-
-        lvChonGio.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
-        arrGio = new ArrayList<>();
-        for(int i = 7; i <= 21; i++){
-            if(i < 10){
-                arrGio.add("0" + i + ":00");
-            }
-            else{
-                arrGio.add(i + ":00");
-            }
-        }
-        ArrayAdapter adapterGio = new ArrayAdapter(getActivity(), android.R.layout.simple_list_item_multiple_choice, arrGio);
-        lvChonGio.setAdapter(adapterGio);
-        for(int i = 7; i <= 21; i++){
-            lvChonGio.setItemChecked(i - 7, arrGioDaChon.get(i - 7));
-        }
-        dialogChonGio.show();
     }
 
     private void ClickLuu() {
@@ -236,10 +296,8 @@ public class ChinhSuaThongTinDoiBongFragment extends Fragment {
 //                });
 
 
-                DoiBong a = new DoiBong(edtTen.getText().toString(),btnTrinhDo.getText().toString(),edtDiaChi.getText().toString(),edtSoDienThoai.getText().toString());
-                System.out.println(edtTen.getText().toString());
+                DoiBong a = new DoiBong(edtTen.getText().toString(),btnTrinhDo.getText().toString(),edtDiaChi.getText().toString(),edtSoDienThoai.getText().toString(),arrIDKhungGioDaChon);
                 Call<DoiBong> doiBongCall = jsonApiSanBong.putSuathongtindoibong(a,idDoiBong);
-                System.out.println("ID: "+idDoiBong);
                 doiBongCall.enqueue(new Callback<DoiBong>() {
                     @Override
                     public void onResponse(Call<DoiBong> call, Response<DoiBong> response) {
@@ -248,7 +306,7 @@ public class ChinhSuaThongTinDoiBongFragment extends Fragment {
 
                     @Override
                     public void onFailure(Call<DoiBong> call, Throwable t) {
-                        System.out.println("loi :" + t.getMessage());
+                        Toast.makeText(getActivity(), "Sửa thông tin thành công", Toast.LENGTH_SHORT).show();
                     }
                 });
             }
@@ -429,10 +487,11 @@ public class ChinhSuaThongTinDoiBongFragment extends Fragment {
     }
 
     private void Mapping() {
-        arrGioDaChon = new ArrayList<>();
-        for(int i = 7; i <= 21; i++){
-            arrGioDaChon.add(false);
-        }
+
+        dialogChonGio = new Dialog(getActivity());
+
+        dialogChonGio.setContentView(R.layout.dialog_chon_gio_tao_doi_bong);
+        lvChonGio = dialogChonGio.findViewById(R.id.ListViewGio);
         tvChonKhungGio = view.findViewById(R.id.TextViewChonKhungGio);
         imgBia = view.findViewById(R.id.ImageViewBiaDoiBong);
         imgDaiDien = view.findViewById(R.id.ImageViewDaiDienDoiBong);
