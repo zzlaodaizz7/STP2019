@@ -22,7 +22,7 @@ import com.example.doan2019.Retrofit.APIUtils;
 public class SuaIPDialog extends DialogFragment {
     private View view;
     EditText edtIP;
-    TextView txtXong;
+    TextView txtXong, txtIPHienTai;
     ImageView imgQuayLai;
     SharedPreferences sharedPreferences;
     @Nullable
@@ -31,15 +31,22 @@ public class SuaIPDialog extends DialogFragment {
         view = inflater.inflate(R.layout.dialog_nhap_ip, container, false);
         sharedPreferences = getActivity().getSharedPreferences("ipServer", Context.MODE_PRIVATE);
 
-        Toast.makeText(getActivity(), APIUtils.BASE_URL, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getActivity(), APIUtils.BASE_URL, Toast.LENGTH_SHORT).show();
 
         Mapping();
+
+        GanIpHienTai();
 
         ClickClousePopup();
 
         ClickXong();
 
         return view;
+    }
+
+    private void GanIpHienTai() {
+        sharedPreferences = getActivity().getSharedPreferences("ipServer", Context.MODE_PRIVATE);
+        txtIPHienTai.setText(sharedPreferences.getString("baseurl", "http://0.0.0.0/DoAn/public/"));
     }
 
     private void ClickXong() {
@@ -52,7 +59,7 @@ public class SuaIPDialog extends DialogFragment {
                     editor.commit();
                 }
 
-                Toast.makeText(getActivity(), APIUtils.BASE_URL, Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getActivity(), APIUtils.BASE_URL, Toast.LENGTH_SHORT).show();
                 Log.e("ABC", "BASE_URL: " + APIUtils.BASE_URL);
                 SuaIPDialog.this.getDialog().cancel();
             }
@@ -69,6 +76,7 @@ public class SuaIPDialog extends DialogFragment {
     }
 
     private void Mapping() {
+        txtIPHienTai = view.findViewById(R.id.TextViewIPICHienTai);
         edtIP = view.findViewById(R.id.EditTextIP);
         txtXong = view.findViewById(R.id.TextViewFixXongIP);
         imgQuayLai = view.findViewById(R.id.ImageViewCLosePopup);

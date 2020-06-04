@@ -117,44 +117,63 @@ public class BatDoiFragment extends Fragment {
 
         bundle = getArguments();
 
-        dangTinDTO = (DangTinDTO) bundle.get("batdoi");
-        if(dangTinDTO.getDoibatdoi_id() != -1){
-            btnBatDoi.setVisibility(View.GONE);
+        try {
+            dangTinDTO = (DangTinDTO) bundle.get("batdoi");
+            if (dangTinDTO.getDoibatdoi_id() != -1) {
+                btnBatDoi.setVisibility(View.GONE);
+            } else {
+            }
         }
-        else{
+        catch (Exception ex){
+            Log.e("BBB", "BatDoiFragment: " + ex.toString());
         }
 
-        if(sharedPreferences.getInt("id", -1)==dangTinDTO.getDoitruongdoidangtin_id()){
-            btnBatDoi.setText("Hủy trận đấu");
-            mode = 2;
+        try {
+            if (sharedPreferences.getInt("id", -1) == dangTinDTO.getDoitruongdoidangtin_id()) {
+                btnBatDoi.setText("Hủy trận đấu");
+                mode = 2;
+            }
         }
-        dangTinDTO.getDoitruongdoidangtin_id();
-        dangtin_id = dangTinDTO.getId();
-        doitimdoi_id = dangTinDTO.getDoidangtin_id();
-        doibatdoi_id = -1;
-        txtTeamHost.setText(dangTinDTO.getDoidangtin_ten());
-        txtTeamGuest.setText(dangTinDTO.getDoibatdoi_ten());
-        txtTime.setText(dangTinDTO.getNgay()+" "+dangTinDTO.getKhunggio_thoigian());
-        txtState.setText(dangTinDTO.getTrangthai());
-        txtRatio.setText(dangTinDTO.getKeo());
-        txtPitch.setText(dangTinDTO.getSan_ten());
-        txtLevel.setText(dangTinDTO.getTrinhdo());
+        catch (Exception ex){
+            Log.e("BBB", "BatDoiFragment: " + ex.toString());
+        }
+        try {
+            dangTinDTO.getDoitruongdoidangtin_id();
+            dangtin_id = dangTinDTO.getId();
+            doitimdoi_id = dangTinDTO.getDoidangtin_id();
+            doibatdoi_id = -1;
+            txtTeamHost.setText(dangTinDTO.getDoidangtin_ten());
+            txtTeamGuest.setText(dangTinDTO.getDoibatdoi_ten());
+            txtTime.setText(dangTinDTO.getNgay() + " " + dangTinDTO.getKhunggio_thoigian());
+            txtState.setText(dangTinDTO.getTrangthai());
+            txtRatio.setText(dangTinDTO.getKeo());
+            txtPitch.setText(dangTinDTO.getSan_ten());
+            txtLevel.setText(dangTinDTO.getTrinhdo());
+        }
+        catch (Exception ex){
+            Log.e("BBB", "BatDoiFragment: " + ex.toString());
+        }
     }
 
     private void loadDoiDangTin_device(){
-        Call<User> userCall = jsonApiUser.getNguoiDung(dangTinDTO.getDoitruongdoidangtin_id());
-        userCall.enqueue(new Callback<User>() {
-            @Override
-            public void onResponse(Call<User> call, Response<User> response) {
-                doidangtin_device = response.body().getDevice();
-                Log.d("batdoi", "da lay duoc thiet bi doi dang tin");
-            }
+        try {
+            Call<User> userCall = jsonApiUser.getNguoiDung(dangTinDTO.getDoitruongdoidangtin_id());
+            userCall.enqueue(new Callback<User>() {
+                @Override
+                public void onResponse(Call<User> call, Response<User> response) {
+                    doidangtin_device = response.body().getDevice();
+                    Log.d("batdoi", "da lay duoc thiet bi doi dang tin");
+                }
 
-            @Override
-            public void onFailure(Call<User> call, Throwable t) {
+                @Override
+                public void onFailure(Call<User> call, Throwable t) {
 
-            }
-        });
+                }
+            });
+        }
+        catch (Exception ex){
+            Log.e("BBB", "BatDoiFragment: " + ex.toString());
+        }
     }
 
     private void LoadListDoiBong() {

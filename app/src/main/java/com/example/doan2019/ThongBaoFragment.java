@@ -36,6 +36,7 @@ public class ThongBaoFragment extends Fragment {
     TextView txtBack;
     Integer IDUser;
     JsonApiSanBong jsonApiSanBong;
+    LangNgheSuKienChuyenFragment langNgheSuKienChuyenFragment;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -44,6 +45,8 @@ public class ThongBaoFragment extends Fragment {
         IDUser = sharedPreferences.getInt("id",0);
         Auth = sharedPreferences.getString("token","");
         jsonApiSanBong = APIUtils.getJsonApiSanBong();
+        langNgheSuKienChuyenFragment = (LangNgheSuKienChuyenFragment) getActivity();
+
         mapping();
 
         ClickBack();
@@ -60,6 +63,8 @@ public class ThongBaoFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Toast.makeText(getActivity(), arrIDNotification.get(position).getId() + "", Toast.LENGTH_SHORT).show();
+                BatDoiFragment batDoiFragment = new BatDoiFragment();
+                langNgheSuKienChuyenFragment.ChuyenHuongFragment(batDoiFragment);
             }
         });
     }
