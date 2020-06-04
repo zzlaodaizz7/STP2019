@@ -250,7 +250,6 @@ public class DangTinFragment extends Fragment {
                                         }
                                     });
                                 }
-
                                 getFragmentManager().popBackStack();
                             }
                             catch (Exception ex){
@@ -294,7 +293,6 @@ public class DangTinFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 IDKhungGio = position;
-                Toast.makeText(getActivity(), IDKhungGio + "", Toast.LENGTH_SHORT).show();
                 tvChonGio.setText(arrGio.get(position));
                 dialogChonGio.cancel();
             }

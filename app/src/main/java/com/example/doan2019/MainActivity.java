@@ -66,6 +66,7 @@ import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 
 public class MainActivity extends AppCompatActivity implements LangNgheSuKienChuyenFragment, OSSubscriptionObserver {
     BottomNavigationView bottomNavigationView;
+    public static String baseURLMain = "";
     int menuHienTai = 1, menuDaChon = 0;
     int rootFragment = 0;
     SharedPreferences sharedPreferencesDataLogin, sharedPreferencesOSId, sharedPreferencesLoadTimDoi;
@@ -85,6 +86,7 @@ public class MainActivity extends AppCompatActivity implements LangNgheSuKienChu
     ArrayList<DoiBong> doiBongArrayList;
     ArrayList<KhungGio> khungGioArrayList;
     Fragment selectedFragment;
+    SharedPreferences sharedPreferencesIP;
     // luu list dang tin sau khi load duoc tai timdoifragment
     // sau moi luc cap nhat, them moi dang tin: set lai gia tri cua sharePre..LoadTimDoi.
     ListView mainLV;
@@ -93,6 +95,9 @@ public class MainActivity extends AppCompatActivity implements LangNgheSuKienChu
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        sharedPreferencesIP = getSharedPreferences("ipServer", MODE_PRIVATE);
+        baseURLMain = sharedPreferencesIP.getString("baseurl", "http://0.0.0.0/DoAn/public/");
 
         if (!checkPermission()) {
             openActivity();

@@ -66,7 +66,7 @@ public class TimDoiFragment extends Fragment {
     ArrayList<DoiBong> doiBongArrayList;
     ArrayList<KhungGio> khungGioArrayList;
     DangTinAdapter dangTinAdapter;
-    Button btnDangTin, btnTimTranDau, btnChonTimKiemTheoTenHaySan, btnChonTrangThai, btnChonTrinhDo;
+    Button btnDangTin, btnTimTranDau, btnChonTimKiemTheoTenHaySan, btnChonTrangThai, btnChonTrinhDo, btnIP;
     Dialog dialogChonTrangThai, dialogChonTrinhDo, dialogChonTimKiemTheoTenHaySan, dialogTinNhan;
     ArrayList<String> statusArrayList, levelArrayList, danhMucTimKiemTheoTenHaySanArrayList;
     ArrayList<DoiBong_NguoiDung> doiBong_nguoiDungArrayList;
@@ -116,8 +116,20 @@ public class TimDoiFragment extends Fragment {
 
         clickChonListViewTinTimDoi();
 
+        ClickButtonIP();
+
         swipeRefresh();
         return view;
+    }
+
+    private void ClickButtonIP() {
+        btnIP.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SuaIPDialog suaIPDialog = new SuaIPDialog();
+                suaIPDialog.show(getActivity().getSupportFragmentManager(), "Dialog_popup");
+            }
+        });
     }
 
     private void ClickEditTextTimKiem() {
@@ -395,6 +407,7 @@ public class TimDoiFragment extends Fragment {
         //list view cua mainActivity
         mainLV = (ListView) getActivity().findViewById(R.id.mainLV);
         gifLoading = (GifTextView) view.findViewById(R.id.gifloading);
+        btnIP = view.findViewById(R.id.ButtonIP);
     }
 
     private void swipeRefresh(){

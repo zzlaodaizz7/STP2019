@@ -44,6 +44,21 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
+
+                <Button
+                    android:id="@+id/ButtonIP"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="18dp"
+                    android:layout_toLeftOf="@+id/btnDangTin"
+                    android:background="@drawable/custom_button_quen_mat_khau"
+                    android:focusedByDefault="true"
+                    android:textColor="@drawable/custom_text_button_quen_mat_khau"
+                    android:text="Đổi IP"
+                    android:textSize="13sp"
+                    android:textAllCaps="false" />
+
                 <Button
                     android:id="@+id/btnDangTin"
                     android:layout_width="wrap_content"

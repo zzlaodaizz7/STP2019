@@ -276,8 +276,12 @@ public class TaoDoiBongDialog extends DialogFragment {
         listViewTrinhDo = dialogChonTrinhDo.findViewById(R.id.listViewTrinhDo);
         levelArrayList = new ArrayList<>();
 
+        levelArrayList.add("Mới thành lập");
         levelArrayList.add("Trung bình");
         levelArrayList.add("Khá");
+        levelArrayList.add("Giỏi");
+        levelArrayList.add("Xuất sắc");
+        levelArrayList.add("Chuyên nghiệp");
 
         ArrayAdapter levelAdapter = new ArrayAdapter(getActivity(), android.R.layout.simple_list_item_1, levelArrayList);
         listViewTrinhDo.setAdapter(levelAdapter);

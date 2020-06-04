@@ -1,14 +1,14 @@
 package com.example.doan2019.Retrofit;
 
+import android.content.SharedPreferences;
 import android.net.wifi.WifiManager;
 
 import com.example.doan2019.MainActivity;
 
 public class APIUtils {
-    MainActivity mainActivity;
     //public static final String BASE_URL ="https://e81419860da2.ngrok.io/DoAn/public/";
-    public static final String BASE_URL = "http://192.168.124.104/DoAn/public/";
-    //public static final String BASE_URL = "http://" + MainActivity.ipDx + "DoAn/public/";
+    //public static final String BASE_URL = "http://192.168.1.6:8008/DoAn/public/";
+    public static String BASE_URL = MainActivity.baseURLMain;
 
     public static JsonApiKhungGio getJsonApiKhungGio() {
         return RetrofitClientInstance.getRetrofitInstance(BASE_URL + "api/").create(JsonApiKhungGio.class);
@@ -41,5 +41,4 @@ public class APIUtils {
     public static JsonApiThongBao getJsonApiThongBao() {
         return RetrofitClientInstance.getRetrofitInstance(BASE_URL + "api/").create(JsonApiThongBao.class);
     }
-
 }
