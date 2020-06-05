@@ -17,8 +17,7 @@ public class HanhKiem {
 
     private int hanhkiem;
     private String type,title,content;
-    public HanhKiem(int user_id, int doiduocvote_id, int hanhkiem) {
-        this.user_id = user_id;
+    public HanhKiem(int doiduocvote_id, int hanhkiem) {
         this.doiduocvote_id = doiduocvote_id;
         this.hanhkiem = hanhkiem;
     }

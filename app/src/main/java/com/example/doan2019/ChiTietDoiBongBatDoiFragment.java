@@ -84,17 +84,17 @@ public class ChiTietDoiBongBatDoiFragment extends Fragment {
                 alertDialogBuilder.setPositiveButton("Có", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        HanhKiem hanhKiem = new HanhKiem(IDUser,doiBongClass.getId(),Math.round(rtb.getRating()));
-                        Map<String,String> header = new HashMap<>();
-                        header.put("value","application/json");
-                        header.put("Accept","application/json");
-                        header.put("Authorization","Bearer "+Auth);
-                        Call<HanhKiem> call = jsonApiSanBong.postHanhKiem(header,hanhKiem);
+                        HanhKiem hanhKiem = new HanhKiem(doiBongClass.getId(),Math.round(rtb.getRating()));
+//                        Map<String,String> header = new HashMap<>();
+//                        header.put("value","application/json");
+//                        header.put("Accept","application/json");
+//                        header.put("Authorization","Bearer "+Auth);
+                        Call<HanhKiem> call = jsonApiSanBong.postHanhKiem(hanhKiem);
                         call.enqueue(new Callback<HanhKiem>() {
                             @Override
                             public void onResponse(Call<HanhKiem> call, Response<HanhKiem> response) {
 //                                System.out.println(response.code());
-                                Toast.makeText(getContext(), "Voted", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getContext(), response.body().getContent(), Toast.LENGTH_SHORT).show();
                             }
                             @Override
                             public void onFailure(Call<HanhKiem> call, Throwable t) {
