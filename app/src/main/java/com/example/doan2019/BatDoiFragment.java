@@ -158,17 +158,22 @@ public class BatDoiFragment extends Fragment {
             call.enqueue(new Callback<DangTinDTO>() {
                 @Override
                 public void onResponse(Call<DangTinDTO> call, Response<DangTinDTO> response) {
-                    DangTinDTO dangTinDTO = response.body();
-                    txtTeamHost.setText(dangTinDTO.getDoidangtin_ten());
-                    txtTeamGuest.setText("");
-                    idDoitruong = dangTinDTO.getDoitruongdoidangtin_id();
-                    doitimdoi_id = dangTinDTO.getDoidangtin_id();
-                    device = dangTinDTO.getDevice();
-                    txtTime.setText(dangTinDTO.getNgay() + " " + dangTinDTO.getKhunggio_thoigian());
-                    txtState.setText("Có sân nhà");
-                    txtRatio.setText(dangTinDTO.getKeo());
-                    txtPitch.setText(dangTinDTO.getSan_ten());
-                    txtLevel.setText(dangTinDTO.getTrinhdo());
+                    try {
+                        DangTinDTO dangTinDTO = response.body();
+                        txtTeamHost.setText(dangTinDTO.getDoidangtin_ten());
+                        txtTeamGuest.setText("");
+                        idDoitruong = dangTinDTO.getDoitruongdoidangtin_id();
+                        doitimdoi_id = dangTinDTO.getDoidangtin_id();
+                        device = dangTinDTO.getDevice();
+                        txtTime.setText(dangTinDTO.getNgay() + " " + dangTinDTO.getKhunggio_thoigian());
+                        txtState.setText("Có sân nhà");
+                        txtRatio.setText(dangTinDTO.getKeo());
+                        txtPitch.setText(dangTinDTO.getSan_ten());
+                        txtLevel.setText(dangTinDTO.getTrinhdo());
+                    }
+                    catch (Exception ex){
+                        Log.e("BBB", ex.toString());
+                    }
                 }
 
                 @Override
