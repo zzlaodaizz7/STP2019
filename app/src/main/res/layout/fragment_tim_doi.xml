@@ -127,7 +127,6 @@
                                 android:layout_weight="8"
                                 android:background="@android:color/transparent"
                                 android:hint="Nhập tên hoặc địa chỉ"
-                                android:inputType="textVisiblePassword"
                                 android:paddingLeft="10dp"
                                 android:singleLine="true"
                                 android:textColor="@color/mauChuNhat"

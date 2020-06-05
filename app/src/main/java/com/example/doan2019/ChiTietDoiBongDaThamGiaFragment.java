@@ -482,9 +482,11 @@ public class ChiTietDoiBongDaThamGiaFragment extends Fragment {
             bundle = getArguments();
 
             if (doiBong.getAnhdaidien() != null) {
+                Log.e("BBB", "anhDaiDienDoiBong: " + doiBong.getAnhdaidien());
                 Picasso.get().load(APIUtils.BASE_URL+doiBong.getAnhdaidien()).into(imgAnhDaiDien);
             }
             if (doiBong.getAnhbia() != null) {
+                Log.e("BBB", "anhBiaDoiBong: " + doiBong.getAnhbia());
                 Picasso.get().load(APIUtils.BASE_URL+doiBong.getAnhbia()).into(imgAnhBia);
             }
             txtTenDoiBong.setText(doiBong.getTen());

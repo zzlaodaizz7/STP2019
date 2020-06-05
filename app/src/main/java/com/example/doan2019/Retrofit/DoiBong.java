@@ -30,6 +30,16 @@ public class DoiBong implements Serializable {
         this.user_id = user_id;
     }
 
+    public DoiBong(String anhbia, String anhdaidien, String ten, String trinhdo, String diachi, String sdt, ArrayList<Integer> arrGio) {
+        this.ten = ten;
+        this.trinhdo = trinhdo;
+        this.diachi = diachi;
+        this.sdt = sdt;
+        this.anhbia = anhbia;
+        this.anhdaidien = anhdaidien;
+        this.arrGio = arrGio;
+    }
+
     public DoiBong(String ten, String trinhdo, String diachi, String sdt, int user_id, ArrayList<Integer> arrGio) {
         this.ten = ten;
         this.trinhdo = trinhdo;
