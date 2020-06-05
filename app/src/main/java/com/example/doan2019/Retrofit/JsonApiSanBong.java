@@ -79,11 +79,11 @@ public interface JsonApiSanBong {
     Call<List<ThongBao>> getThongbao(@Path("id") int id);
     @PUT("doibong/{id}")
     Call<DoiBong> putSuathongtindoibong(@Body DoiBong doiBong,@Path("id") int id);
-//    @DELETE("thanhvien/1")
-//    Call<DoiBong_NguoiDung> deleteThanhvien(@Body DoiBong_NguoiDung doiBong_nguoiDung);
+    @DELETE("thanhvien/{id}")
+    Call<DoiBong_NguoiDung> deleteThanhvien(@Path("id") int id);
 
-    @HTTP(method = "DELETE", path = "thanhvien/1", hasBody = true)
-    Call<DoiBong_NguoiDung> deleteThanhvien(@Body DoiBong_NguoiDung doiBong_nguoiDung);
+//    @HTTP(method = "DELETE", path = "thanhvien/1", hasBody = true)
+//    Call<DoiBong_NguoiDung> deleteThanhvien(@Body DoiBong_NguoiDung doiBong_nguoiDung);
 
     @GET("doibongkhunggio/{id}")
     Call<List<KhungGio>> getKhunggiodachon(@Path("id")int id);

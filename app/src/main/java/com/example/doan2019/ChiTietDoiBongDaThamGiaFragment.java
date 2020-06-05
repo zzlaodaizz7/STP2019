@@ -34,7 +34,9 @@ import com.example.doan2019.Retrofit.DangTin;
 import com.example.doan2019.Retrofit.DoiBong;
 import com.example.doan2019.Retrofit.DoiBong_NguoiDung;
 import com.example.doan2019.Retrofit.JsonApiDoiBongNGuoiDung;
+import com.example.doan2019.Retrofit.JsonApiKhungGio;
 import com.example.doan2019.Retrofit.JsonApiSanBong;
+import com.example.doan2019.Retrofit.KhungGio;
 import com.example.doan2019.Retrofit.User;
 import com.squareup.picasso.Picasso;
 
@@ -44,7 +46,7 @@ import retrofit2.Response;
 
 public class ChiTietDoiBongDaThamGiaFragment extends Fragment {
     private View view;
-    private TextView txtTenDoiBong, txtDiem, txtDiaChi, txtTrinhDo, txtNgayThanhlap, txtPhone, txtDanhSachCacTinDaDang, txtQuayLai;
+    private TextView txtTenDoiBong, txtDiem, txtDiaChi, txtTrinhDo, txtNgayThanhlap, txtPhone, txtDanhSachCacTinDaDang, txtQuayLai, txtKhungGioChoi;
     private ImageView imgAnhBia, imgAnhDaiDien;
     private Bundle bundle;
     private ListView lvDanhSachThanhVien, lvTranDauSapToi, lvLichSuTranDau;
@@ -64,6 +66,12 @@ public class ChiTietDoiBongDaThamGiaFragment extends Fragment {
     private JsonApiSanBong jsonApiSanBong;
     private JsonApiDoiBongNGuoiDung jsonApiDoiBongNGuoiDung;
     private int quyen;
+    private ArrayList<Integer> arrIDKhungGioDaChon = new ArrayList<>();
+    ArrayList<String> arrGio;
+    private int idDoiBong;
+    JsonApiKhungGio jsonApiKhungGio;
+    List<KhungGio> khungGios;
+    private ArrayList<Boolean> arrGioDaChon = new ArrayList<>();
 
     @Nullable
     @Override
@@ -102,7 +110,89 @@ public class ChiTietDoiBongDaThamGiaFragment extends Fragment {
 
         ClickSDT();
 
+        LoadListKhungGio();
+
         return view;
+    }
+
+    private void LoadListKhungGio() {
+        arrGio = new ArrayList<>();
+        jsonApiKhungGio = APIUtils.getJsonApiKhungGio();
+        Call<List<KhungGio>> call = jsonApiKhungGio.getKhungGios();
+        try {
+            call.enqueue(new Callback<List<KhungGio>>() {
+                @Override
+                public void onResponse(Call<List<KhungGio>> call, Response<List<KhungGio>> response) {
+                    try {
+                        khungGios = response.body();
+                        for (KhungGio khungGio : khungGios) {
+                            arrGio.add(khungGio.getThoigian());
+                        }
+                        arrGioDaChon = new ArrayList<>();
+                        for (int i = 0; i < arrGio.size(); i++) {
+                            arrGioDaChon.add(false);
+                        }
+                    } catch (Exception ex) {
+                        Log.e("BBB", ex.toString());
+                    }
+                    Call<List<KhungGio>> call1 = jsonApiSanBong.getKhunggiodachon(idDoiBong);
+                    try {
+                        call1.enqueue(new Callback<List<KhungGio>>() {
+                            @Override
+                            public void onResponse(Call<List<KhungGio>> call, Response<List<KhungGio>> response) {
+                                try {
+                                    List<KhungGio> khungGios = response.body();
+                                    for (KhungGio khungGio : khungGios) {
+                                        Log.d("TAG", "onResponse: " + khungGio.getKhunggio_id());
+                                        arrIDKhungGioDaChon.add(khungGio.getKhunggio_id());
+                                        arrGioDaChon.set(khungGio.getKhunggio_id(), true);
+                                    }
+                                    String gioDaChon = "";
+                                    int j = -1;
+                                    for (int i = 0; i < arrGio.size(); i++) {
+                                        if (arrGioDaChon.get(i) == true) {
+                                            arrIDKhungGioDaChon.add(i);
+                                            gioDaChon += arrGio.get(i);
+                                            Log.e("DxTrue", arrGio.get(i));
+                                            j = i;
+                                            break;
+                                        }
+                                    }
+                                    if (j != -1) {
+                                        for (int i = j + 1; i < arrGio.size(); i++) {
+                                            if (arrGioDaChon.get(i) == true) {
+                                                arrIDKhungGioDaChon.add(i);
+                                                gioDaChon += ", " + arrGio.get(i);
+                                                Log.e("DxTrue", arrGio.get(i));
+                                            }
+                                        }
+                                    }
+                                    txtKhungGioChoi.setText(gioDaChon);
+                                    Log.e("Dx", gioDaChon);
+                                }
+                                catch (Exception ex){
+                                    Log.e("BBB", ex.toString());
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call<List<KhungGio>> call, Throwable t) {
+
+                            }
+                        });
+                    } catch (Exception ex) {
+                        Log.e("BBB", ex.toString());
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<List<KhungGio>> call, Throwable t) {
+
+                }
+            });
+        } catch (Exception ex) {
+            Log.e("BBB", ex.toString());
+        }
     }
 
     private void ClickSDT() {
@@ -273,8 +363,7 @@ public class ChiTietDoiBongDaThamGiaFragment extends Fragment {
 
                 }
             });
-        }
-        catch (Exception ex){
+        } catch (Exception ex) {
             Log.e("BBB", ex.toString());
         }
     }
@@ -298,8 +387,7 @@ public class ChiTietDoiBongDaThamGiaFragment extends Fragment {
             ViewGroup.LayoutParams params = listView.getLayoutParams();
             params.height = totalHeight + (listView.getDividerHeight() * (matchAdapter.getCount() - 1));
             listView.setLayoutParams(params);
-        }
-        catch (Exception ex){
+        } catch (Exception ex) {
             Log.e("BBB", ex.toString());
         }
     }
@@ -340,8 +428,7 @@ public class ChiTietDoiBongDaThamGiaFragment extends Fragment {
                     System.out.println("Loi~: " + t.getMessage());
                 }
             });
-        }
-        catch (Exception ex){
+        } catch (Exception ex) {
             Log.e("BBB", ex.toString());
         }
     }
@@ -420,8 +507,7 @@ public class ChiTietDoiBongDaThamGiaFragment extends Fragment {
                 public void onFailure(Call<List<DoiBong_NguoiDung>> call, Throwable t) {
                 }
             });
-        }
-        catch (Exception ex){
+        } catch (Exception ex) {
             Log.e("BBB", ex.toString());
         }
 
@@ -457,8 +543,7 @@ public class ChiTietDoiBongDaThamGiaFragment extends Fragment {
             ViewGroup.LayoutParams params = listView.getLayoutParams();
             params.height = totalHeight + (listView.getDividerHeight() * (matchAdapter.getCount() - 1));
             listView.setLayoutParams(params);
-        }
-        catch (Exception ex){
+        } catch (Exception ex) {
             Log.d("BBB", ex.toString());
         }
     }
@@ -479,34 +564,36 @@ public class ChiTietDoiBongDaThamGiaFragment extends Fragment {
 
     private void GanNoiDungThongTinDoiBong() {
         try {
+            idDoiBong = doiBong.getId();
             bundle = getArguments();
 
             if (doiBong.getAnhdaidien() != null) {
                 Log.e("BBB", "anhDaiDienDoiBong: " + doiBong.getAnhdaidien());
-                Picasso.get().load(APIUtils.BASE_URL+doiBong.getAnhdaidien()).into(imgAnhDaiDien);
+                Picasso.get().load(APIUtils.BASE_URL + doiBong.getAnhdaidien()).into(imgAnhDaiDien);
             }
             if (doiBong.getAnhbia() != null) {
                 Log.e("BBB", "anhBiaDoiBong: " + doiBong.getAnhbia());
-                Picasso.get().load(APIUtils.BASE_URL+doiBong.getAnhbia()).into(imgAnhBia);
+                Picasso.get().load(APIUtils.BASE_URL + doiBong.getAnhbia()).into(imgAnhBia);
             }
             txtTenDoiBong.setText(doiBong.getTen());
             txtDiem.setText(doiBong.getSodiem() + " Điểm");
             txtDiaChi.setText(doiBong.getDiachi());
             txtTrinhDo.setText(doiBong.getTrinhdo());
             txtNgayThanhlap.setText(doiBong.getCreated_at().toString());
+
 //        System.out.println("ngaytao " + doiBong.getCreated_at());
             txtPhone.setText(doiBong.getSdt());
 //        arrThanhVien = doiBong.getListThanhVien();
 //        adapter = new DanhSachThanhVienAdapter(getActivity(), R.layout.dong_thanh_vien, arrThanhVien);
 //        lvDanhSachThanhVien.setAdapter(adapter);
 //        SetListViewHeightBasedOnChildren(adapter, lvDanhSachThanhVien);
-        }
-        catch (Exception ex){
+        } catch (Exception ex) {
             Log.e("BBB", ex.toString());
         }
     }
 
     private void Mapping() {
+        txtKhungGioChoi = view.findViewById(R.id.TextViewKhungGioChoi);
         bundle = getArguments();
 
         DoiBong_NguoiDung doiBong_nguoiDung = (DoiBong_NguoiDung) bundle.getSerializable("doibong1");
@@ -547,7 +634,7 @@ public class ChiTietDoiBongDaThamGiaFragment extends Fragment {
             LLButtonDuyetDonXin.setVisibility(View.GONE);
         }
 
-        if(quyen == 2) {
+        if (quyen == 2) {
             txtDanhSachCacTinDaDang.setVisibility(View.INVISIBLE);
             btnSuaThongTinDoiBong.setVisibility(View.INVISIBLE);
             btnDonXinGiaNhap.setVisibility(View.INVISIBLE);

@@ -113,7 +113,7 @@ public class DanhSachThanhVienAdapter extends BaseAdapter {
                                     jsonApiSanBong = APIUtils.getJsonApiSanBong();
 //                                    DoiBong_NguoiDung a = new DoiBong_NguoiDung(arrThanhVien.get(i).getDoibongId(),arrThanhVien.get(i).getUserId());
                                     DoiBong_NguoiDung a = arrThanhVien.get(i);
-                                    Call<DoiBong_NguoiDung> doiBong_nguoiDungCall = jsonApiSanBong.deleteThanhvien(a);
+                                    Call<DoiBong_NguoiDung> doiBong_nguoiDungCall = jsonApiSanBong.deleteThanhvien(a.getId());
                                     doiBong_nguoiDungCall.enqueue(new Callback<DoiBong_NguoiDung>() {
                                         @Override
                                         public void onResponse(Call<DoiBong_NguoiDung> call, Response<DoiBong_NguoiDung> response) {
