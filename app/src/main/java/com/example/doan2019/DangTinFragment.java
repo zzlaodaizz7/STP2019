@@ -196,11 +196,6 @@ public class DangTinFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 keo = edtKeoDau.getText().toString();
-//                System.out.println(IDDoiBong);
-//                System.out.println(d);
-//                System.out.println(keo);
-//                System.out.println(IDSanBong);
-//                System.out.println(IDKhungGio);
                 String content = "";
                 if (IDDoiBong == -1){
                     content += "Bạn chưa chọn đội bóng \n";
@@ -227,11 +222,11 @@ public class DangTinFragment extends Fragment {
                         @Override
                         public void onResponse(Call<DangTin> call, Response<DangTin> response) {
                             try {
-                                if (response.body().getType() == "success") {
-                                    Toast.makeText(getContext(), response.body().getContent(), Toast.LENGTH_SHORT).show();
-                                } else {
-                                    Toast.makeText(getContext(), response.body().getContent(), Toast.LENGTH_SHORT).show();
-                                }
+//                                if (response.body().getType() == "success") {
+//                                    Toast.makeText(getContext(), response.body().getContent(), Toast.LENGTH_SHORT).show();
+//                                } else {
+//                                    Toast.makeText(getContext(), response.body().getContent(), Toast.LENGTH_SHORT).show();
+//                                }
                                 List<User> userLogins = response.body().getListgoiy();
                                 for (User user : userLogins){
                                     System.out.println("Device: "+user.getDevice());
@@ -246,10 +241,11 @@ public class DangTinFragment extends Fragment {
 
                                         @Override
                                         public void onFailure(Call<ThongBao> call, Throwable t) {
-                                            System.out.println("loi: "+t.getMessage());
+                                            System.out.println("loi1: "+t.getMessage());
                                         }
                                     });
                                 }
+                                Toast.makeText(getContext(), response.body().getContent(), Toast.LENGTH_SHORT).show();
                                 getFragmentManager().popBackStack();
                             }
                             catch (Exception ex){

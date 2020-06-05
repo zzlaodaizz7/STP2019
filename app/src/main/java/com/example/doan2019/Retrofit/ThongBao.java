@@ -3,13 +3,13 @@ package com.example.doan2019.Retrofit;
 import java.sql.Timestamp;
 
 public class ThongBao {
-    private int id, nguoidung_id;
+    private int id, user_id;
     private String noidung, loaithongbao, device;
     private Timestamp created_at, updated_at;
     private String type, tittle, content;
 
-    public ThongBao(int nguoidung_id, String noidung, String loaithongbao, String device) {
-        this.nguoidung_id = nguoidung_id;
+    public ThongBao(int user_id, String noidung, String loaithongbao, String device) {
+        this.user_id = user_id;
         this.noidung = noidung;
         this.loaithongbao = loaithongbao;
         this.device = device;
@@ -23,12 +23,12 @@ public class ThongBao {
         this.id = id;
     }
 
-    public int getNguoidung_id() {
-        return nguoidung_id;
+    public int getUser_id() {
+        return user_id;
     }
 
-    public void setNguoidung_id(int nguoidung_id) {
-        this.nguoidung_id = nguoidung_id;
+    public void setUser_id(int user_id) {
+        this.user_id = user_id;
     }
 
     public String getLoaithongbao() {

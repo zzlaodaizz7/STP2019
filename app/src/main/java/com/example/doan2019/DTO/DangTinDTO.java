@@ -7,7 +7,7 @@ import java.sql.Timestamp;
 public class DangTinDTO implements Serializable {
     private int id;
     private int doidangtin_id;
-    private String doidangtin_ten;
+    private String doidangtin_ten,device;
     private int doitruongdoidangtin_id;
     private String trangthai, trinhdo;
     private int doibatdoi_id;
@@ -43,6 +43,14 @@ public class DangTinDTO implements Serializable {
         this.updated_at = updated_at;
         this.doitruongdoibatdoi_id = doitruongdoibatdoi_id;
         this.doitruongdoidangtin_id = doitruongdoidangtin_id;
+    }
+
+    public String getDevice() {
+        return device;
+    }
+
+    public void setDevice(String device) {
+        this.device = device;
     }
 
     public String getDoidangtin_ten() {

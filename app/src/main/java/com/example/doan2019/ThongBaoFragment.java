@@ -30,7 +30,8 @@ import retrofit2.Response;
 public class ThongBaoFragment extends Fragment {
     View view;
     ListView listViewNotification;
-    ArrayList<Notification> notificationArrayList, arrIDNotification;
+    ArrayList<Notification> notificationArrayList;
+    ArrayList<Integer> arrIDNotification;
     SharedPreferences sharedPreferences;
     String Auth ="";
     TextView txtBack;
@@ -62,8 +63,13 @@ public class ThongBaoFragment extends Fragment {
         listViewNotification.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(getActivity(), arrIDNotification.get(position).getId() + "", Toast.LENGTH_SHORT).show();
+
+//                Toast.makeText(getActivity(), arrIDNotification.get(position) + " loaithongbao", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getActivity(), arrIDNotification.get(position).getId() + " id", Toast.LENGTH_SHORT).show();
+                Bundle bundleID = new Bundle();
+                bundleID.putSerializable("iddangtin",arrIDNotification.get(position));
                 BatDoiFragment batDoiFragment = new BatDoiFragment();
+                batDoiFragment.setArguments(bundleID);
                 langNgheSuKienChuyenFragment.ChuyenHuongFragment(batDoiFragment);
             }
         });
@@ -81,8 +87,9 @@ public class ThongBaoFragment extends Fragment {
 //                System.out.println(response.code());
                     List<ThongBao> thongBao = response.body();
                     for (ThongBao thongBao1 : thongBao) {
+
                         notificationArrayList.add(new Notification(thongBao1.getNoidung()));
-                        arrIDNotification.add(new Notification(thongBao1.getId()));
+                        arrIDNotification.add(Integer.parseInt(thongBao1.getLoaithongbao()));
                     }
                     NotificationAdapter notificationAdapter = new NotificationAdapter(getActivity(), R.layout._notification, notificationArrayList);
                     listViewNotification.setAdapter(notificationAdapter);

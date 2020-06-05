@@ -1,5 +1,6 @@
 package com.example.doan2019.Retrofit;
 
+import com.example.doan2019.DTO.DangTinDTO;
 import com.example.doan2019.DangTinDuongClass;
 import com.example.doan2019.DoiBongClass;
 
@@ -87,4 +88,6 @@ public interface JsonApiSanBong {
 
     @GET("doibongkhunggio/{id}")
     Call<List<KhungGio>> getKhunggiodachon(@Path("id")int id);
+    @GET("chitiettindang/{id}")
+    Call<DangTinDTO> getChitiettindang(@Path("id") int id);
 }

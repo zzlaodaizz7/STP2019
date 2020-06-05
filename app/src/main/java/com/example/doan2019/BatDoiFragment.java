@@ -27,6 +27,7 @@ import com.example.doan2019.Retrofit.DoiBong;
 import com.example.doan2019.Retrofit.JsonApiBatDoi;
 import com.example.doan2019.Retrofit.JsonApiDangTin;
 import com.example.doan2019.Retrofit.JsonApiDoiBongNGuoiDung;
+import com.example.doan2019.Retrofit.JsonApiSanBong;
 import com.example.doan2019.Retrofit.JsonApiThongBao;
 import com.example.doan2019.Retrofit.JsonApiUser;
 import com.example.doan2019.Retrofit.ThongBao;
@@ -51,20 +52,20 @@ public class BatDoiFragment extends Fragment {
     TextView txtTime, txtPitch, txtRatio, txtState, txtLevel, txtTeamHost, txtTeamGuest, txtVS, txtBack;
     Button btnBatDoi;
     Bundle bundle;
-    JsonApiDangTin jsonApiDangTin; JsonApiBatDoi jsonApiBatDoi; JsonApiUser jsonApiUser; JsonApiThongBao jsonApiThongBao; JsonApiDoiBongNGuoiDung jsonApiDoiBongNGuoiDung;
+    JsonApiSanBong jsonApiSanBong; JsonApiDangTin jsonApiDangTin; JsonApiBatDoi jsonApiBatDoi; JsonApiUser jsonApiUser; JsonApiThongBao jsonApiThongBao; JsonApiDoiBongNGuoiDung jsonApiDoiBongNGuoiDung;
     DangTinDTO dangTinDTO;
     Dialog dialogChonDoi;
     int dangtin_id, doitimdoi_id, doibatdoi_id, mode;
     String doidangtin_device;
     SharedPreferences sharedPreferences, sharedPreferencesLoadTimDoi;
-    String Auth = "";
+    String Auth = "",device;
     ArrayList<DoiBong> doiBongArrayList;
     Map<String,String> header;
     ListView listViewDoiBong, mainLV;
     ArrayList<String> tenDoiBongArrayList;
     String doibatdoi_ten;
     Dialog dialogTinNhan;
-
+    Integer idDoitruong,iddangtin;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -74,7 +75,7 @@ public class BatDoiFragment extends Fragment {
         jsonApiThongBao = APIUtils.getJsonApiThongBao();
         jsonApiDoiBongNGuoiDung = APIUtils.getJsonApiDoiBongNguoiDung();
         jsonApiDangTin = APIUtils.getJsonApiDangTin();
-
+        jsonApiSanBong = APIUtils.getJsonApiSanBong();
         mapping();
         loadDoiDangTin_device();
         LoadListDoiBong();
@@ -113,10 +114,8 @@ public class BatDoiFragment extends Fragment {
         txtTeamHost = view.findViewById(R.id.txtTeamHost);
         txtTeamGuest = view.findViewById(R.id.txtTeamGuest);
         btnBatDoi = view.findViewById(R.id.btnBatDoi);
-        mode = 1;
-
         bundle = getArguments();
-
+        mode = 1;
         try {
             dangTinDTO = (DangTinDTO) bundle.get("batdoi");
             if (dangTinDTO.getDoibatdoi_id() != -1) {
@@ -151,6 +150,34 @@ public class BatDoiFragment extends Fragment {
             txtLevel.setText(dangTinDTO.getTrinhdo());
         }
         catch (Exception ex){
+            Log.e("BBB", "BatDoiFragment: " + ex.toString());
+        }
+        try {
+            iddangtin = (Integer)bundle.get("iddangtin");
+            Call<DangTinDTO> call = jsonApiSanBong.getChitiettindang(iddangtin);
+            call.enqueue(new Callback<DangTinDTO>() {
+                @Override
+                public void onResponse(Call<DangTinDTO> call, Response<DangTinDTO> response) {
+                    DangTinDTO dangTinDTO = response.body();
+                    txtTeamHost.setText(dangTinDTO.getDoidangtin_ten());
+                    txtTeamGuest.setText("");
+                    idDoitruong = dangTinDTO.getDoitruongdoidangtin_id();
+                    doitimdoi_id = dangTinDTO.getDoidangtin_id();
+                    device = dangTinDTO.getDevice();
+                    txtTime.setText(dangTinDTO.getNgay() + " " + dangTinDTO.getKhunggio_thoigian());
+                    txtState.setText("Có sân nhà");
+                    txtRatio.setText(dangTinDTO.getKeo());
+                    txtPitch.setText(dangTinDTO.getSan_ten());
+                    txtLevel.setText(dangTinDTO.getTrinhdo());
+                }
+
+                @Override
+                public void onFailure(Call<DangTinDTO> call, Throwable t) {
+
+                }
+            });
+            Log.e("BBB", "IDdangtin: " + bundle.get("iddangtin"));
+        }catch (Exception ex){
             Log.e("BBB", "BatDoiFragment: " + ex.toString());
         }
     }
@@ -253,40 +280,82 @@ public class BatDoiFragment extends Fragment {
                             //btnBatDoi.setText();
                             doibatdoi_ten = tenDoiBongArrayList.get(position);
                             dialogChonDoi.cancel();
-
                             for(DoiBong doiBong : doiBongArrayList){
                                 if(doiBong.getTen().equals(doibatdoi_ten)){
-                                    BatDoi batDoi = new BatDoi(doiBong.getId(), doitimdoi_id, dangtin_id);
-                                    Call<BatDoi> call1 = jsonApiBatDoi.createBatDoi(header, batDoi);
-                                    call1.enqueue(new Callback<BatDoi>() {
-                                        @Override
-                                        public void onResponse(Call<BatDoi> call, Response<BatDoi> response) {
-                                            Log.d("batdoi", "Bat doi thanh cong");
-                                            // tao thong bao
-                                            ThongBao thongBao = new ThongBao(dangTinDTO.getDoitruongdoidangtin_id(), doibatdoi_ten + " muốn bắt đối với bạn", "batdoi", doidangtin_device);
-                                            Call<ThongBao> call2 = jsonApiThongBao.createThongBao(thongBao);
-                                            call2.enqueue(new Callback<ThongBao>() {
+                                    if (dangTinDTO!=null){
+                                        System.out.println("khong null ne``````````");
+                                        try {
+                                            BatDoi batDoi = new BatDoi(doiBong.getId(), doitimdoi_id, dangtin_id);
+                                            Call<BatDoi> call1 = jsonApiBatDoi.createBatDoi(header, batDoi);
+                                            call1.enqueue(new Callback<BatDoi>() {
                                                 @Override
-                                                public void onResponse(Call<ThongBao> call, Response<ThongBao> response) {
-                                                    Log.d("batdoi", "tao thong bao thanh cong");
-                                                    showDialogTinNhan("Gửi yêu cầu thành công.");
-                                                    hideDialogTinNhan();
-                                                    dayThongBaoOneSignal(doibatdoi_ten+" muốn bắt đối với bạn", doidangtin_device);
+                                                public void onResponse(Call<BatDoi> call, Response<BatDoi> response) {
+                                                    Log.d("batdoi", "Bat doi thanh cong");
+                                                    // tao thong bao
+                                                    System.out.println(dangTinDTO.getDoitruongdoidangtin_id()+"-"+doibatdoi_ten+"-"+doidangtin_device);
+                                                    ThongBao thongBao = new ThongBao(dangTinDTO.getDoitruongdoidangtin_id(), doibatdoi_ten + " muốn bắt đối với bạn", "batdoi", doidangtin_device);
+                                                    Call<ThongBao> call2 = jsonApiThongBao.createThongBao(thongBao);
+                                                    call2.enqueue(new Callback<ThongBao>() {
+                                                        @Override
+                                                        public void onResponse(Call<ThongBao> call, Response<ThongBao> response) {
+                                                            Log.d("batdoi", "tao thong bao thanh cong");
+                                                            showDialogTinNhan("Gửi yêu cầu thành công.");
+                                                            hideDialogTinNhan();
+                                                            dayThongBaoOneSignal(doibatdoi_ten+" muốn bắt đối với bạn", doidangtin_device);
+                                                        }
+
+                                                        @Override
+                                                        public void onFailure(Call<ThongBao> call, Throwable t) {
+
+                                                        }
+                                                    });
                                                 }
 
                                                 @Override
-                                                public void onFailure(Call<ThongBao> call, Throwable t) {
-
+                                                public void onFailure(Call<BatDoi> call, Throwable t) {
                                                 }
                                             });
-                                            //
+                                            break;
+                                        }catch (Exception ex){
                                         }
+                                    }else{
+                                        try {
+                                            System.out.println("null"+doiBong.getId()+doitimdoi_id+iddangtin);
+                                            BatDoi batDoi = new BatDoi(doiBong.getId(), doitimdoi_id, iddangtin);
+                                            Call<BatDoi> call1 = jsonApiBatDoi.createBatDoi(header, batDoi);
+                                            call1.enqueue(new Callback<BatDoi>() {
+                                                @Override
+                                                public void onResponse(Call<BatDoi> call, Response<BatDoi> response) {
+                                                    Log.d("batdoi", "Bat doi thanh cong");
+                                                    // tao thong bao
+                                                    System.out.println(idDoitruong+"-"+doibatdoi_ten+"-"+device);
+                                                    ThongBao thongBao = new ThongBao(idDoitruong, doibatdoi_ten + " muốn bắt đối với bạn", "batdoi", device);
+                                                    Call<ThongBao> call2 = jsonApiThongBao.createThongBao(thongBao);
+                                                    call2.enqueue(new Callback<ThongBao>() {
+                                                        @Override
+                                                        public void onResponse(Call<ThongBao> call, Response<ThongBao> response) {
+                                                            Log.d("batdoi", "tao thong bao thanh cong");
+                                                            showDialogTinNhan("Gửi yêu cầu thành công.");
+                                                            hideDialogTinNhan();
+                                                            dayThongBaoOneSignal(doibatdoi_ten+" muốn bắt đối với bạn", device);
+                                                        }
 
-                                        @Override
-                                        public void onFailure(Call<BatDoi> call, Throwable t) {
+                                                        @Override
+                                                        public void onFailure(Call<ThongBao> call, Throwable t) {
+
+                                                        }
+                                                    });
+
+                                                }
+
+                                                @Override
+                                                public void onFailure(Call<BatDoi> call, Throwable t) {
+                                                }
+                                            });
+                                            break;
+                                        }catch (Exception ex){
                                         }
-                                    });
-                                    break;
+                                    }
                                 }
 
                             }
