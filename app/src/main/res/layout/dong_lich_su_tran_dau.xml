@@ -69,7 +69,7 @@
                 android:layout_height="wrap_content"
                 android:text="6"
                 android:textColor="@android:color/holo_green_light"
-                android:textSize="30sp" />
+                android:textSize="25sp" />
 
             <TextView
                 android:id="@+id/TextViewDauCachTiSo"
@@ -77,7 +77,7 @@
                 android:layout_height="wrap_content"
                 android:text="-"
                 android:textColor="@android:color/holo_green_light"
-                android:textSize="30sp" />
+                android:textSize="25sp" />
 
             <TextView
                 android:id="@+id/TextViewSoBanThangDoiHai"
@@ -85,7 +85,7 @@
                 android:layout_height="wrap_content"
                 android:text="0"
                 android:textColor="@android:color/holo_green_light"
-                android:textSize="30sp" />
+                android:textSize="25sp" />
         </LinearLayout>
         <LinearLayout
             android:layout_width="wrap_content"

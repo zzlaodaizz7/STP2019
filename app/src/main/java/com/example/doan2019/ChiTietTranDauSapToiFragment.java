@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -44,7 +45,9 @@ public class ChiTietTranDauSapToiFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_chi_tiet_tran_dau_sap_toi, container, false);
         langNgheSuKienChuyenFragment = (LangNgheSuKienChuyenFragment) getActivity();
         jsonApiSanBong = APIUtils.getJsonApiSanBong();
+
         Mapping();
+
         GetDuLieu();
 
         ClickBack();
@@ -75,6 +78,8 @@ public class ChiTietTranDauSapToiFragment extends Fragment {
     private void GetDuLieu() {
         bundle = getArguments();
         TranDauDuongClass tranDau = (TranDauDuongClass) bundle.getSerializable("trandauduong");
+        Toast.makeText(getActivity(), tranDau.getKhungGio()+"", Toast.LENGTH_SHORT).show();
+        Log.e("Dx", tranDau.getDoiBongDoiThu().getImageBia() + "");
         if(tranDau != null) {
             DoiBongClass doiMinh = tranDau.getDoiMinh();
             DoiBongClass doiBan = tranDau.getDoiBongDoiThu();

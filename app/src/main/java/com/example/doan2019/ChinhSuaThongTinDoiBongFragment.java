@@ -72,9 +72,10 @@ public class ChinhSuaThongTinDoiBongFragment extends Fragment {
     private String anhbia = "", anhDaiDien = "";
     private DoiBong doiBong;
     private ArrayList<Boolean> arrGioDaChon = new ArrayList<>();
-    String base_Url = "/images/";
+    String base_Url = "images/";
     ArrayList<String> arrGio;
     JsonApiKhungGio jsonApiKhungGio;
+    Boolean checkSuaBia = false, checkSuaDaiDien = false;
 
     @Nullable
     @Override
@@ -244,86 +245,214 @@ public class ChinhSuaThongTinDoiBongFragment extends Fragment {
         btnLuu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Ảnh bìa
-                try {
-                    File fileBia = new File(realPathBia);
-                    String file_pathBia = fileBia.getAbsolutePath();
-                    String[] tenFileArray = file_pathBia.split("\\.");
-                    file_pathBia = tenFileArray[0] + System.currentTimeMillis() + "." + tenFileArray[1];
-                    Log.d("path", file_pathBia);
-                    RequestBody requestBody = RequestBody.create(MediaType.parse("multipart/form-data"), fileBia);
-                    MultipartBody.Part body = MultipartBody.Part.createFormData("uploaded_file", file_pathBia, requestBody);
-                    Log.d("anhbia", body + "");
-                    Call<String> call = jsonApiUser.upload(body);
-                    call.enqueue(new Callback<String>() {
-                        @Override
-                        public void onResponse(Call<String> call, Response<String> response) {
-                            anhbia = response.body();
+                if(checkSuaBia == false && checkSuaDaiDien == false){
+                    try {
+                        Log.e("Dx", "Bia: " + base_Url + anhbia);
+                        Log.e("Dx", "DaiDien: " + base_Url + anhDaiDien);
+                        DoiBong a = new DoiBong(anhbia, anhDaiDien, edtTen.getText().toString(), btnTrinhDo.getText().toString(), edtDiaChi.getText().toString(), edtSoDienThoai.getText().toString(), arrIDKhungGioDaChon);
+                        Call<DoiBong> doiBongCall = jsonApiSanBong.putSuathongtindoibong(a, idDoiBong);
+                        doiBongCall.enqueue(new Callback<DoiBong>() {
+                            @Override
+                            public void onResponse(Call<DoiBong> call, Response<DoiBong> response) {
+                                Toast.makeText(getActivity(), "Sửa thông tin thành công", Toast.LENGTH_SHORT).show();
+                            }
+
+                            @Override
+                            public void onFailure(Call<DoiBong> call, Throwable t) {
+                                Toast.makeText(getActivity(), "Sửa thông tin thành công", Toast.LENGTH_SHORT).show();
+                                Log.e("BBB", "Sua that bai: " + t.getMessage());
+                            }
+                        });
+                    }
+                    catch (Exception ex){
+                        Log.e("BBB", ex.toString());
+                    }
+                }
+                else if(checkSuaBia == true && checkSuaDaiDien == false){
+                    try {
+                        File fileBia = new File(realPathBia);
+                        String file_pathBia = fileBia.getAbsolutePath();
+                        String[] tenFileArray = file_pathBia.split("\\.");
+                        file_pathBia = tenFileArray[0] + System.currentTimeMillis() + "." + tenFileArray[1];
+                        Log.d("path", file_pathBia);
+                        RequestBody requestBody = RequestBody.create(MediaType.parse("multipart/form-data"), fileBia);
+                        MultipartBody.Part body = MultipartBody.Part.createFormData("uploaded_file", file_pathBia, requestBody);
+                        Log.d("anhbia", body + "");
+                        Call<String> call = jsonApiUser.upload(body);
+                        call.enqueue(new Callback<String>() {
+                            @Override
+                            public void onResponse(Call<String> call, Response<String> response) {
+                                anhbia = response.body();
+                                try {
+                                    Log.e("Dx", "Bia: " + base_Url + anhbia);
+                                    Log.e("Dx", "DaiDien: " + base_Url + anhDaiDien);
+                                    DoiBong a = new DoiBong(base_Url + anhbia, anhDaiDien, edtTen.getText().toString(), btnTrinhDo.getText().toString(), edtDiaChi.getText().toString(), edtSoDienThoai.getText().toString(), arrIDKhungGioDaChon);
+                                    Call<DoiBong> doiBongCall = jsonApiSanBong.putSuathongtindoibong(a, idDoiBong);
+                                    doiBongCall.enqueue(new Callback<DoiBong>() {
+                                        @Override
+                                        public void onResponse(Call<DoiBong> call, Response<DoiBong> response) {
+                                            Toast.makeText(getActivity(), "Sửa thông tin thành công", Toast.LENGTH_SHORT).show();
+                                        }
+
+                                        @Override
+                                        public void onFailure(Call<DoiBong> call, Throwable t) {
+                                            Toast.makeText(getActivity(), "Sửa thông tin thành công", Toast.LENGTH_SHORT).show();
+                                            Log.e("BBB", "Sua that bai: " + t.getMessage());
+                                        }
+                                    });
+                                }
+                                catch (Exception ex){
+                                    Log.e("BBB", ex.toString());
+                                }
 //                        doiBong.setAnhbia(base_Url+anhDaiDien);
-                            Log.e("CCC", base_Url + anhbia + "");
-                        }
+                                Log.e("CCC", base_Url + anhbia + "");
+                            }
 
-                        @Override
-                        public void onFailure(Call<String> call, Throwable t) {
-                            Log.e("BBB", "Up ảnh bìa thất bại" + t.toString());
-                        }
-                    });
+                            @Override
+                            public void onFailure(Call<String> call, Throwable t) {
+                                Log.e("BBB", "Up ảnh bìa thất bại" + t.toString());
+                            }
+                        });
+                    }
+                    catch (Exception ex){
+                        Log.e("BBB", ex.toString());
+                    }
                 }
-                catch (Exception ex){
-                    Log.e("BBB", ex.toString());
-                }
-
-                //Ảnh đại diện
-                try {
-                    File fileDaiDien = new File(realPathDaiDien);
-                    String file_pathDaiDien = fileDaiDien.getAbsolutePath();
-                    String[] tenFileArrayDaiDien = file_pathDaiDien.split("\\.");
-                    file_pathDaiDien = tenFileArrayDaiDien[0] + System.currentTimeMillis() + "." + tenFileArrayDaiDien[1];
-                    Log.d("path", file_pathDaiDien);
-                    RequestBody requestBodyDaiDien = RequestBody.create(MediaType.parse("multipart/form-data"), fileDaiDien);
-                    MultipartBody.Part bodyDaiDien = MultipartBody.Part.createFormData("uploaded_file", file_pathDaiDien, requestBodyDaiDien);
-                    Log.d("anhbia", bodyDaiDien + "");
-                    Call<String> callDaiDien = jsonApiUser.upload(bodyDaiDien);
-                    callDaiDien.enqueue(new Callback<String>() {
-                        @Override
-                        public void onResponse(Call<String> call, Response<String> response) {
-                            anhDaiDien = response.body();
+                else if(checkSuaBia == false && checkSuaDaiDien == true){
+                    try {
+                        File fileDaiDien = new File(realPathDaiDien);
+                        String file_pathDaiDien = fileDaiDien.getAbsolutePath();
+                        String[] tenFileArrayDaiDien = file_pathDaiDien.split("\\.");
+                        file_pathDaiDien = tenFileArrayDaiDien[0] + System.currentTimeMillis() + "." + tenFileArrayDaiDien[1];
+                        Log.d("path", file_pathDaiDien);
+                        RequestBody requestBodyDaiDien = RequestBody.create(MediaType.parse("multipart/form-data"), fileDaiDien);
+                        MultipartBody.Part bodyDaiDien = MultipartBody.Part.createFormData("uploaded_file", file_pathDaiDien, requestBodyDaiDien);
+                        Log.d("anhbia", bodyDaiDien + "");
+                        Call<String> callDaiDien = jsonApiUser.upload(bodyDaiDien);
+                        callDaiDien.enqueue(new Callback<String>() {
+                            @Override
+                            public void onResponse(Call<String> call, Response<String> response) {
+                                anhDaiDien = response.body();
 //                        doiBong.setAnhdaidien(base_Url+anhDaiDien);
-                            Log.e("CCC", base_Url + anhDaiDien + "");
-                            try {
-                                Log.e("Dx", "Bia: " + base_Url + anhbia);
-                                Log.e("Dx", "DaiDien: " + base_Url + anhDaiDien);
-                                DoiBong a = new DoiBong(base_Url + anhbia, base_Url + anhDaiDien, edtTen.getText().toString(), btnTrinhDo.getText().toString(), edtDiaChi.getText().toString(), edtSoDienThoai.getText().toString(), arrIDKhungGioDaChon);
-                                Call<DoiBong> doiBongCall = jsonApiSanBong.putSuathongtindoibong(a, idDoiBong);
-                                doiBongCall.enqueue(new Callback<DoiBong>() {
-                                    @Override
-                                    public void onResponse(Call<DoiBong> call, Response<DoiBong> response) {
-                                        Toast.makeText(getActivity(), "Sửa thông tin thành công", Toast.LENGTH_SHORT).show();
-                                    }
+                                Log.e("CCC", base_Url + anhDaiDien + "");
+                                try {
+                                    Log.e("Dx", "Bia: " + base_Url + anhbia);
+                                    Log.e("Dx", "DaiDien: " + base_Url + anhDaiDien);
+                                    DoiBong a = new DoiBong(anhbia, base_Url + anhDaiDien, edtTen.getText().toString(), btnTrinhDo.getText().toString(), edtDiaChi.getText().toString(), edtSoDienThoai.getText().toString(), arrIDKhungGioDaChon);
+                                    Call<DoiBong> doiBongCall = jsonApiSanBong.putSuathongtindoibong(a, idDoiBong);
+                                    doiBongCall.enqueue(new Callback<DoiBong>() {
+                                        @Override
+                                        public void onResponse(Call<DoiBong> call, Response<DoiBong> response) {
+                                            Toast.makeText(getActivity(), "Sửa thông tin thành công", Toast.LENGTH_SHORT).show();
+                                        }
 
-                                    @Override
-                                    public void onFailure(Call<DoiBong> call, Throwable t) {
-                                        Toast.makeText(getActivity(), "Sửa thông tin thành công", Toast.LENGTH_SHORT).show();
-                                        Log.e("BBB", "Sua that bai: " + t.getMessage());
-                                    }
-                                });
+                                        @Override
+                                        public void onFailure(Call<DoiBong> call, Throwable t) {
+                                            Toast.makeText(getActivity(), "Sửa thông tin thành công", Toast.LENGTH_SHORT).show();
+                                            Log.e("BBB", "Sua that bai: " + t.getMessage());
+                                        }
+                                    });
+                                }
+                                catch (Exception ex){
+                                    Log.e("BBB", ex.toString());
+                                }
                             }
-                            catch (Exception ex){
-                                Log.e("BBB", ex.toString());
-                            }
-                        }
 
-                        @Override
-                        public void onFailure(Call<String> call, Throwable t) {
-                            Log.e("BBB", "Up ảnh bìa thất bại" + t.toString());
-                        }
-                    });
+                            @Override
+                            public void onFailure(Call<String> call, Throwable t) {
+                                Log.e("BBB", "Up ảnh bìa thất bại" + t.toString());
+                            }
+                        });
+                    }
+                    catch (Exception ex){
+                        Log.e("BBB", ex.toString());
+                    }
                 }
-                catch (Exception ex){
-                    Log.e("BBB", ex.toString());
+                else{
+                    //Ảnh bìa
+                    try {
+                        File fileBia = new File(realPathBia);
+                        String file_pathBia = fileBia.getAbsolutePath();
+                        String[] tenFileArray = file_pathBia.split("\\.");
+                        file_pathBia = tenFileArray[0] + System.currentTimeMillis() + "." + tenFileArray[1];
+                        Log.d("path", file_pathBia);
+                        RequestBody requestBody = RequestBody.create(MediaType.parse("multipart/form-data"), fileBia);
+                        MultipartBody.Part body = MultipartBody.Part.createFormData("uploaded_file", file_pathBia, requestBody);
+                        Log.d("anhbia", body + "");
+                        Call<String> call = jsonApiUser.upload(body);
+                        call.enqueue(new Callback<String>() {
+                            @Override
+                            public void onResponse(Call<String> call, Response<String> response) {
+                                anhbia = response.body();
+                                LuuAnhDaiDienVaThongTin();
+//                        doiBong.setAnhbia(base_Url+anhDaiDien);
+                                Log.e("CCC", base_Url + anhbia + "");
+                            }
+
+                            @Override
+                            public void onFailure(Call<String> call, Throwable t) {
+                                Log.e("BBB", "Up ảnh bìa thất bại" + t.toString());
+                            }
+                        });
+                    }
+                    catch (Exception ex){
+                        Log.e("BBB", ex.toString());
+                    }
                 }
             }
         });
+    }
+
+    private void LuuAnhDaiDienVaThongTin(){
+        //Ảnh đại diện
+        try {
+            File fileDaiDien = new File(realPathDaiDien);
+            String file_pathDaiDien = fileDaiDien.getAbsolutePath();
+            String[] tenFileArrayDaiDien = file_pathDaiDien.split("\\.");
+            file_pathDaiDien = tenFileArrayDaiDien[0] + System.currentTimeMillis() + "." + tenFileArrayDaiDien[1];
+            Log.d("path", file_pathDaiDien);
+            RequestBody requestBodyDaiDien = RequestBody.create(MediaType.parse("multipart/form-data"), fileDaiDien);
+            MultipartBody.Part bodyDaiDien = MultipartBody.Part.createFormData("uploaded_file", file_pathDaiDien, requestBodyDaiDien);
+            Log.d("anhbia", bodyDaiDien + "");
+            Call<String> callDaiDien = jsonApiUser.upload(bodyDaiDien);
+            callDaiDien.enqueue(new Callback<String>() {
+                @Override
+                public void onResponse(Call<String> call, Response<String> response) {
+                    anhDaiDien = response.body();
+//                        doiBong.setAnhdaidien(base_Url+anhDaiDien);
+                    Log.e("CCC", base_Url + anhDaiDien + "");
+                    try {
+                        Log.e("Dx", "Bia: " + base_Url + anhbia);
+                        Log.e("Dx", "DaiDien: " + base_Url + anhDaiDien);
+                        DoiBong a = new DoiBong(base_Url + anhbia, base_Url + anhDaiDien, edtTen.getText().toString(), btnTrinhDo.getText().toString(), edtDiaChi.getText().toString(), edtSoDienThoai.getText().toString(), arrIDKhungGioDaChon);
+                        Call<DoiBong> doiBongCall = jsonApiSanBong.putSuathongtindoibong(a, idDoiBong);
+                        doiBongCall.enqueue(new Callback<DoiBong>() {
+                            @Override
+                            public void onResponse(Call<DoiBong> call, Response<DoiBong> response) {
+                                Toast.makeText(getActivity(), "Sửa thông tin thành công", Toast.LENGTH_SHORT).show();
+                            }
+
+                            @Override
+                            public void onFailure(Call<DoiBong> call, Throwable t) {
+                                Toast.makeText(getActivity(), "Sửa thông tin thành công", Toast.LENGTH_SHORT).show();
+                                Log.e("BBB", "Sua that bai: " + t.getMessage());
+                            }
+                        });
+                    }
+                    catch (Exception ex){
+                        Log.e("BBB", ex.toString());
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<String> call, Throwable t) {
+                    Log.e("BBB", "Up ảnh bìa thất bại" + t.toString());
+                }
+            });
+        }
+        catch (Exception ex){
+            Log.e("BBB", ex.toString());
+        }
     }
 
     private void ClickThayAnhDaiDien() {
@@ -352,6 +481,7 @@ public class ChinhSuaThongTinDoiBongFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if( requestCode == REQUEST_CODE_ANH_BIA ) {
+            checkSuaBia = true;
             try {
                 Uri uri = data.getData();
                 realPathBia = getRealPathFromURI(uri);
@@ -372,6 +502,7 @@ public class ChinhSuaThongTinDoiBongFragment extends Fragment {
             }
         }
         else if(requestCode == REQUEST_CODE_ANH_DAI_DIEN){
+            checkSuaDaiDien = true;
             try {
                 Uri uri = data.getData();
                 realPathDaiDien = getRealPathFromURI(uri);
@@ -489,9 +620,13 @@ public class ChinhSuaThongTinDoiBongFragment extends Fragment {
             idDoiBong = doibong.getId();
 
             if (doibong.getAnhdaidien() != null) {
+                anhDaiDien = doibong.getAnhdaidien();
+                Log.e("Dx", doibong.getAnhdaidien());
                 Picasso.get().load(APIUtils.BASE_URL+doibong.getAnhdaidien()).into(imgDaiDien);
             }
             if (doibong.getAnhbia() != null) {
+                anhbia = doibong.getAnhbia();
+                Log.e("Dx", doibong.getAnhbia());
                 Picasso.get().load(APIUtils.BASE_URL+doibong.getAnhbia()).into(imgBia);
             }
             edtTen.setText(doibong.getTen());

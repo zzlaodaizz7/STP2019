@@ -128,6 +128,7 @@ public class TimDoiFragment extends Fragment {
             public void onClick(View v) {
                 SuaIPDialog suaIPDialog = new SuaIPDialog();
                 suaIPDialog.show(getActivity().getSupportFragmentManager(), "Dialog_popup");
+                btnIP.setVisibility(View.INVISIBLE);
             }
         });
     }
