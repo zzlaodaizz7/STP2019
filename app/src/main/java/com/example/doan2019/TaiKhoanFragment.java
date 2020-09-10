@@ -13,22 +13,26 @@ import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
 public class TaiKhoanFragment extends Fragment {
-    private View view;
-    private ViewPager viewPager;
-
+    private static ViewPager viewPager;
+    private static View view;
+    public static TaiKhoanAdapter taiKhoanAdapter;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_tai_khoan, container, false);
         Mapping();
+        XuLy();
         return view;
     }
 
-    private void Mapping() {
-        viewPager = view.findViewById(R.id.ViewPagerTaiKhoan);
-        TaiKhoanAdapter taiKhoanAdapter = new TaiKhoanAdapter(getChildFragmentManager());
+    public static void XuLy() {
         viewPager.setAdapter(taiKhoanAdapter);
         TabLayout tabLayout = view.findViewById(R.id.TabLayoutTaiKhoan);
         tabLayout.setupWithViewPager(viewPager);
+    }
+
+    public void Mapping() {
+        viewPager = view.findViewById(R.id.ViewPagerTaiKhoan);
+        taiKhoanAdapter= new TaiKhoanAdapter(getChildFragmentManager());
     }
 }

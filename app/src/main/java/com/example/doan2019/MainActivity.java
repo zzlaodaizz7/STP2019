@@ -283,11 +283,21 @@ public class MainActivity extends AppCompatActivity implements LangNgheSuKienChu
 
     @Override
     public void ChuyenHuongFragment(Fragment x) {
-        getSupportFragmentManager().beginTransaction()
-                .setCustomAnimations(R.anim.enter_right_to_left, R.anim.exit_right_to_left,
-                        R.anim.enter_left_to_right, R.anim.exit_left_to_right)
-                .replace(R.id.fragment_container, x)
-                .addToBackStack(rootFragment + "").commit();
+        if(x.getClass().getSimpleName().equals("TaiKhoanFragment")) {
+            getSupportFragmentManager().popBackStack(0,0);
+            getSupportFragmentManager().popBackStack();
+            getSupportFragmentManager().beginTransaction()
+                    .setCustomAnimations(R.anim.enter_right_to_left, R.anim.exit_right_to_left,
+                            R.anim.enter_left_to_right, R.anim.exit_left_to_right)
+                    .replace(R.id.fragment_container, x).commit();
+        }
+        else{
+            getSupportFragmentManager().beginTransaction()
+                    .setCustomAnimations(R.anim.enter_right_to_left, R.anim.exit_right_to_left,
+                            R.anim.enter_left_to_right, R.anim.exit_left_to_right)
+                    .replace(R.id.fragment_container, x)
+                    .addToBackStack(rootFragment + "").commit();
+        }
     }
     @Override
     public void onOSSubscriptionChanged(OSSubscriptionStateChanges stateChanges) {

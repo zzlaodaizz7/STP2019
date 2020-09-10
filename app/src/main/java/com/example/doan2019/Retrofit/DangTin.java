@@ -60,6 +60,7 @@ public class DangTin implements Serializable {
     public DangTin(int id, String ngay, int san_id, int khunggio_id, String keo, Timestamp created_at, Timestamp updated_at, int doibatdoi_id) {
     }
     public List<User> getListgoiy() {
+
         return listgoiy;
     }
 

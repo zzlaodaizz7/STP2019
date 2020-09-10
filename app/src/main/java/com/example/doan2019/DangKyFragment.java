@@ -15,6 +15,9 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.viewpager.widget.ViewPager;
 
 import com.example.doan2019.Retrofit.APIUtils;
 import com.example.doan2019.Retrofit.JsonApiDangTin;
@@ -34,12 +37,15 @@ public class DangKyFragment extends Fragment {
     private CheckBox cbHienMatKhau;
     private ImageView imgVisibility;
     private TextView txtTrangThaiPass;
+    LangNgheSuKienChuyenFragment langNgheSuKienChuyenFragment;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_dang_ky, container, false);
         jsonApiUser = APIUtils.getJsonApiUser();
+        langNgheSuKienChuyenFragment = (LangNgheSuKienChuyenFragment) getActivity();
+
         Mapping();
 
         ClickDangKy();
@@ -92,13 +98,15 @@ public class DangKyFragment extends Fragment {
                     call.enqueue(new Callback<String>() {
                         @Override
                         public void onResponse(Call<String> call, Response<String> response) {
-                            Toast.makeText(getActivity(), "Bạn đã đăng ký thành công", Toast.LENGTH_LONG).show();
+                            Toast.makeText(getActivity(), "Bạn đã đăng ký thành công!", Toast.LENGTH_LONG).show();
                             ResetCacTruong();
+                            langNgheSuKienChuyenFragment.ChuyenHuongFragment(new TaiKhoanFragment());
                         }
                         @Override
                         public void onFailure(Call<String> call, Throwable t) {
                             Toast.makeText(getActivity(), "Bạn đã đăng ký thành công", Toast.LENGTH_LONG).show();
                             ResetCacTruong();
+                            langNgheSuKienChuyenFragment.ChuyenHuongFragment(new TaiKhoanFragment());
                         }
                     });
                 }
